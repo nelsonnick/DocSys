@@ -1,0 +1,8 @@
+src/main/webapp/node_modules/
+src/main/webapp/.idea/
+src/main/webapp/dist/
+.idea/
+target/
+jfinal_demo.log
+src/main/webapp/WEB-INF/classes/
+src/main/webapp/WEB-INF/lib/

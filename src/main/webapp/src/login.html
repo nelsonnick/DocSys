@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript">
+        //点击切换验证码
+        function changeVerifyCode() {
+            $("#yzmImg").attr("src", "${contextPath}/img?" + Math.floor(Math.random() * 100));
+        }
+    </script>
+</head>
+<body>
+<form action="${contextPath}/login" method="post">
+    <input type="text" placeholder="请输入用户名" name="number">
+    <input type="password" placeholder="请输入密码" name="password">
+    <input type="text" placeholder="请输入验证码"  name="verifyCode" id="verifyCode">
+    <img src="${contextPath}/img"  onclick="changeVerifyCode()" id="yzmImg" style="cursor: pointer;">
+    <button type="submit">登陆</button>
+    <label id="red">${(error)!''}</label>
+</form>
+</body>
+</html>

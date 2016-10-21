@@ -1,0 +1,19 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "max-len":0,//字符串最大长度
+    "no-console":0,//禁止使用console
+    "react/jsx-no-bind":0,
+    "react/prefer-stateless-function":0,
+    "no-class-assign":0,//禁止给类赋值
+    "no-dupe-keys": 0,//在创建对象字面量时不允许键重复 {a:1,a:1}
+    "comma-dangle":1,//定义数组或对象最后多余的逗号
+    "no-eval":0,//禁止使用eval
+    "no-array-constructor": 1, //禁止使用数组构造器
+    "quote-props": ["error", "as-needed", { "keywords": true, "unnecessary": false }]//对象字面量中的属性名是否强制双引号
+  }
+}
