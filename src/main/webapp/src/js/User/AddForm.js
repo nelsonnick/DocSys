@@ -222,9 +222,7 @@ class AddFrom extends React.Component {
           required
         >
           <Select
-            tags
             style={{ width: '100%' }}
-            searchPlaceholder="标签模式"
             placeholder="请选择所属部门"
             {...userDeptProps}
           >
