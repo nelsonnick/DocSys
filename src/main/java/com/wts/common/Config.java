@@ -8,6 +8,8 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.wts.controller.*;
+import com.wts.entity.Department;
+import com.wts.entity.User;
 
 /**
  * API引导式配置
@@ -28,6 +30,8 @@ public class Config extends JFinalConfig {
      */
     public void configRoute(Routes me) {
         me.add("/", MainController.class);
+        me.add("/department", DepartmentController.class);
+        me.add("/user", UserController.class);
     }
 
     /**
@@ -35,13 +39,14 @@ public class Config extends JFinalConfig {
      */
     public void configPlugin(Plugins me) {
         // 配置C3p0数据库连接池插件
-//        C3p0Plugin c3p0Plugin = new C3p0Plugin(PropKit.get("jdbcUrl"), PropKit.get("user"), PropKit.get("password").trim());
-//        me.add(c3p0Plugin);
-//
-//        // 配置ActiveRecord插件
-//        ActiveRecordPlugin arp = new ActiveRecordPlugin(c3p0Plugin);
-//        me.add(arp);
-//        arp.addMapping("department", Department.class);
+        C3p0Plugin c3p0Plugin = new C3p0Plugin(PropKit.get("jdbcUrl"), PropKit.get("user"), PropKit.get("password").trim());
+        me.add(c3p0Plugin);
+
+        // 配置ActiveRecord插件
+        ActiveRecordPlugin arp = new ActiveRecordPlugin(c3p0Plugin);
+        me.add(arp);
+        arp.addMapping("department", Department.class);
+        arp.addMapping("user", User.class);
     }
 
     /**

@@ -9,7 +9,7 @@ public class MainController extends Controller {
      * 主界面
      * */
     public void index() {
-        render("/src/login.html");
+        render("/dist/index.html");
     }
     public void img() {
         renderCaptcha();

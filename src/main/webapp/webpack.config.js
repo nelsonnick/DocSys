@@ -8,7 +8,8 @@ module.exports = {
   entry: {// 入口文件，单入口 app.js 文件
     //app: './src/js/tt.js'
     //app: './src/test/App.js'
-    all: './src/js/Area/All.js'
+    // all: './src/js/Area/All.js',
+    sys: './src/js/Sys/All.js'
   },
   output: {
     path:__dirname + '/dist/',
