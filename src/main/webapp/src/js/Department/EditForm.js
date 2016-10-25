@@ -102,57 +102,22 @@ class EditFrom extends React.Component {
     }
   }
   render() {
-    const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
+    const { getFieldDecorator, getFieldError, isFieldValidating } = this.props.form;
     const { departmentId, departmentName, departmentPhone, departmentAddress, departmentState, departmentOther, departmentNumber } = this.props;
 
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
     };
-    const departmentIdProps = getFieldProps('departmentId', {
-      initialValue: departmentId,
-    });
-    const departmentNameProps = getFieldProps('departmentName', {
-      rules: [
-        { required: true, whitespace: true, message: '必填项' },
-        { validator: this.departmentNameCheck },
-      ],
-      initialValue: departmentName,
-    });
-    const departmentNumberProps = getFieldProps('departmentNumber', {
-      rules: [
-        { required: true, whitespace: true, message: '必填项' },
-        { validator: this.departmentNumberCheck },
-      ],
-      initialValue: departmentNumber,
-    });
-    const departmentPhoneProps = getFieldProps('departmentPhone', {
-      rules: [
-        { required: true, whitespace: true, message: '必填项' },
-        { validator: this.departmentPhoneCheck },
-      ],
-      initialValue: departmentPhone,
-    });
-    const departmentAddressProps = getFieldProps('departmentAddress', {
-      rules: [
-        { required: true, whitespace: true, message: '必填项' },
-        { validator: this.departmentAddressCheck },
-      ],
-      initialValue: departmentAddress,
-    });
-    const departmentStateProps = getFieldProps('departmentState', {
-      initialValue: departmentState,
-    });
-    const departmentOtherProps = getFieldProps('departmentOther', {
-      initialValue: departmentOther,
-    });
     return (
       <Form horizontal>
         <FormItem
           label=""
           {...formItemLayout}
         >
-          <Input type="hidden" {...departmentIdProps} />
+          {getFieldDecorator('departmentId', { initialValue: departmentId })(
+            <Input type="hidden" />
+          )}
         </FormItem>
         <FormItem
           label="部门名称"
@@ -161,7 +126,14 @@ class EditFrom extends React.Component {
           required
           help={isFieldValidating('departmentName') ? '校验中...' : (getFieldError('departmentName') || [])}
         >
-          <Input placeholder="请输入部门的中文全称" {...departmentNameProps} />
+          {getFieldDecorator('departmentName', { initialValue: departmentName,
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+              { validator: this.departmentNameCheck },
+            ],
+          })(
+            <Input placeholder="请输入部门的中文全称" />
+          )}
         </FormItem>
         <FormItem
           label="部门编号"
@@ -170,7 +142,14 @@ class EditFrom extends React.Component {
           required
           help={isFieldValidating('departmentNumber') ? '校验中...' : (getFieldError('departmentNumber') || [])}
         >
-          <Input placeholder="请输入部门的编号" {...departmentNumberProps} />
+          {getFieldDecorator('departmentNumber', { initialValue: departmentNumber,
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+              { validator: this.departmentNumberCheck },
+            ],
+          })(
+            <Input placeholder="请输入部门的编号" />
+          )}
         </FormItem>
         <FormItem
           label="部门电话"
@@ -179,7 +158,14 @@ class EditFrom extends React.Component {
           required
           help={isFieldValidating('departmentPhone') ? '校验中...' : (getFieldError('departmentPhone') || [])}
         >
-          <Input placeholder="请输入8位固定电话" {...departmentPhoneProps} />
+          {getFieldDecorator('departmentPhone', { initialValue: departmentPhone,
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+              { validator: this.departmentPhoneCheck },
+            ],
+          })(
+            <Input placeholder="请输入8位固定电话" />
+          )}
         </FormItem>
         <FormItem
           label="部门地址"
@@ -188,24 +174,35 @@ class EditFrom extends React.Component {
           required
           help={isFieldValidating('departmentAddress') ? '校验中...' : (getFieldError('departmentAddress') || [])}
         >
-          <Input placeholder="请输入详细地址" {...departmentAddressProps} />
+          {getFieldDecorator('departmentAddress', { initialValue: departmentAddress,
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+              { validator: this.departmentAddressCheck },
+            ],
+          })(
+            <Input placeholder="请输入详细地址" />
+          )}
         </FormItem>
         <FormItem
           label="部门状态"
           {...formItemLayout}
           required
         >
-          <Select size="large" {...departmentStateProps} disabled >
-            <Option value="激活">激活</Option>
-            <Option value="注销">注销</Option>
-          </Select>
+          {getFieldDecorator('departmentState', { initialValue: departmentState })(
+            <Select size="large" disabled >
+              <Option value="激活">激活</Option>
+              <Option value="注销">注销</Option>
+            </Select>
+          )}
         </FormItem>
         <FormItem
           label="其他信息"
           {...formItemLayout}
           hasFeedback
         >
-          <Input type="textarea" rows="3" placeholder="其他需要填写的信息" {...departmentOtherProps} />
+          {getFieldDecorator('departmentOther', { initialValue: departmentOther })(
+            <Input type="textarea" rows="3" placeholder="其他需要填写的信息" />
+          )}
         </FormItem>
       </Form>
     );

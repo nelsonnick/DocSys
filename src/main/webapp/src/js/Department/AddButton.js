@@ -16,7 +16,6 @@ export default class AddButton extends React.Component {
     super(props);
     this.state = {
       visible: false,
-      options: [],
     };
     this.showModal = this.showModal.bind(this);
     this.handleOk = this.handleOk.bind(this);
@@ -111,7 +110,7 @@ export default class AddButton extends React.Component {
             <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleOk}>提 交</Button>,
           ]}
         >
-          <AddForm ref="AddForm" options={this.state.options} />
+          <AddForm ref="AddForm" />
         </Modal>
       </Row>
     );

@@ -5,6 +5,13 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.wts.entity.Department;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 public class DepartmentController extends Controller {
@@ -270,4 +277,70 @@ public class DepartmentController extends Controller {
     }
   }
 
+  /**
+   * 检查导出
+   *@param: QueryString
+   */
+  public void download() {
+    List<Department> departments = Department.dao.find(
+            "select * from department where name like '%?%'", getPara("QueryString"));
+    if (departments.size()>100) {
+      setSessionAttr("DepartmentQueryString", "");
+      renderText("导出数据数量超过上限！");
+    }else{
+      setSessionAttr("DepartmentQueryString", getPara("QueryString"));
+      renderText("OK");
+    }
+  }
+  /**
+   * 导出
+   */
+  public void export()  throws IOException {
+    String[] title={"序号","部门名称","部门编号","联系电话","联系地址","状态","备注"};
+    //创建Excel工作簿
+    HSSFWorkbook workbook = new HSSFWorkbook();
+    //创建一个工作表
+    Sheet sheet = workbook.createSheet();
+    //创建第一行
+    Row row =sheet.createRow(0);
+    Cell cell=null;
+    //插入表头数据
+    for(int i=0;i<title.length;i++){
+      cell=row.createCell(i);
+      cell.setCellValue(title[i]);
+    }
+    List<Department> d = Department.dao.find(
+            "select * from department where name like '%?%'", getPara("QueryString"));
+    for (int i = 0; i < d.size(); i++) {
+      Row nextRow = sheet.createRow(i+1);
+      Cell cell2 = nextRow.createCell(0);
+      cell2.setCellValue(d.get(i).get("id").toString());
+      cell2 = nextRow.createCell(1);
+      cell2.setCellValue(d.get(i).get("name").toString());
+      cell2 = nextRow.createCell(2);
+      cell2.setCellValue(d.get(i).get("number").toString());
+      cell2 = nextRow.createCell(3);
+      cell2.setCellValue(d.get(i).get("phone").toString());
+      cell2 = nextRow.createCell(4);
+      cell2.setCellValue(d.get(i).get("address").toString());
+      cell2 = nextRow.createCell(5);
+      cell2.setCellValue(d.get(i).get("state").toString());
+
+      cell2 = nextRow.createCell(6);
+      if (d.get(i).get("remark") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(d.get(i).get("other").toString());
+      }
+    }
+
+    HttpServletResponse response = getResponse();
+    response.setContentType("application/octet-stream");
+    response.setHeader("Content-Disposition", "attachment;filename=部门导出.xlsx");
+    OutputStream out = response.getOutputStream();
+    workbook.write(out);
+    out.flush();
+    out.close();
+    renderNull() ;
+  }
 }

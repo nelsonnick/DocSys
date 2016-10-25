@@ -124,52 +124,17 @@ class AddFrom extends React.Component {
   }
 
   render() {
-    const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
-    const { did, dname } = this.props;
+    const { getFieldDecorator, getFieldError, isFieldValidating } = this.props.form;
     const children = [];
-    for (let i = 1; i < did.length; i++) {
-      children.push(<Option value={did[i]}>{dname[i]}</Option>);
+    for (let i = 0; i < this.props.deptCount; i++) {
+      children.push(<Option value={this.props.deptList[i][0]}>{this.props.deptList[i][1]}</Option>);
     }
 
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
     };
-    const userNameProps = getFieldProps('userName', {
-      rules: [
-        { required: true, whitespace: true, message: '必填项' },
-        { validator: this.userNameCheck },
-      ],
-    });
-    const userNumberProps = getFieldProps('userNumber', {
-      rules: [
-        { required: true, whitespace: true, message: '必填项' },
-        { validator: this.userNumberCheck },
-      ],
-    });
-    const userPhoneProps = getFieldProps('userPhone', {
-      rules: [
-        { required: true, whitespace: true, message: '必填项' },
-        { validator: this.userPhoneCheck },
-      ],
-    });
-    const userLoginProps = getFieldProps('userLogin', {
-      rules: [
-        { required: true, whitespace: true, message: '必填项' },
-        { validator: this.userLoginCheck },
-      ],
-    });
-    const userDeptProps = getFieldProps('userDept', {
-      rules: [
-        { required: true, whitespace: true, message: '必填项' },
-        { validator: this.userDeptCheck },
-      ],
-    });
-    const userStateProps = getFieldProps('userState', {
-      initialValue: '激活',
-    });
-    const userOtherProps = getFieldProps('userOther', {
-    });
+
     return (
       <Form horizontal>
         <FormItem
@@ -179,7 +144,14 @@ class AddFrom extends React.Component {
           required
           help={isFieldValidating('userName') ? '校验中...' : (getFieldError('userName') || [])}
         >
-          <Input placeholder="请输入用户真实姓名" {...userNameProps} />
+          {getFieldDecorator('userName', {
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+              { validator: this.userNameCheck },
+            ],
+          })(
+            <Input placeholder="请输入用户真实姓名" />
+          )}
         </FormItem>
         <FormItem
           label="证件号码"
@@ -188,7 +160,14 @@ class AddFrom extends React.Component {
           required
           help={isFieldValidating('userNumber') ? '校验中...' : (getFieldError('userNumber') || [])}
         >
-          <Input placeholder="请输入用户证件号码" {...userNumberProps} maxlength="18" />
+          {getFieldDecorator('userNumber', {
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+              { validator: this.userNumberCheck },
+            ],
+          })(
+            <Input placeholder="请输入用户证件号码" maxlength="18" />
+          )}
         </FormItem>
         <FormItem
           label="联系电话"
@@ -197,7 +176,14 @@ class AddFrom extends React.Component {
           required
           help={isFieldValidating('userPhone') ? '校验中...' : (getFieldError('userPhone') || [])}
         >
-          <Input placeholder="请输入用户手机号码" {...userPhoneProps} maxlength="11" />
+          {getFieldDecorator('userPhone', {
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+              { validator: this.userPhoneCheck },
+            ],
+          })(
+            <Input placeholder="请输入用户手机号码" maxlength="11" />
+          )}
         </FormItem>
         <FormItem
           label="登录名称"
@@ -206,7 +192,14 @@ class AddFrom extends React.Component {
           required
           help={isFieldValidating('userLogin') ? '校验中...' : (getFieldError('userLogin') || [])}
         >
-          <Input placeholder="请输入用户登录名称" {...userLoginProps} />
+          {getFieldDecorator('userLogin', {
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+              { validator: this.userLoginCheck },
+            ],
+          })(
+            <Input placeholder="请输入用户登录名称" />
+          )}
         </FormItem>
         <FormItem
           label="默认密码"
@@ -220,31 +213,42 @@ class AddFrom extends React.Component {
           label="所属部门"
           {...formItemLayout}
           required
+          help={isFieldValidating('userDept') ? '校验中...' : (getFieldError('userDept') || [])}
         >
-          <Select
-            style={{ width: '100%' }}
-            placeholder="请选择所属部门"
-            {...userDeptProps}
-          >
-            {children}
-          </Select>
+          {getFieldDecorator('userDept', {
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+              { validator: this.userDeptCheck },
+            ],
+          })(
+            <Select
+              style={{ width: 150 }}
+              placeholder="请选择所属部门"
+            >
+              {children}
+            </Select>
+          )}
         </FormItem>
         <FormItem
           label="用户状态"
           {...formItemLayout}
           required
         >
-          <Select size="large" {...userStateProps} >
-            <Option value="激活">激活</Option>
-            <Option value="注销">注销</Option>
-          </Select>
+          {getFieldDecorator('userState', { initialValue: '激活' })(
+            <Select size="large" >
+              <Option value="激活">激活</Option>
+              <Option value="注销">注销</Option>
+            </Select>
+          )}
         </FormItem>
         <FormItem
           label="其他信息"
           {...formItemLayout}
           hasFeedback
         >
-          <Input type="textarea" rows="3" placeholder="其他需要填写的信息" {...userOtherProps} />
+          {getFieldDecorator('userOther')(
+            <Input type="textarea" rows="3" placeholder="其他需要填写的信息" />
+          )}
         </FormItem>
       </Form>
     );
@@ -254,6 +258,6 @@ AddFrom = Form.create({})(AddFrom);
 export default AddFrom;
 AddFrom.propTypes = {
   form: React.PropTypes.object,
-  did: React.PropTypes.array,
-  dname: React.PropTypes.array,
+  deptList: React.PropTypes.array,
+  deptCount: React.PropTypes.string,
 };

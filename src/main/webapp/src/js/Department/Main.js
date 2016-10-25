@@ -27,6 +27,7 @@ export default class DepCont extends React.Component {
       Loading: true,     // 数据加载情况
     };
     this.getQuery = this.getQuery.bind(this);
+    this.getDownload = this.getDownload.bind(this);
     this.resetPage = this.resetPage.bind(this);
     this.onShowSizeChange = this.onShowSizeChange.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -219,6 +220,28 @@ export default class DepCont extends React.Component {
       },
     });
   }
+
+
+  getDownload() {
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.DepartmentDownload,
+      'dataType': 'json',
+      'data': {
+        'QueryString': this.state.QueryString,
+      },
+      'success': (data) => {
+        if (data.toString() === 'OK') {
+          document.getElementById('a').click();
+        } else {
+          openNotificationWithIcon('error', '导出失败', `无法进行导出操作： ${data.toString()}`);
+        }
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法完成刷新列表，请检查网络情况');
+      },
+    });
+  }
   resetPage() {
     this.setState(
       {
@@ -342,7 +365,6 @@ export default class DepCont extends React.Component {
       },
     });
   }
-
   AfterEditAndState() {
     this.setState(
       {
@@ -383,7 +405,8 @@ export default class DepCont extends React.Component {
         <div key="a">
           <Row type="flex" justify="start">
             <Col span={6}><AddButton afterAdd={this.AfterAddAndDelete} QueryString={this.state.QueryString} /></Col>
-            <Col span={18}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} /></Col>
+            <Col span={18}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} getDownload={this.getDownload} /></Col>
+            <a id="a" href="${contextPath}/department/export" style="visibility: hidden;" />
           </Row>
           <Row>
             <span style={{ 'font-size': '5px' }}>&nbsp;&nbsp;&nbsp;</span>

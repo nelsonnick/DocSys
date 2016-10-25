@@ -9,9 +9,9 @@ export default class Top extends React.Component {
     return (
       <div>
         <Row type="flex" justify="space-between" align="bottom">
-          <Col span={12}><LogoName name="槐荫区职业介绍中心档案管理系统" /></Col>
-          <Col span={4}><UserName /></Col>
-          <Col span={4}><DepartmentName /></Col>
+          <Col span={12}><LogoName name="档案管理系统后台" /></Col>
+          <Col span={4}><UserName name="系统管理员" /></Col>
+          <Col span={4}><DepartmentName name="系统管理员" /></Col>
           <Col span={4}>退出</Col>
         </Row>
       </div>

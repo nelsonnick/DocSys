@@ -16,8 +16,9 @@ export default class EditLink extends React.Component {
     super(props);
     this.state = {
       visible: false,
-      options: [],
-      userDid: [],
+      DeptList: [],
+      DeptCount: '',
+      UserDept: '',
     };
     this.showModal = this.showModal.bind(this);
     this.handleOk = this.handleOk.bind(this);
@@ -28,33 +29,57 @@ export default class EditLink extends React.Component {
   showModal() {
     $.ajax({
       'type': 'POST',
-      'url': AjaxFunction.UserTree,
+      'url': AjaxFunction.DepartmentList,
       'dataType': 'text',
-      'success': (data) => {
+      'success': (DeptList) => {
         $.ajax({
           'type': 'POST',
-          'url': AjaxFunction.DeptNows,
+          'url': AjaxFunction.DepartmentCount,
           'dataType': 'text',
-          'data': { 'did': this.props.userDid },
-          'success': (msg) => {
-            this.setState(
-              {
-                visible: true,
-                options: eval(`(${data})`),
-                userDid: eval(`(${msg})`),
-              }
-            );
+          'data': {
+            'QueryString': '',
+          },
+          'success': (DeptCount) => {
+            $.ajax({
+              'type': 'POST',
+              'url': AjaxFunction.DeptNow,
+              'dataType': 'text',
+              'data': { 'did': this.props.userDid },
+              'success': (UserDept) => {
+                this.setState(
+                  {
+                    visible: true,
+                    DeptList: eval(`(${DeptList})`),
+                    DeptCount,
+                    UserDept,
+                  }
+                );
+              },
+              'error': () => {
+                openNotificationWithIcon('error', '请求错误', '无法获取当前部门信息，请检查网络情况');
+              },
+            });
           },
           'error': () => {
-            openNotificationWithIcon('error', '请求错误', '无法获取上级部门信息，请检查网络情况');
+            openNotificationWithIcon('error', '请求错误', '无法获取部门总数，请检查网络情况');
+            this.setState(
+              {
+                DeptList: '',
+                DeptCount: '',
+                userDept: '',
+                visible: false,
+              }
+            );
           },
         });
       },
       'error': () => {
-        openNotificationWithIcon('error', '请求错误', '无法获取部门信息，请检查网络情况');
+        openNotificationWithIcon('error', '请求错误', '无法获取部门列表，请检查网络情况');
         this.setState(
           {
-            options: '',
+            DeptList: '',
+            DeptCount: '',
+            userDept: '',
             visible: false,
           }
         );
@@ -85,7 +110,7 @@ export default class EditLink extends React.Component {
           'number': values.userNumber,
           'login': values.userLogin,
           'other': values.userOther || '',
-          'did': values.userDept,
+          'did': values.userDid,
         },
         'success': (data) => {
           if (data.toString() === 'OK') {
@@ -125,7 +150,7 @@ export default class EditLink extends React.Component {
   }
 
   render() {
-    const { userId, userName, userPhone, userNumber, userState, userOther, userLogin } = this.props;
+    const { userId, userName, userPhone, userNumber, userState, userOther, userLogin, userDid } = this.props;
     return (
       <span>
         <a onClick={this.showModal} className="btn btn-primary btn-xs" >修改</a>
@@ -151,8 +176,10 @@ export default class EditLink extends React.Component {
             userState={userState}
             userOther={userOther}
             userLogin={userLogin}
-            userDept={this.state.userDid}
-            options={this.state.options}
+            userDid={userDid}
+            userDept={this.state.UserDept}
+            deptList={this.state.DeptList}
+            deptCount={this.state.DeptCount}
           />
         </Modal>
       </span>
@@ -169,5 +196,7 @@ EditLink.propTypes = {
   userDid: React.PropTypes.string,
   userLogin: React.PropTypes.string,
   userDept: React.PropTypes.string,
+  deptList: React.PropTypes.string,
+  deptCount: React.PropTypes.string,
   afterEdit: React.PropTypes.func,
 };

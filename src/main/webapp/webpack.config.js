@@ -1,5 +1,5 @@
 var webpack = require('webpack');
-//var CopyWebpackPlugin=require('copy-webpack-plugin');
+var CopyWebpackPlugin=require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var OpenBrowserPlugin= require('open-browser-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -28,15 +28,13 @@ module.exports = {
     //保证变异过程不出错
     new webpack.NoErrorsPlugin(),
     //自动生成HTML
-    new HtmlWebpackPlugin({
-      title: 'My App',
-      filename: 'index.html'
-    }),
-    // //自动复制HTML
-    // new CopyWebpackPlugin({
-    //   from: './index.html',
-    //   to: './index.html'
+    // new HtmlWebpackPlugin({
+    //   title: 'My App',
+    //   filename: 'sys.html'
     // }),
+    // //自动复制HTML
+    new CopyWebpackPlugin(
+      [{ from: 'src/public', to: 'src/dist' }]),
     //自动打开浏览器
     new OpenBrowserPlugin({
       url:'http://localhost:9000'

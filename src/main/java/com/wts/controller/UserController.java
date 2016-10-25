@@ -23,13 +23,18 @@ public class UserController extends Controller {
     renderJson(users.getList());
   }
   /**
-   * 查询角色数量
+   * 查询用户数量
    *@param: UserName
    *@param: UserDept
    */
   public void count() {
-    String count = Db.queryLong("select count(*) from user inner join department on user.did=department.id where user.name like '%"+ getPara("UserName") +"%' and department.name like '%"+ getPara("UserDept") +"%' and user.state<>'删除' ").toString();
-    renderText(count);
+    if (getPara("UserDept").equals("")) {
+      String count = Db.queryLong("select count(*) from user where name like '%" + getPara("UserName") + "%' and state<>'删除' ").toString();
+      renderText(count);
+    } else {
+      String count = Db.queryLong("select count(*) from user where name like '%" + getPara("UserName") + "%' and did = " + getPara("UserDept") + " and state<>'删除' ").toString();
+      renderText(count);
+    }
   }
 
   /**
@@ -90,19 +95,12 @@ public class UserController extends Controller {
     }
   }
   /**
-   * 核查用户所属部门
+   * 获取户所属部门
    *@param: did
    */
   public void depts() {
     Department department = Department.dao.findById(getPara("did"));
-    if (department.get("level").toString().equals("1")){
-      renderText("['"+getPara("did")+"']");
-    } else if (department.get("level").toString().equals("2")){
-      renderText("['"+department.get("father").toString()+"','"+getPara("did")+"']");
-    } else {
-      Department department1 = Department.dao.findById(department.get("father"));
-      renderText("['"+department1.get("id").toString()+"','"+department.get("father").toString()+"','"+getPara("did")+"']");
-    }
+    renderText(department.get("id").toString());
   }
   /**
    * 新增用户
@@ -151,13 +149,12 @@ public class UserController extends Controller {
     if (user == null) {
       renderText("要修改的用户不存在，请刷新页面后再试！");
     } else {
-      if (user.get("name").equals(getPara("name"))
-              && user.get("other").equals(getPara("other"))
-              && user.get("number").equals(getPara("number"))
-              && user.get("phone").equals(getPara("phone"))
-              && user.get("login").equals(getPara("login"))
-              && user.get("state").equals(getPara("state"))
-              && user.get("did").equals(getPara("did"))
+      if (user.get("name").equals(getPara("name").trim())
+              && user.get("other").equals(getPara("other").trim())
+              && user.get("number").equals(getPara("number").trim())
+              && user.get("phone").equals(getPara("phone").trim())
+              && user.get("login").equals(getPara("login").trim())
+              && user.get("did").toString().equals(getPara("did").trim())
               ) {
         renderText("未找到修改内容，请核实后再修改！");
       } else if (!user.get("number").equals(getPara("number"))
@@ -176,12 +173,12 @@ public class UserController extends Controller {
         renderText("证件号码错误，请核实！");
       } else {
         if (user
-                .set("name",getPara("name"))
-                .set("number",getPara("number"))
-                .set("phone",getPara("phone"))
-                .set("login",getPara("login"))
-                .set("did",getPara("did"))
-                .set("other",getPara("other"))
+                .set("name",getPara("name").trim())
+                .set("number",getPara("number").trim())
+                .set("phone",getPara("phone").trim())
+                .set("login",getPara("login").trim())
+                .set("did",getPara("did").trim())
+                .set("other",getPara("other").trim())
                 .update()) {
           renderText("OK");
         } else{
@@ -248,7 +245,9 @@ public class UserController extends Controller {
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
       renderText("要重置的用户不存在，请刷新页面后再试！");
-    }else{
+    }else if(!IDNumber.availableIDNumber(getPara("number"))){
+      renderText("要重置的用户证件号码有误，请修改证件号码后再试！");
+    } else {
       if (user.set("pass", encodeMD5String(user.get("number").toString().substring(user.get("number").toString().length()-6,user.get("number").toString().length()).trim())).update()){
         renderText("OK");
       } else {

@@ -104,40 +104,12 @@ class AddFrom extends React.Component {
   }
 
   render() {
-    const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
+    const { getFieldDecorator, getFieldError, isFieldValidating } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
     };
-    const departmentNameProps = getFieldProps('departmentName', {
-      rules: [
-        { required: true, whitespace: true, message: '必填项' },
-        { validator: this.departmentNameCheck },
-      ],
-    });
-    const departmentNumberProps = getFieldProps('departmentNumber', {
-      rules: [
-        { required: true, whitespace: true, message: '必填项' },
-        { validator: this.departmentNumberCheck },
-      ],
-    });
-    const departmentPhoneProps = getFieldProps('departmentPhone', {
-      rules: [
-        { required: true, whitespace: true, message: '必填项' },
-        { validator: this.departmentPhoneCheck },
-      ],
-    });
-    const departmentAddressProps = getFieldProps('departmentAddress', {
-      rules: [
-        { required: true, whitespace: true, message: '必填项' },
-        { validator: this.departmentAddressCheck },
-      ],
-    });
-    const departmentStateProps = getFieldProps('departmentState', {
-      initialValue: '激活',
-    });
-    const departmentOtherProps = getFieldProps('departmentOther', {
-    });
+
     return (
       <Form horizontal>
         <FormItem
@@ -147,7 +119,14 @@ class AddFrom extends React.Component {
           required
           help={isFieldValidating('departmentName') ? '校验中...' : (getFieldError('departmentName') || [])}
         >
-          <Input placeholder="请输入部门的中文全称" {...departmentNameProps} />
+          {getFieldDecorator('departmentName', {
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+              { validator: this.departmentNameCheck },
+            ],
+          })(
+            <Input placeholder="请输入部门的中文全称" />
+          )}
         </FormItem>
         <FormItem
           label="部门编号"
@@ -156,7 +135,14 @@ class AddFrom extends React.Component {
           required
           help={isFieldValidating('departmentNumber') ? '校验中...' : (getFieldError('departmentNumber') || [])}
         >
-          <Input placeholder="请输入部门的编号" {...departmentNumberProps} />
+          {getFieldDecorator('departmentNumber', {
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+              { validator: this.departmentNumberCheck },
+            ],
+          })(
+            <Input placeholder="请输入部门的编号" />
+          )}
         </FormItem>
         <FormItem
           label="部门电话"
@@ -165,7 +151,14 @@ class AddFrom extends React.Component {
           required
           help={isFieldValidating('departmentPhone') ? '校验中...' : (getFieldError('departmentPhone') || [])}
         >
-          <Input placeholder="请输入8位固定电话" {...departmentPhoneProps} />
+          {getFieldDecorator('departmentPhone', {
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+              { validator: this.departmentPhoneCheck },
+            ],
+          })(
+            <Input placeholder="请输入8位固定电话" />
+          )}
         </FormItem>
         <FormItem
           label="部门地址"
@@ -174,24 +167,35 @@ class AddFrom extends React.Component {
           required
           help={isFieldValidating('departmentAddress') ? '校验中...' : (getFieldError('departmentAddress') || [])}
         >
-          <Input placeholder="请输入详细地址" {...departmentAddressProps} />
+          {getFieldDecorator('departmentAddress', {
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+              { validator: this.departmentAddressCheck },
+            ],
+          })(
+            <Input placeholder="请输入详细地址" />
+          )}
         </FormItem>
         <FormItem
           label="部门状态"
           {...formItemLayout}
           required
         >
-          <Select size="large" {...departmentStateProps} >
-            <Option value="激活">激活</Option>
-            <Option value="注销">注销</Option>
-          </Select>
+          {getFieldDecorator('departmentState', { initialValue: '激活' })(
+            <Select size="large" >
+              <Option value="激活">激活</Option>
+              <Option value="注销">注销</Option>
+            </Select>
+          )}
         </FormItem>
         <FormItem
           label="其他信息"
           {...formItemLayout}
           hasFeedback
         >
-          <Input type="textarea" rows="3" placeholder="其他需要填写的信息" {...departmentOtherProps} />
+          {getFieldDecorator('departmentOther')(
+            <Input type="textarea" rows="3" placeholder="其他需要填写的信息" />
+          )}
         </FormItem>
       </Form>
     );
