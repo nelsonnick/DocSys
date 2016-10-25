@@ -5,7 +5,14 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.wts.entity.*;
 import com.wts.util.IDNumber;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import static com.wts.util.EncryptUtils.encodeMD5String;
@@ -254,6 +261,114 @@ public class UserController extends Controller {
         renderText("发生未知错误，请检查数据库！");
       }
     }
+  }
+  /**
+   * 检查导出
+   *@param: UserName
+   *@param: UserDept
+   */
+  public void download() {
+    List<User> users;
+    String username,userdept;
+    if (getPara("UserName").equals("") || getPara("UserName")==null) {
+      username = "";
+    }else{
+      username = " name like '%"+getPara("UserName")+"%'";
+    }
+    if (getPara("UserDept").equals("") || getPara("UserDept")==null) {
+      userdept = "";
+    }else{
+      userdept = " did = "+getPara("UserDept");
+    }
+
+    if (username.equals("") && userdept.equals("")) {
+      users = User.dao.find("select * from user");
+    }else if (username.equals("") && !userdept.equals("")) {
+      users = User.dao.find("select * from user where" + userdept);
+    }else if (!username.equals("") && userdept.equals("")) {
+      users = User.dao.find("select * from user where" + username);
+    }else{
+      users = User.dao.find("select * from user where" + username + " and " + userdept);
+    }
+    System.out.println(users);
+    if (users.size()>100) {
+      setSessionAttr("UserName", "");
+      setSessionAttr("UserDept", "");
+      renderText("导出数据数量超过上限！");
+    }else{
+      if(getPara("UserName").equals("") || getPara("UserName")==null){
+        setSessionAttr("UserName", "");
+      }else {
+        setSessionAttr("UserName", getPara("UserName"));
+      }
+      if(getPara("UserDept").equals("") || getPara("UserDept")==null){
+        setSessionAttr("UserDept", "");
+      }else {
+        setSessionAttr("UserDept", getPara("UserDept"));
+      }
+      renderText("OK");
+    }
+  }
+  /**
+   * 导出
+   */
+  public void export() throws IOException {
+    String[] title={"序号","姓名","证件号码","联系电话","登录名称","所属部门","状态","备注"};
+    //创建Excel工作簿
+    XSSFWorkbook workbook = new XSSFWorkbook();
+    //创建一个工作表
+    XSSFSheet sheet = workbook.createSheet();
+    //创建第一行
+    XSSFRow row =sheet.createRow(0);
+    XSSFCell cell=null;
+    //插入表头数据
+    for(int i=0;i<title.length;i++){
+      cell=row.createCell(i);
+      cell.setCellValue(title[i]);
+    }
+    List<User> u;
+    if (getSessionAttr("UserName").equals("") && getSessionAttr("UserDept").equals("")) {
+      u = User.dao.find("select user.*,department.name as dname from user inner join department on user.did=department.id");
+    }else if (!getSessionAttr("UserName").equals("") && getSessionAttr("UserDept").equals("")) {
+      u = User.dao.find("select user.*,department.name as dname from user inner join department on user.did=department.id where user.name like '%"+getSessionAttr("UserName")+"%'");
+    }else if(getSessionAttr("UserName").equals("") && !getSessionAttr("UserDept").equals("")){
+      u = User.dao.find("select user.*,department.name as dname from user inner join department on user.did=department.id where user.did = "+getSessionAttr("UserDept"));
+    }else {
+      u = User.dao.find("select user.*,department.name as dname from user inner join department on user.did=department.id where user.name like '%"+getSessionAttr("UserName")+"%' and user.did = "+getSessionAttr("UserDept"));
+    }
+    for (int i = 0; i < u.size(); i++) {
+      XSSFRow nextRow = sheet.createRow(i+1);
+      XSSFCell cell2 = nextRow.createCell(0);
+      cell2.setCellValue(u.get(i).get("id").toString());
+      cell2 = nextRow.createCell(1);
+      cell2.setCellValue(u.get(i).get("name").toString());
+      cell2 = nextRow.createCell(2);
+      cell2.setCellValue(u.get(i).get("number").toString());
+      cell2 = nextRow.createCell(3);
+      cell2.setCellValue(u.get(i).get("phone").toString());
+      cell2 = nextRow.createCell(4);
+      cell2.setCellValue(u.get(i).get("login").toString());
+      cell2 = nextRow.createCell(5);
+      cell2.setCellValue(u.get(i).get("dname").toString());
+      cell2 = nextRow.createCell(6);
+      cell2.setCellValue(u.get(i).get("state").toString());
+      cell2 = nextRow.createCell(7);
+      if (u.get(i).get("remark") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(u.get(i).get("other").toString());
+      }
+    }
+
+    HttpServletResponse response = getResponse();
+    response.setContentType("application/octet-stream");
+    response.setHeader("Content-Disposition", "attachment;filename=export.xlsx");
+    OutputStream out = response.getOutputStream();
+    workbook.write(out);
+    out.flush();
+    out.close();
+    workbook.close();
+    renderNull() ;
   }
 
 }

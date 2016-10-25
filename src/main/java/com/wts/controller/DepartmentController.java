@@ -5,17 +5,17 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.wts.entity.Department;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
 public class DepartmentController extends Controller {
-
   /**
    * 查询部门
    *@param: PageNumber
@@ -26,7 +26,6 @@ public class DepartmentController extends Controller {
     Page<Department> departments=Department.dao.paginate(getParaToInt("PageNumber"),getParaToInt("PageSize"),getPara("QueryString"));
     renderJson(departments.getList());
   }
-
   /**
    * 查询部门数量
    *@param: QueryString
@@ -122,7 +121,6 @@ public class DepartmentController extends Controller {
       renderText("OK");
     }
   }
-
   /**
    * 核查部门地址
    */
@@ -133,7 +131,6 @@ public class DepartmentController extends Controller {
       renderText("OK");
     }
   }
-
   /**
    * 新增部门
    */
@@ -190,7 +187,6 @@ public class DepartmentController extends Controller {
       }
     }
   }
-
   /**
    * 激活部门
    */
@@ -208,7 +204,6 @@ public class DepartmentController extends Controller {
       }
     }
   }
-
   /**
    * 删除部门
    */
@@ -276,44 +271,51 @@ public class DepartmentController extends Controller {
       }
     }
   }
-
   /**
    * 检查导出
    *@param: QueryString
    */
   public void download() {
-    List<Department> departments = Department.dao.find(
-            "select * from department where name like '%?%'", getPara("QueryString"));
+    List<Department> departments;
+    if (getPara("QueryString").equals("") || getPara("QueryString")==null){
+      departments= Department.dao.find("select * from department");
+    }else{
+      departments= Department.dao.find("select * from department where name like '%"+getPara("QueryString")+"%'");
+    }
+
     if (departments.size()>100) {
       setSessionAttr("DepartmentQueryString", "");
       renderText("导出数据数量超过上限！");
     }else{
-      setSessionAttr("DepartmentQueryString", getPara("QueryString"));
+      if(getPara("QueryString")==null){
+        setSessionAttr("DepartmentQueryString", "");
+      }else {
+        setSessionAttr("DepartmentQueryString", getPara("QueryString"));
+      }
       renderText("OK");
     }
   }
   /**
    * 导出
    */
-  public void export()  throws IOException {
+  public void export() throws IOException {
     String[] title={"序号","部门名称","部门编号","联系电话","联系地址","状态","备注"};
     //创建Excel工作簿
-    HSSFWorkbook workbook = new HSSFWorkbook();
+    XSSFWorkbook workbook = new XSSFWorkbook();
     //创建一个工作表
-    Sheet sheet = workbook.createSheet();
+    XSSFSheet sheet = workbook.createSheet();
     //创建第一行
-    Row row =sheet.createRow(0);
-    Cell cell=null;
+    XSSFRow row =sheet.createRow(0);
+    XSSFCell cell=null;
     //插入表头数据
     for(int i=0;i<title.length;i++){
       cell=row.createCell(i);
       cell.setCellValue(title[i]);
     }
-    List<Department> d = Department.dao.find(
-            "select * from department where name like '%?%'", getPara("QueryString"));
+    List<Department> d= Department.dao.find("select * from department where name like '%"+getSessionAttr("DepartmentQueryString")+"%'");
     for (int i = 0; i < d.size(); i++) {
-      Row nextRow = sheet.createRow(i+1);
-      Cell cell2 = nextRow.createCell(0);
+      XSSFRow nextRow = sheet.createRow(i+1);
+      XSSFCell cell2 = nextRow.createCell(0);
       cell2.setCellValue(d.get(i).get("id").toString());
       cell2 = nextRow.createCell(1);
       cell2.setCellValue(d.get(i).get("name").toString());
@@ -336,11 +338,13 @@ public class DepartmentController extends Controller {
 
     HttpServletResponse response = getResponse();
     response.setContentType("application/octet-stream");
-    response.setHeader("Content-Disposition", "attachment;filename=部门导出.xlsx");
+    response.setHeader("Content-Disposition", "attachment;filename=export.xlsx");
     OutputStream out = response.getOutputStream();
     workbook.write(out);
     out.flush();
     out.close();
+    workbook.close();
     renderNull() ;
   }
+
 }

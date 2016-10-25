@@ -15,7 +15,7 @@ const openNotificationWithIcon = (type, msg, desc) => {
   });
 };
 
-export default class UserCont extends React.Component {
+export default class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,6 +30,7 @@ export default class UserCont extends React.Component {
       Loading: true,     // 数据加载情况
     };
     this.getQuery = this.getQuery.bind(this);
+    this.getDownload = this.getDownload.bind(this);
     this.resetPage = this.resetPage.bind(this);
     this.onShowSizeChange = this.onShowSizeChange.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -127,7 +128,6 @@ export default class UserCont extends React.Component {
       },
     });
   }
-
   onChange(PageNumbers) {
     this.setState(
       {
@@ -260,6 +260,28 @@ export default class UserCont extends React.Component {
       },
     });
   }
+  getDownload() {
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.UserDownload,
+      'dataType': 'text',
+      'data': {
+        'UserName': this.state.UserName,
+        'UserDept': this.state.UserDept,
+      },
+      'success': (data) => {
+        if (data.toString() === 'OK') {
+          $('#a').attr('href', '/user/export');
+          document.getElementById('a').click();
+        } else {
+          openNotificationWithIcon('error', '导出失败', `无法进行导出操作： ${data.toString()}`);
+        }
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法读取数据，请检查网络情况');
+      },
+    });
+  }
   resetPage() {
     this.setState(
       {
@@ -385,7 +407,6 @@ export default class UserCont extends React.Component {
       },
     });
   }
-
   AfterEditAndState() {
     this.setState(
       {
@@ -420,14 +441,14 @@ export default class UserCont extends React.Component {
       },
     });
   }
-
   render() {
     return (
       <QueueAnim>
         <div key="a">
           <Row type="flex" justify="start">
             <Col span={6}><AddButton afterAdd={this.AfterAddAndDelete} deptList={this.state.DeptList} deptCount={this.state.DeptCount} /></Col>
-            <Col span={18}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} deptList={this.state.DeptList} userName={this.state.UserName} userDept={this.state.UserDept} deptCount={this.state.DeptCount} /></Col>
+            <Col span={18}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} deptList={this.state.DeptList} userName={this.state.UserName} userDept={this.state.UserDept} deptCount={this.state.DeptCount} getDownload={this.getDownload} /></Col>
+            <a id="a" className="aa" />
           </Row>
           <Row>
             <span style={{ 'font-size': '5px' }}>&nbsp;&nbsp;&nbsp;</span>

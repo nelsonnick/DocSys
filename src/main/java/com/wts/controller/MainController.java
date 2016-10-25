@@ -19,7 +19,7 @@ public class MainController extends Controller {
         boolean result = validateCaptcha("verifyCode");
 
         if (result){
-            if (getPara("number").equals("admin") && getPara("password").equals("admin")){
+            if (getPara("login").equals("admin") && getPara("password").equals("admin")){
                 setSessionAttr("user","管理员");
                 setAttr("userName","管理员");
                 render("/dist/sys.html");

@@ -35,7 +35,7 @@ class DataSearch extends React.Component {
           <span>&nbsp;&nbsp;&nbsp;</span>
           <Button type="ghost" onClick={this.handleReset}>重置</Button>
           <span>&nbsp;&nbsp;&nbsp;</span>
-          <Button type="ghost" onClick={this.download}>导出</Button>
+          <Button onClick={this.download}>导出</Button>
         </Form>
       </Row>
     );

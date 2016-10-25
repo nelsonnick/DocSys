@@ -10,6 +10,7 @@ class DataSearch extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.onChangeDept = this.onChangeDept.bind(this);
+    this.download = this.download.bind(this);
   }
   onChangeDept(userDept) {
     this.setState({ userDept });
@@ -23,6 +24,10 @@ class DataSearch extends React.Component {
     e.preventDefault();
     this.props.form.resetFields();
     this.props.resetPage();
+  }
+  download(e) {
+    e.preventDefault();
+    this.props.getDownload(this.props.form.getFieldValue('departmentName'));
   }
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -54,6 +59,8 @@ class DataSearch extends React.Component {
           <Button type="primary" htmlType="submit">查找</Button>
           <span>&nbsp;&nbsp;&nbsp;</span>
           <Button type="ghost" onClick={this.handleReset}>重置</Button>
+          <span>&nbsp;&nbsp;&nbsp;</span>
+          <Button onClick={this.download}>导出</Button>
         </Form>
       </Row>
     );
@@ -64,6 +71,7 @@ export default DataSearch;
 DataSearch.propTypes = {
   setQuery: React.PropTypes.func,
   resetPage: React.PropTypes.func,
+  getDownload: React.PropTypes.func,
   userName: React.PropTypes.string,
   userDept: React.PropTypes.string,
   deptList: React.PropTypes.array,

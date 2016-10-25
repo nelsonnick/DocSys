@@ -12,7 +12,7 @@ export const DepartmentPhone = '/department/phone';          // 检测电话    
 export const DepartmentNumber = '/department/number';        // 检测编号     --参数：number
 export const DepartmentNumbers = '/department/numbers';      // 检测编号     --参数：number
 export const DepartmentList = '/department/list';            // 获取部门     --参数：无
-export const DepartmentDownload = '/department/download';    // 检查导出     --参数：PageNumber,PageSize,QueryString
+export const DepartmentDownload = '/department/download';    // 检查导出     --参数：QueryString
 
 export const UserCount = '/user/count';                      // 数据总数     --参数：无
 export const UserQuery = '/user/query';                      // 数据查询     --参数：queryName
@@ -28,3 +28,4 @@ export const UserActive = '/user/active';                    // 激活用户    
 export const UserAbandon = '/user/abandon';                  // 注销用户     --参数：id
 export const UserReset = '/user/reset';                      // 重置密码     --参数：id
 export const DeptNow = '/user/depts';                        // 当前部门     --参数：无
+export const UserDownload = '/user/download';                 // 检查导出     --参数：QueryString

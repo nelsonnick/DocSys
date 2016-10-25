@@ -2,7 +2,10 @@
   font-size: 50px;
   color: green;
 }
+.aa{
+  display: none;
+}
 .pageStyle{
-  background-image: url(../img/background.jpg);
+  background-image: url(../img/bg.png);
   background-repeat: repeat;
 }

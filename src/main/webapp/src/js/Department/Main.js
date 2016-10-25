@@ -7,6 +7,7 @@ import AddButton from './AddButton.js';
 import * as AjaxFunction from '../Util/AjaxFunction.js';
 import $ from 'jquery';
 import QueueAnim from 'rc-queue-anim';
+import '../../css/test.css';
 
 const openNotificationWithIcon = (type, msg, desc) => {
   notification[type]({
@@ -15,7 +16,7 @@ const openNotificationWithIcon = (type, msg, desc) => {
   });
 };
 
-export default class DepCont extends React.Component {
+export default class Department extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -226,19 +227,21 @@ export default class DepCont extends React.Component {
     $.ajax({
       'type': 'POST',
       'url': AjaxFunction.DepartmentDownload,
-      'dataType': 'json',
+      'dataType': 'text',
       'data': {
         'QueryString': this.state.QueryString,
       },
       'success': (data) => {
         if (data.toString() === 'OK') {
+          console.log('进来了');
+          $('#a').attr('href', '/department/export');
           document.getElementById('a').click();
         } else {
           openNotificationWithIcon('error', '导出失败', `无法进行导出操作： ${data.toString()}`);
         }
       },
       'error': () => {
-        openNotificationWithIcon('error', '请求错误', '无法完成刷新列表，请检查网络情况');
+        openNotificationWithIcon('error', '请求错误', '无法读取数据，请检查网络情况');
       },
     });
   }
@@ -406,7 +409,7 @@ export default class DepCont extends React.Component {
           <Row type="flex" justify="start">
             <Col span={6}><AddButton afterAdd={this.AfterAddAndDelete} QueryString={this.state.QueryString} /></Col>
             <Col span={18}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} getDownload={this.getDownload} /></Col>
-            <a id="a" href="${contextPath}/department/export" style="visibility: hidden;" />
+            <a id="a" className="aa" />
           </Row>
           <Row>
             <span style={{ 'font-size': '5px' }}>&nbsp;&nbsp;&nbsp;</span>
