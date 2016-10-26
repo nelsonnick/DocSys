@@ -1,0 +1,92 @@
+Table: department
+---------+--------------+------+-----+---------+---------
+ Field   | Type         | Null | Key | Default | Remarks 
+---------+--------------+------+-----+---------+---------
+ id      | INT(10)      | NO   | PRI |         |         
+ name    | VARCHAR(255) | YES  |     |         |         
+ number  | VARCHAR(255) | YES  |     |         |         
+ phone   | VARCHAR(255) | YES  |     |         |         
+ address | VARCHAR(255) | YES  |     |         |         
+ state   | VARCHAR(255) | YES  |     |         |         
+ other   | VARCHAR(255) | YES  |     |         |         
+---------+--------------+------+-----+---------+---------
+
+Table: file
+--------+--------------+------+-----+---------+---------
+ Field  | Type         | Null | Key | Default | Remarks 
+--------+--------------+------+-----+---------+---------
+ id     | INT(10)      | NO   | PRI |         |         
+ pid    | INT(10)      | YES  |     |         |         
+ did    | INT(10)      | YES  |     |         |         
+ state  | VARCHAR(255) | YES  |     |         |         
+ remark | VARCHAR(255) | YES  |     |         |         
+--------+--------------+------+-----+---------+---------
+
+Table: flow
+--------+--------------+------+-----+---------+---------
+ Field  | Type         | Null | Key | Default | Remarks 
+--------+--------------+------+-----+---------+---------
+ id     | INT(10)      | NO   | PRI |         |         
+ uid    | INT(10)      | YES  |     |         |         
+ did    | INT(10)      | YES  |     |         |         
+ time   | DATETIME(19) | YES  |     |         |         
+ remark | VARCHAR(255) | YES  |     |         |         
+ flow   | VARCHAR(255) | YES  |     |         |         
+ reason | VARCHAR(255) | YES  |     |         |         
+--------+--------------+------+-----+---------+---------
+
+Table: person
+---------+--------------+------+-----+---------+---------
+ Field   | Type         | Null | Key | Default | Remarks 
+---------+--------------+------+-----+---------+---------
+ id      | INT(10)      | NO   | PRI |         |         
+ name    | VARCHAR(255) | YES  |     |         |         
+ number  | VARCHAR(255) | YES  |     |         |         
+ phone1  | VARCHAR(255) | YES  |     |         |         
+ phone2  | VARCHAR(255) | YES  |     |         |         
+ address | VARCHAR(255) | YES  |     |         |         
+ sex     | INT(10)      | YES  |     |         |         
+ birth   | DATETIME(19) | YES  |     |         |         
+ remark  | VARCHAR(255) | YES  |     |         |         
+ fileAge | DATETIME(19) | YES  |     |         |         
+ state   | VARCHAR(255) | YES  |     |         |         
+---------+--------------+------+-----+---------+---------
+
+Table: trans
+---------------+--------------+------+-----+---------+---------
+ Field         | Type         | Null | Key | Default | Remarks 
+---------------+--------------+------+-----+---------+---------
+ id            | INT(10)      | NO   | PRI |         |         
+ pid           | INT(10)      | YES  |     |         |         
+ did           | INT(10)      | YES  |     |         |         
+ uid           | INT(10)      | YES  |     |         |         
+ time          | DATETIME(19) | YES  |     |         |         
+ nameBefore    | VARCHAR(255) | YES  |     |         |         
+ nameAfter     | VARCHAR(255) | YES  |     |         |         
+ numberBefore  | VARCHAR(255) | YES  |     |         |         
+ numberAfter   | VARCHAR(255) | YES  |     |         |         
+ phone1Before  | VARCHAR(255) | YES  |     |         |         
+ phone1After   | VARCHAR(255) | YES  |     |         |         
+ phone2Before  | VARCHAR(255) | YES  |     |         |         
+ phone2After   | VARCHAR(255) | YES  |     |         |         
+ addressBefore | VARCHAR(255) | YES  |     |         |         
+ addressAfter  | VARCHAR(255) | YES  |     |         |         
+ fileAgeBefore | DATETIME(19) | YES  |     |         |         
+ fileAgeAfter  | DATETIME(19) | YES  |     |         |         
+---------------+--------------+------+-----+---------+---------
+
+Table: user
+--------+--------------+------+-----+---------+---------
+ Field  | Type         | Null | Key | Default | Remarks 
+--------+--------------+------+-----+---------+---------
+ id     | INT(10)      | NO   | PRI |         |         
+ name   | VARCHAR(255) | YES  |     |         |         
+ number | VARCHAR(255) | YES  |     |         |         
+ phone  | VARCHAR(255) | YES  |     |         |         
+ login  | VARCHAR(255) | YES  |     |         |         
+ pass   | VARCHAR(255) | YES  |     |         |         
+ did    | INT(10)      | YES  |     |         |         
+ other  | VARCHAR(255) | YES  |     |         |         
+ state  | VARCHAR(255) | YES  |     |         |         
+--------+--------------+------+-----+---------+---------
+

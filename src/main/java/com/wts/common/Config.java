@@ -7,6 +7,7 @@ import com.jfinal.ext.handler.ContextPathHandler;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
+import com.wts.common.model._MappingKit;
 import com.wts.controller.*;
 import com.wts.entity.Department;
 import com.wts.entity.User;
@@ -44,9 +45,11 @@ public class Config extends JFinalConfig {
 
         // 配置ActiveRecord插件
         ActiveRecordPlugin arp = new ActiveRecordPlugin(c3p0Plugin);
+        arp.setShowSql(true);
         me.add(arp);
-        arp.addMapping("department", Department.class);
-        arp.addMapping("user", User.class);
+//        arp.addMapping("department", Department.class);
+//        arp.addMapping("user", User.class);
+        _MappingKit.mapping(arp);
     }
 
     /**

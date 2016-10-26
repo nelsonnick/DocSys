@@ -20,6 +20,7 @@ public class MainController extends Controller {
 
         if (result){
             if (getPara("login").equals("admin") && getPara("password").equals("admin")){
+                User user=new User();
                 setSessionAttr("user","管理员");
                 setAttr("userName","管理员");
                 render("/dist/sys.html");
