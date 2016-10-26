@@ -16,7 +16,7 @@ export default class AddButton extends React.Component {
     super(props);
     this.state = {
       visible: false,
-      FileNew: '',
+      fileNumber: '',
     };
     this.showModal = this.showModal.bind(this);
     this.handleOk = this.handleOk.bind(this);
@@ -31,7 +31,7 @@ export default class AddButton extends React.Component {
       'success': (FileNew) => {
         this.setState(
           {
-            FileNew,
+            fileNumber: FileNew,
             visible: true,
           }
         );
@@ -62,13 +62,14 @@ export default class AddButton extends React.Component {
           'pname': values.personName,
           'pnumber': values.personNumber,
           'pphone1': values.personPhone1,
-          'pphone2': values.personPhone2,
+          'pphone2': values.personPhone2 || '',
           'paddress': values.personAddress,
           'premark': values.personRemark || '',
           'fnumber': values.fileNumber,
           'fremark': values.fileRemark || '',
           'fileAge': values.fileAge,
-          'fstate': values.fileState,
+          'ftype': values.flowType,
+          'fdirect': values.fileDirect,
         },
         'success': (data) => {
           if (data.toString() === 'OK') {
@@ -111,7 +112,7 @@ export default class AddButton extends React.Component {
   render() {
     return (
       <Row type="flex" justify="start">
-        <Button type="primary" size="large" onClick={this.showModal} >新增用户</Button>
+        <Button type="primary" size="large" onClick={this.showModal} >新增档案</Button>
         <Modal
           maskClosable={false}
           title="新增档案"
@@ -127,7 +128,8 @@ export default class AddButton extends React.Component {
         >
           <AddForm
             ref="AddForm"
-            fileNew={this.state.FileNew}
+            fileNew={this.state.fileNumber}
+            departmentName={window.CurrentDepartment}
           />
         </Modal>
       </Row>

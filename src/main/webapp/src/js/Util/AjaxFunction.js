@@ -31,3 +31,17 @@ export const DeptNow = '/user/depts';                        // 当前部门    
 export const UserDownload = '/user/download';                // 检查导出     --参数：userName,userDid
 export const CurrentUser = '/getCurrentUser';                // 当前人员     --参数：无
 export const CurrentDepartment = '/getCurrentDepartment';    // 所属部门     --参数：无
+
+export const FileNew = '/file/new';                          // 最新编号     --参数：无
+export const FileAdd = '/file/add';                          // 新增档案     --参数：一大堆。。。。。
+export const FileNumber = '/file/number';                    // 检测编号     --参数：number
+export const FileDirect = '/file/direct';                    // 检测来源     --参数：direct
+export const FileEdit = '/file/edit';                        // 修改档案     --参数：一大堆。。。。。
+export const FileFlow = '/file/flow';                        // 档案流动     --参数：一大堆。。。。。
+
+export const PersonName = '/person/name';                    // 检测姓名     --参数：name
+export const PersonNumber = '/person/number';                // 检测证件     --参数：number
+export const PersonPhone1 = '/person/phone1';                // 检测电话     --参数：phone
+export const PersonPhone2 = '/person/phone2';                // 检测电话     --参数：phone
+export const PersonAddress = '/person/address';              // 检测地址     --参数：address
+export const PersonAge = '/person/age';                      // 检测年龄     --参数：age

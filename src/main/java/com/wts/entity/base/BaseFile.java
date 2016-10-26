@@ -17,6 +17,14 @@ public abstract class BaseFile<M extends BaseFile<M>> extends Model<M> implement
 		return get("id");
 	}
 
+	public void setNumber(java.lang.String number) {
+		set("number", number);
+	}
+
+	public java.lang.String getNumber() {
+		return get("number");
+	}
+
 	public void setPid(java.lang.Integer pid) {
 		set("pid", pid);
 	}

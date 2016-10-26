@@ -16,9 +16,6 @@ export default class EditLink extends React.Component {
     super(props);
     this.state = {
       visible: false,
-      DeptList: [],
-      DeptCount: '',
-      UserDept: '',
     };
     this.showModal = this.showModal.bind(this);
     this.handleOk = this.handleOk.bind(this);
@@ -27,64 +24,11 @@ export default class EditLink extends React.Component {
   }
 
   showModal() {
-    $.ajax({
-      'type': 'POST',
-      'url': AjaxFunction.DepartmentList,
-      'dataType': 'text',
-      'success': (DeptList) => {
-        $.ajax({
-          'type': 'POST',
-          'url': AjaxFunction.DepartmentCount,
-          'dataType': 'text',
-          'data': {
-            'QueryString': '',
-          },
-          'success': (DeptCount) => {
-            $.ajax({
-              'type': 'POST',
-              'url': AjaxFunction.DeptNow,
-              'dataType': 'text',
-              'data': { 'did': this.props.userDid },
-              'success': (UserDept) => {
-                this.setState(
-                  {
-                    visible: true,
-                    DeptList: eval(`(${DeptList})`),
-                    DeptCount,
-                    UserDept,
-                  }
-                );
-              },
-              'error': () => {
-                openNotificationWithIcon('error', '请求错误', '无法获取当前部门信息，请检查网络情况');
-              },
-            });
-          },
-          'error': () => {
-            openNotificationWithIcon('error', '请求错误', '无法获取部门总数，请检查网络情况');
-            this.setState(
-              {
-                DeptList: '',
-                DeptCount: '',
-                userDept: '',
-                visible: false,
-              }
-            );
-          },
-        });
-      },
-      'error': () => {
-        openNotificationWithIcon('error', '请求错误', '无法获取部门列表，请检查网络情况');
-        this.setState(
-          {
-            DeptList: '',
-            DeptCount: '',
-            userDept: '',
-            visible: false,
-          }
-        );
-      },
-    });
+    this.setState(
+      {
+        visible: true,
+      }
+    );
   }
 
   handleOk() {
@@ -101,16 +45,19 @@ export default class EditLink extends React.Component {
       }
       $.ajax({
         'type': 'POST',
-        'url': AjaxFunction.UserEdit,
+        'url': AjaxFunction.FileEdit,
         'dataType': 'text',
         'data': {
-          'id': values.userId,
-          'name': values.userName,
-          'phone': values.userPhone,
-          'number': values.userNumber,
-          'login': values.userLogin,
-          'other': values.userOther || '',
-          'did': values.userDid,
+          'fid': values.fileId,
+          'pid': values.personId,
+          'pname': values.personName,
+          'pnumber': values.personNumber,
+          'pphone1': values.personPhone1,
+          'pphone2': values.personPhone2 || '',
+          'paddress': values.personAddress,
+          'premark': values.personRemark || '',
+          'fremark': values.fileRemark || '',
+          'fileAge': values.fileAge,
         },
         'success': (data) => {
           if (data.toString() === 'OK') {
@@ -150,13 +97,13 @@ export default class EditLink extends React.Component {
   }
 
   render() {
-    const { userId, userName, userPhone, userNumber, userState, userOther, userLogin, userDid } = this.props;
+    const { fileId, fileNumber, fileRemark, personId, personName, personNumber, personPhone1, personPhone2, personAddress, fileAge, personRemark, departmentName } = this.props;
     return (
       <span>
         <a onClick={this.showModal} className="btn btn-primary btn-xs" >修改</a>
         <Modal
           maskClosable={false}
-          title="修改用户信息"
+          title="修改档案信息"
           visible={this.state.visible}
           onOk={this.handleOk}
           confirmLoading={this.state.confirmLoading}
@@ -169,17 +116,18 @@ export default class EditLink extends React.Component {
         >
           <EditForm
             ref="EditForm"
-            userId={userId.toString()}
-            userName={userName}
-            userNumber={userNumber}
-            userPhone={userPhone}
-            userState={userState}
-            userOther={userOther}
-            userLogin={userLogin}
-            userDid={userDid}
-            userDept={this.state.UserDept}
-            deptList={this.state.DeptList}
-            deptCount={this.state.DeptCount}
+            fileId={fileId.toString()}
+            fileNumber={fileNumber}
+            fileRemark={fileRemark}
+            personId={personId.toString()}
+            personName={personName}
+            personNumber={personNumber}
+            personPhone1={personPhone1}
+            personPhone2={personPhone2}
+            personAddress={personAddress}
+            fileAge={fileAge}
+            personRemark={personRemark}
+            departmentName={departmentName}
           />
         </Modal>
       </span>
@@ -187,16 +135,16 @@ export default class EditLink extends React.Component {
   }
 }
 EditLink.propTypes = {
-  userId: React.PropTypes.string,
-  userName: React.PropTypes.string,
-  userNumber: React.PropTypes.string,
-  userPhone: React.PropTypes.string,
-  userState: React.PropTypes.string,
-  userOther: React.PropTypes.string,
-  userDid: React.PropTypes.string,
-  userLogin: React.PropTypes.string,
-  userDept: React.PropTypes.string,
-  deptList: React.PropTypes.string,
-  deptCount: React.PropTypes.string,
+  fileId: React.PropTypes.string,
+  fileNumber: React.PropTypes.string,
+  fileRemark: React.PropTypes.string,
+  personId: React.PropTypes.string,
+  personName: React.PropTypes.string,
+  personNumber: React.PropTypes.string,
+  personPhone2: React.PropTypes.string,
+  personAddress: React.PropTypes.string,
+  fileAge: React.PropTypes.string,
+  personRemark: React.PropTypes.string,
+  departmentName: React.PropTypes.string,
   afterEdit: React.PropTypes.func,
 };

@@ -1,9 +1,17 @@
 import React from 'react';
-import { Form, Input, Select } from 'antd';
+import { Form, Input, Select, DatePicker } from 'antd';
 import $ from 'jquery';
 const FormItem = Form.Item;
 const Option = Select.Option;
 import * as AjaxFunction from '../Util/AjaxFunction.js';
+import moment from 'moment-timezone/moment-timezone';
+
+// 推荐在入口文件全局设置 locale 与时区
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
+moment.tz.add('Asia/Shanghai|CST CDT|-80 -90|01010101010101010|-1c1I0 LX0 16p0 1jz0 1Myp0 Rb0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0|23e6');
+moment.tz.setDefault('Asia/Shanghai')
+
 class EditFrom extends React.Component {
   constructor(props) {
     super(props);
