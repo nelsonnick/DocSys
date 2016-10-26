@@ -15,7 +15,7 @@ const openNotificationWithIcon = (type, msg, desc) => {
   });
 };
 
-export default class User extends React.Component {
+export default class File extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,8 +24,10 @@ export default class User extends React.Component {
       PageNumber: '1',   // 当前页的页码
       DataCount: '0',    // 当前数据的总数量
       DeptCount: '',     // 部门总数量
-      UserName: '',      // 当前搜索的用户姓名
+      FileNumber: '',    // 当前搜索的档案编号
       UserDept: '',      // 当前搜索的用户部门
+      PersonName: '',    // 当前搜索的市民姓名
+      PersonNumber: '',  // 当前搜索的证件号码
       DeptList: [],      // 部门列表
       Loading: true,     // 数据加载情况
     };
@@ -54,24 +56,28 @@ export default class User extends React.Component {
           'success': (DeptCount) => {
             $.ajax({
               'type': 'POST',
-              'url': AjaxFunction.UserQuery,
+              'url': AjaxFunction.FileQuery,
               'dataType': 'json',
               'data': {
                 'PageNumber': '1',
                 'PageSize': '9',
-                'UserName': '',
+                'PersonName': '',
                 'UserDept': '',
+                'PersonNumber': '',
+                'FileNumber': '',
               },
               'success': (dataTable) => {
                 $.ajax({
                   'type': 'POST',
-                  'url': AjaxFunction.UserCount,
+                  'url': AjaxFunction.FileCount,
                   'dataType': 'text',
                   'data': {
                     'PageNumber': '1',
                     'PageSize': '9',
-                    'UserName': '',
+                    'PersonName': '',
                     'UserDept': '',
+                    'PersonNumber': '',
+                    'FileNumber': '',
                   },
                   'success': (DataCount) => {
                     this.setState(
@@ -82,8 +88,10 @@ export default class User extends React.Component {
                         DataTable: dataTable,
                         PageNumber: '1',
                         PageSize: '9',
-                        UserName: '',
+                        PersonName: '',
                         UserDept: '',
+                        PersonNumber: '',
+                        FileNumber: '',
                         DeptList: eval(`(${DeptList})`),
                       }
                     );
@@ -136,13 +144,15 @@ export default class User extends React.Component {
     );
     $.ajax({
       'type': 'POST',
-      'url': AjaxFunction.UserQuery,
+      'url': AjaxFunction.FileQuery,
       'dataType': 'json',
       'data': {
         'PageNumber': PageNumbers,
         'PageSize': this.state.PageSize,
-        'UserName': this.state.UserName,
+        'PersonName': this.state.PersonName,
         'UserDept': this.state.UserDept,
+        'PersonNumber': this.state.PersonNumber,
+        'FileNumber': this.state.FileNumber,
       },
       'success': (data) => {
         this.setState(
@@ -171,13 +181,15 @@ export default class User extends React.Component {
     );
     $.ajax({
       'type': 'POST',
-      'url': AjaxFunction.UserQuery,
+      'url': AjaxFunction.FileQuery,
       'dataType': 'json',
       'data': {
         'PageNumber': PageNumbers,
         'PageSize': PageSizes,
-        'UserName': this.state.UserName,
+        'PersonName': this.state.PersonName,
         'UserDept': this.state.UserDept,
+        'PersonNumber': this.state.PersonNumber,
+        'FileNumber': this.state.FileNumber,
       },
       'success': (data) => {
         this.setState(
@@ -199,7 +211,7 @@ export default class User extends React.Component {
       },
     });
   }
-  getQuery(UserName = '', UserDept = '') {
+  getQuery(PersonName = '', UserDept = '', FileNumber = '', PersonNumber = '') {
     this.setState(
       {
         Loading: true,
@@ -207,21 +219,25 @@ export default class User extends React.Component {
     );
     $.ajax({
       'type': 'POST',
-      'url': AjaxFunction.UserQuery,
+      'url': AjaxFunction.FileQuery,
       'dataType': 'json',
       'data': {
         'PageNumber': '1',
         'PageSize': this.state.PageSize,
-        UserName,
+        PersonName,
         UserDept,
+        FileNumber,
+        PersonNumber,
       },
       'success': (data) => {
         this.setState(
           {
             PageNumber: '1',
             DataTable: data,
-            UserName,
+            PersonName,
             UserDept,
+            FileNumber,
+            PersonNumber,
           }
         );
       },
@@ -236,11 +252,13 @@ export default class User extends React.Component {
     });
     $.ajax({
       'type': 'POST',
-      'url': AjaxFunction.UserCount,
+      'url': AjaxFunction.FileCount,
       'dataType': 'text',
       'data': {
-        UserName,
+        PersonName,
         UserDept,
+        FileNumber,
+        PersonNumber,
       },
       'success': (data) => {
         this.setState(
@@ -263,15 +281,17 @@ export default class User extends React.Component {
   getDownload() {
     $.ajax({
       'type': 'POST',
-      'url': AjaxFunction.UserDownload,
+      'url': AjaxFunction.FileDownload,
       'dataType': 'text',
       'data': {
-        'UserName': this.state.UserName,
+        'PersonName': this.state.PersonName,
+        'PersonNumber': this.state.PersonNumber,
+        'FileNumber': this.state.FileNumber,
         'UserDept': this.state.UserDept,
       },
       'success': (data) => {
         if (data.toString() === 'OK') {
-          $('#a').attr('href', '/user/export');
+          $('#a').attr('href', '/file/export');
           document.getElementById('a').click();
         } else {
           openNotificationWithIcon('error', '导出失败', `无法进行导出操作： ${data.toString()}`);
@@ -290,13 +310,15 @@ export default class User extends React.Component {
     );
     $.ajax({
       'type': 'POST',
-      'url': AjaxFunction.UserQuery,
+      'url': AjaxFunction.FileQuery,
       'dataType': 'json',
       'data': {
         'PageNumber': '1',
         'PageSize': this.state.PageSize,
-        'UserName': '',
+        'FileNumber': '',
         'UserDept': '',
+        'PersonName': '',
+        'PersonNumber': '',
       },
       'success': (data) => {
         this.setState(
@@ -304,8 +326,10 @@ export default class User extends React.Component {
             DataTable: data,
             PageNumber: '1',
             PageSize: this.state.PageSize,
-            UserName: '',
+            FileNumber: '',
             UserDept: '',
+            PersonName: '',
+            PersonNumber: '',
           }
         );
       },
@@ -315,13 +339,15 @@ export default class User extends React.Component {
     });
     $.ajax({
       'type': 'POST',
-      'url': AjaxFunction.UserCount,
+      'url': AjaxFunction.FileCount,
       'dataType': 'text',
       'data': {
         'PageNumber': '1',
         'PageSize': '9',
-        'UserName': '',
+        'FileNumber': '',
         'UserDept': '',
+        'PersonName': '',
+        'PersonNumber': '',
       },
       'success': (data) => {
         this.setState(
@@ -349,21 +375,25 @@ export default class User extends React.Component {
     );
     $.ajax({
       'type': 'POST',
-      'url': AjaxFunction.UserQuery,
+      'url': AjaxFunction.FileQuery,
       'dataType': 'json',
       'data': {
         'PageNumber': '1',
         'PageSize': this.state.PageSize,
-        'UserName': '',
+        'FileNumber': '',
         'UserDept': '',
+        'PersonName': '',
+        'PersonNumber': '',
       },
       'success': (data) => {
         this.setState(
           {
             PageNumber: '1',
             DataTable: data,
-            UserName: '',
+            FileNumber: '',
             UserDept: '',
+            PersonName: '',
+            PersonNumber: '',
           }
         );
       },
@@ -378,13 +408,15 @@ export default class User extends React.Component {
     });
     $.ajax({
       'type': 'POST',
-      'url': AjaxFunction.UserCount,
+      'url': AjaxFunction.FileCount,
       'dataType': 'text',
       'data': {
         'PageNumber': '1',
         'PageSize': this.state.PageSize,
-        'UserName': '',
+        'FileNumber': '',
         'UserDept': '',
+        'PersonName': '',
+        'PersonNumber': '',
       },
       'success': (data) => {
         this.setState(
@@ -392,8 +424,10 @@ export default class User extends React.Component {
             Loading: false,
             DataCount: data,
             PageNumber: '1',
-            UserName: '',
+            FileNumber: '',
             UserDept: '',
+            PersonName: '',
+            PersonNumber: '',
           }
         );
       },
@@ -415,13 +449,15 @@ export default class User extends React.Component {
     );
     $.ajax({
       'type': 'POST',
-      'url': AjaxFunction.UserQuery,
+      'url': AjaxFunction.FileQuery,
       'dataType': 'json',
       'data': {
         'PageNumber': this.state.PageNumber,
         'PageSize': this.state.PageSize,
-        'UserName': this.state.UserName,
+        'FileNumber': this.state.FileNumber,
         'UserDept': this.state.UserDept,
+        'PersonName': this.state.PersonName,
+        'PersonNumber': this.state.PersonNumber,
       },
       'success': (data) => {
         this.setState(

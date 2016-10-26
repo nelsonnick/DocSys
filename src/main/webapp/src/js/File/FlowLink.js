@@ -50,9 +50,9 @@ export default class FlowLink extends React.Component {
         'data': {
           'fid': values.fileId,
           'pid': values.personId,
-          'flowType': values.flowType,
-          'flowDirect': values.flowDirect,
-          'flowRemark': values.flowRemark || '',
+          'ftype': values.flowType,
+          'fdirect': values.flowDirect,
+          'lremark': values.flowRemark || '',
         },
         'success': (data) => {
           if (data.toString() === 'OK') {

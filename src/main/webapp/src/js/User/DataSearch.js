@@ -27,7 +27,7 @@ class DataSearch extends React.Component {
   }
   download(e) {
     e.preventDefault();
-    this.props.getDownload(this.props.form.getFieldValue('departmentName'));
+    this.props.getDownload();
   }
   render() {
     const { getFieldDecorator } = this.props.form;

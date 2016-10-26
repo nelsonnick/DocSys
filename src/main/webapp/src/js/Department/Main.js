@@ -58,11 +58,6 @@ export default class Department extends React.Component {
       },
       'error': () => {
         openNotificationWithIcon('error', '请求错误', '无法完成刷新列表，请检查网络情况');
-        // this.setState(
-        //   {
-        //     DataTable: tableDat, // 这里暂时用演示数据
-        //   }
-        // );
       },
     });
     $.ajax({
@@ -93,7 +88,6 @@ export default class Department extends React.Component {
       },
     });
   }
-
   onChange(PageNumbers) {
     this.setState(
       {
@@ -221,8 +215,6 @@ export default class Department extends React.Component {
       },
     });
   }
-
-
   getDownload() {
     $.ajax({
       'type': 'POST',

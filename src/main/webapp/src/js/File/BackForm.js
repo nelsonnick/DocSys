@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Input, Select, DatePicker } from 'antd';
 import $ from 'jquery';
 const FormItem = Form.Item;
+const Option = Select.Option;
 import * as AjaxFunction from '../Util/AjaxFunction.js';
 import moment from 'moment-timezone/moment-timezone';
 
@@ -11,7 +12,7 @@ moment.locale('zh-cn');
 moment.tz.add('Asia/Shanghai|CST CDT|-80 -90|01010101010101010|-1c1I0 LX0 16p0 1jz0 1Myp0 Rb0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0|23e6');
 moment.tz.setDefault('Asia/Shanghai')
 
-class AddFrom extends React.Component {
+class BackFrom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -214,9 +215,10 @@ class AddFrom extends React.Component {
       );
     }
   }
+
   render() {
     const { getFieldDecorator, getFieldError, isFieldValidating } = this.props.form;
-    const { fileNew, departmentName } = this.props;
+    const { fileNumber, personId, personName, personNumber, personPhone1, personPhone2, personAddress, fileAge, personRemark, departmentName } = this.props;
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
@@ -224,13 +226,21 @@ class AddFrom extends React.Component {
     return (
       <Form horizontal>
         <FormItem
+          label=""
+          {...formItemLayout}
+        >
+          {getFieldDecorator('personId', { initialValue: personId })(
+            <Input type="hidden" />
+          )}
+        </FormItem>
+        <FormItem
           label="档案编号"
           {...formItemLayout}
           hasFeedback
           required
           help={isFieldValidating('fileNumber') ? '校验中...' : (getFieldError('fileNumber') || [])}
         >
-          {getFieldDecorator('fileNumber', { initialValue: fileNew,
+          {getFieldDecorator('fileNumber', { initialValue: fileNumber,
             rules: [
               { required: true, whitespace: true, message: '必填项' },
               { validator: this.fileNumberCheck },
@@ -246,13 +256,13 @@ class AddFrom extends React.Component {
           required
           help={isFieldValidating('personName') ? '校验中...' : (getFieldError('personName') || [])}
         >
-          {getFieldDecorator('personName', {
+          {getFieldDecorator('personName', { initialValue: personName,
             rules: [
               { required: true, whitespace: true, message: '必填项' },
               { validator: this.personNameCheck },
             ],
           })(
-            <Input placeholder="请输入市民真实姓名" />
+            <Input placeholder="请输入市民真实姓名" disabled />
           )}
         </FormItem>
         <FormItem
@@ -262,13 +272,13 @@ class AddFrom extends React.Component {
           required
           help={isFieldValidating('personNumber') ? '校验中...' : (getFieldError('personNumber') || [])}
         >
-          {getFieldDecorator('personNumber', {
+          {getFieldDecorator('personNumber', { initialValue: personNumber,
             rules: [
               { required: true, whitespace: true, message: '必填项' },
               { validator: this.personNumberCheck },
             ],
           })(
-            <Input placeholder="请输入市民证件号码" maxlength="18" onChange={this.getFileAge} ref="personNumber" />
+            <Input placeholder="请输入市民证件号码" maxlength="18" onChange={this.getFileAge} ref="personNumber" disabled />
           )}
         </FormItem>
         <FormItem
@@ -278,13 +288,13 @@ class AddFrom extends React.Component {
           required
           help={isFieldValidating('fileAge') ? '校验中...' : (getFieldError('fileAge') || [])}
         >
-          {getFieldDecorator('fileAge', {
+          {getFieldDecorator('fileAge', { initialValue: moment(fileAge, 'YYYY-MM-DD'),
             rules: [
               { required: true, whitespace: true, message: '必填项' },
               { validator: this.fileAgeCheck },
             ],
           })(
-            <DatePicker size="large" Value={this.state.FileAge} />
+            <DatePicker size="large" defaultValue={moment(fileAge, 'YYYY-MM-DD')} disabled />
           )}
         </FormItem>
         <FormItem
@@ -294,7 +304,7 @@ class AddFrom extends React.Component {
           required
           help={isFieldValidating('personPhone1') ? '校验中...' : (getFieldError('personPhone1') || [])}
         >
-          {getFieldDecorator('personPhone1', {
+          {getFieldDecorator('personPhone1', { initialValue: personPhone1,
             rules: [
               { required: true, whitespace: true, message: '必填项' },
               { validator: this.personPhone1Check },
@@ -310,7 +320,7 @@ class AddFrom extends React.Component {
           required
           help={isFieldValidating('personPhone2') ? '校验中...' : (getFieldError('personPhone2') || [])}
         >
-          {getFieldDecorator('personPhone2', {
+          {getFieldDecorator('personPhone2', { initialValue: personPhone2,
             rules: [
               { validator: this.personPhone2Check },
             ],
@@ -325,7 +335,7 @@ class AddFrom extends React.Component {
           required
           help={isFieldValidating('personAddress') ? '校验中...' : (getFieldError('personAddress') || [])}
         >
-          {getFieldDecorator('personAddress', {
+          {getFieldDecorator('personAddress', { initialValue: personAddress,
             rules: [
               { required: true, whitespace: true, message: '必填项' },
               { validator: this.personAddressCheck },
@@ -374,13 +384,13 @@ class AddFrom extends React.Component {
           )}
         </FormItem>
         <FormItem
-        label="人员备注"
-        {...formItemLayout}
-        hasFeedback
-      >
-        {getFieldDecorator('personRemark')(
-          <Input type="textarea" rows="3" placeholder="其他需要填写的信息" />
-        )}
+          label="人员备注"
+          {...formItemLayout}
+          hasFeedback
+        >
+          {getFieldDecorator('personRemark', { initialValue: personRemark})(
+            <Input type="textarea" rows="3" placeholder="其他需要填写的信息" />
+          )}
         </FormItem>
         <FormItem
           label="档案备注"
@@ -404,10 +414,18 @@ class AddFrom extends React.Component {
     );
   }
 }
-AddFrom = Form.create({})(AddFrom);
-export default AddFrom;
-AddFrom.propTypes = {
+BackFrom = Form.create({})(BackFrom);
+export default BackFrom;
+BackFrom.propTypes = {
   form: React.PropTypes.object,
-  fileNew: React.PropTypes.string,
+  fileNumber: React.PropTypes.string,
+  personId: React.PropTypes.string,
+  personName: React.PropTypes.string,
+  personNumber: React.PropTypes.string,
+  personPhone1: React.PropTypes.string,
+  personPhone2: React.PropTypes.string,
+  personAddress: React.PropTypes.string,
+  fileAge: React.PropTypes.string,
+  personRemark: React.PropTypes.string,
   departmentName: React.PropTypes.string,
 };

@@ -38,6 +38,9 @@ export const FileNumber = '/file/number';                    // 检测编号    
 export const FileDirect = '/file/direct';                    // 检测来源     --参数：direct
 export const FileEdit = '/file/edit';                        // 修改档案     --参数：一大堆。。。。。
 export const FileFlow = '/file/flow';                        // 档案流动     --参数：一大堆。。。。。
+export const FileCount = '/file/count';                      // 数据总数     --参数：
+export const FileQuery = '/file/query';                      // 数据查询     --参数：
+export const FileDownload = '/file/download';                // 检查导出     --参数：
 
 export const PersonName = '/person/name';                    // 检测姓名     --参数：name
 export const PersonNumber = '/person/number';                // 检测证件     --参数：number

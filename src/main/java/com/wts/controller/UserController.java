@@ -70,7 +70,7 @@ public class UserController extends Controller {
   }
   /**
    * 核查用户联系电话
-   *@param: name
+   *@param: phone
    */
   public void phone() {
     if (!getPara("phone").matches("\\d{11}")) {

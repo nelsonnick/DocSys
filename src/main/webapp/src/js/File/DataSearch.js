@@ -14,11 +14,10 @@ class DataSearch extends React.Component {
   }
   onChangeDept(userDept) {
     this.setState({ userDept });
-    console.log(`%c已选择第 ${userDept}个部门`, 'color:red');
   }
   handleSubmit(e) {
     e.preventDefault();
-    this.props.setQuery(this.props.form.getFieldValue('userName'), this.state.userDept);
+    this.props.setQuery(this.props.form.getFieldValue('personName'), this.props.form.getFieldValue('personNumber'), this.props.form.getFieldValue('fileNumber'), this.state.userDept);
   }
   handleReset(e) {
     e.preventDefault();
@@ -38,9 +37,19 @@ class DataSearch extends React.Component {
     return (
       <Row type="flex" justify="end">
         <Form inline onSubmit={this.handleSubmit}>
+          <FormItem label="档案编号：" >
+            {getFieldDecorator('fileNumber')(
+              <Input placeholder="请输入档案编号" />
+            )}
+          </FormItem>
           <FormItem label="真实姓名：" >
-            {getFieldDecorator('userName')(
-              <Input placeholder="请输入用户真实姓名" />
+            {getFieldDecorator('personName')(
+              <Input placeholder="请输入市民真实姓名" />
+            )}
+          </FormItem>
+          <FormItem label="证件号码：" >
+            {getFieldDecorator('personNumber')(
+              <Input placeholder="请输入市民证件号码" />
             )}
           </FormItem>
           <FormItem label="所属部门：" >
@@ -72,7 +81,9 @@ DataSearch.propTypes = {
   setQuery: React.PropTypes.func,
   resetPage: React.PropTypes.func,
   getDownload: React.PropTypes.func,
-  userName: React.PropTypes.string,
+  personName: React.PropTypes.string,
+  personNumber: React.PropTypes.string,
+  fileNumber: React.PropTypes.string,
   userDept: React.PropTypes.string,
   deptList: React.PropTypes.array,
   deptCount: React.PropTypes.string,

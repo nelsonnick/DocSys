@@ -67,9 +67,10 @@ export default class AddButton extends React.Component {
           'premark': values.personRemark || '',
           'fnumber': values.fileNumber,
           'fremark': values.fileRemark || '',
+          'lremark': values.flowRemark || '',
           'fileAge': values.fileAge,
           'ftype': values.flowType,
-          'fdirect': values.fileDirect,
+          'fdirect': values.fileDirect || '',
         },
         'success': (data) => {
           if (data.toString() === 'OK') {

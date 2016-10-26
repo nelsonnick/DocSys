@@ -60,16 +60,15 @@ export default class BackLink extends React.Component {
         'url': AjaxFunction.FileBack,
         'dataType': 'text',
         'data': {
-          'fid': values.fileId,
           'pid': values.personId,
-          'pname': values.personName,
-          'pnumber': values.personNumber,
           'pphone1': values.personPhone1,
           'pphone2': values.personPhone2 || '',
           'paddress': values.personAddress,
+          'ftype': values.flowType,
+          'fdirect': values.fileDirect || '',
           'premark': values.personRemark || '',
           'fremark': values.fileRemark || '',
-          'fileAge': values.fileAge,
+          'lremark': values.flowRemark || '',
         },
         'success': (data) => {
           if (data.toString() === 'OK') {
