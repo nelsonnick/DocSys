@@ -28,4 +28,6 @@ export const UserActive = '/user/active';                    // 激活用户    
 export const UserAbandon = '/user/abandon';                  // 注销用户     --参数：id
 export const UserReset = '/user/reset';                      // 重置密码     --参数：id
 export const DeptNow = '/user/depts';                        // 当前部门     --参数：无
-export const UserDownload = '/user/download';                 // 检查导出     --参数：QueryString
+export const UserDownload = '/user/download';                // 检查导出     --参数：userName,userDid
+export const CurrentUser = '/getCurrentUser';                // 当前人员     --参数：无
+export const CurrentDepartment = '/getCurrentDepartment';    // 所属部门     --参数：无

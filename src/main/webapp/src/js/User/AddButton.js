@@ -55,7 +55,6 @@ export default class AddButton extends React.Component {
               }
             );
           },
-
         });
       },
       'error': () => {

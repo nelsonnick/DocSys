@@ -16,17 +16,14 @@ public class GeneratorDemo {
   }
 
   public static void main(String[] args) {
-    System.out.println(PathKit.getWebRootPath());
     // base model 所使用的包名
-    String baseModelPackageName = "com.wts.common.model.base";
+    String baseModelPackageName = "com.wts.entity.base";
     // base model 文件保存路径
-    String baseModelOutputDir = PathKit.getWebRootPath() + "/src/main/java/com/wts/common/model/base";
-
+    String baseModelOutputDir = PathKit.getWebRootPath() + "/src/main/java/com/wts/entity/base";
     // model 所使用的包名 (MappingKit 默认使用的包名)
-    String modelPackageName = "com.wts.common.model";
+    String modelPackageName = "com.wts.entity.model";
     // model 文件保存路径 (MappingKit 与 DataDictionary 文件默认保存路径)
-    String modelOutputDir = baseModelOutputDir + "/..";
-
+    String modelOutputDir = PathKit.getWebRootPath() + "/src/main/java/com/wts/entity/model";
     // 创建生成器
     Generator gernerator = new Generator(getDataSource(), baseModelPackageName, baseModelOutputDir, modelPackageName, modelOutputDir);
     // 设置数据库方言
