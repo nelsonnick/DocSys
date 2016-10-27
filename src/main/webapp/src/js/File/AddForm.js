@@ -3,13 +3,7 @@ import { Form, Input, Select, DatePicker } from 'antd';
 import $ from 'jquery';
 const FormItem = Form.Item;
 import * as AjaxFunction from '../Util/AjaxFunction.js';
-import moment from 'moment-timezone/moment-timezone';
-
-// 推荐在入口文件全局设置 locale 与时区
-import 'moment/locale/zh-cn';
-moment.locale('zh-cn');
-moment.tz.add('Asia/Shanghai|CST CDT|-80 -90|01010101010101010|-1c1I0 LX0 16p0 1jz0 1Myp0 Rb0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0|23e6');
-moment.tz.setDefault('Asia/Shanghai');
+import moment from 'moment';
 
 class AddFrom extends React.Component {
   constructor(props) {
@@ -28,26 +22,15 @@ class AddFrom extends React.Component {
     this.flowReasonCheck = this.flowReasonCheck.bind(this);
     this.getFileAge = this.getFileAge.bind(this);
   }
-  personNameCheck(rule, value, callback) {
-    if (!value) {
-      callback();
-    } else {
-      $.ajax({
-        'type': 'POST',
-        'url': AjaxFunction.PersonName,
-        'dataType': 'text',
-        'data': { 'name': value },
-        'success': (data) => {
-          if (data.toString() === 'OK') {
-            callback();
-          } else {
-            callback(new Error(data.toString()));
-          }
-        },
-        'error': () => {
-          callback(new Error('无法执行后台验证，请重试'));
-        },
-      });
+  getFileAge() {
+    const number = this.refs.personNumber;
+    const parse = '/d{17}[0-9,X]';
+    if (parse.exec(number)) {
+      this.setState(
+        {
+          FileAge: moment(number.substring(6, 10) & '-' & number.substring(10, 12) & '-' & number.substring(12, 14), 'YYYY-MM-DD'),
+        }
+      );
     }
   }
   personNumberCheck(rule, value, callback) {
@@ -204,15 +187,26 @@ class AddFrom extends React.Component {
       });
     }
   }
-  getFileAge() {
-    const number = this.refs.personNumber;
-    const parse = '/d{17}[0-9,X]';
-    if (parse.exec(number)) {
-      this.setState(
-        {
-          FileAge: moment(number.substring(6, 10) + '-' + number.substring(10, 12) + '-' + number.substring(12, 14), 'YYYY-MM-DD'),
-        }
-      );
+  personNameCheck(rule, value, callback) {
+    if (!value) {
+      callback();
+    } else {
+      $.ajax({
+        'type': 'POST',
+        'url': AjaxFunction.PersonName,
+        'dataType': 'text',
+        'data': { 'name': value },
+        'success': (data) => {
+          if (data.toString() === 'OK') {
+            callback();
+          } else {
+            callback(new Error(data.toString()));
+          }
+        },
+        'error': () => {
+          callback(new Error('无法执行后台验证，请重试'));
+        },
+      });
     }
   }
   fileNumberCheck(rule, value, callback) {
@@ -388,7 +382,7 @@ class AddFrom extends React.Component {
           hasFeedback
           required
         >
-          {getFieldDecorator('departmentName', { initialValue: departmentName})(
+          {getFieldDecorator('departmentName', { initialValue: departmentName })(
             <Input disabled />
           )}
         </FormItem>

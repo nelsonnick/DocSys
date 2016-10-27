@@ -63,7 +63,7 @@ export default class DataTable extends React.Component {
       width: 150,
       render: (text, record) => {
         const operate = [];
-        if (window.CurrentDepartment===record.dname.toString()) {
+        if (window.CurrentDepartment === record.dname.toString()) {
           operate.push(
             <EditLink
               userId={record.uid}

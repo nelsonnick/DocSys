@@ -4,7 +4,7 @@ import $ from 'jquery';
 const FormItem = Form.Item;
 const Option = Select.Option;
 import * as AjaxFunction from '../Util/AjaxFunction.js';
-import moment from 'moment-timezone/moment-timezone';
+import moment from 'moment';
 
 // 推荐在入口文件全局设置 locale 与时区
 import 'moment/locale/zh-cn';
@@ -28,26 +28,15 @@ class FlowFrom extends React.Component {
     this.fileDirectCheck = this.fileDirectCheck.bind(this);
     this.getFileAge = this.getFileAge.bind(this);
   }
-  personNameCheck(rule, value, callback) {
-    if (!value) {
-      callback();
-    } else {
-      $.ajax({
-        'type': 'POST',
-        'url': AjaxFunction.PersonName,
-        'dataType': 'text',
-        'data': { 'name': value },
-        'success': (data) => {
-          if (data.toString() === 'OK') {
-            callback();
-          } else {
-            callback(new Error(data.toString()));
-          }
-        },
-        'error': () => {
-          callback(new Error('无法执行后台验证，请重试'));
-        },
-      });
+  getFileAge() {
+    const number = this.refs.personNumber;
+    const parse = '/d{17}[0-9,X]';
+    if (parse.exec(number)) {
+      this.setState(
+        {
+          FileAge: moment(number.substring(6, 10) & '-' & number.substring(10, 12) & '-' & number.substring(12, 14), 'YYYY-MM-DD'),
+        }
+      );
     }
   }
   personNumberCheck(rule, value, callback) {
@@ -182,15 +171,26 @@ class FlowFrom extends React.Component {
       });
     }
   }
-  getFileAge() {
-    const number = this.refs.personNumber;
-    const parse = '/d{17}[0-9,X]';
-    if (parse.exec(number)) {
-      this.setState(
-        {
-          FileAge: moment(number.substring(6, 10) + '-' + number.substring(10, 12) + '-' + number.substring(12, 14), 'YYYY-MM-DD'),
-        }
-      );
+  personNameCheck(rule, value, callback) {
+    if (!value) {
+      callback();
+    } else {
+      $.ajax({
+        'type': 'POST',
+        'url': AjaxFunction.PersonName,
+        'dataType': 'text',
+        'data': { 'name': value },
+        'success': (data) => {
+          if (data.toString() === 'OK') {
+            callback();
+          } else {
+            callback(new Error(data.toString()));
+          }
+        },
+        'error': () => {
+          callback(new Error('无法执行后台验证，请重试'));
+        },
+      });
     }
   }
   fileNumberCheck(rule, value, callback) {

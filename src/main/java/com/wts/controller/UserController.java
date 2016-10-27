@@ -49,12 +49,8 @@ public class UserController extends Controller {
    *@param: name
    */
   public void name() {
-    List<User> user2 = User.dao.find(
-            "select * from user where login=?", getPara("login"));
     if (!getPara("name").matches("[\u4e00-\u9fa5]+")) {
       renderText("真实姓名必须为汉字!");
-    } else if (user2.size() != 0) {
-      renderText("该登录名称已有其他工作人员使用，请更换!");
     } else if (getPara("name").length()<2) {
       renderText("真实姓名必须在两个汉字以上，请使用其他名称!");
     } else {
@@ -81,10 +77,14 @@ public class UserController extends Controller {
   }
   /**
    * 核查用户登录名称
-   *@param: name
+   *@param: login
    */
   public void login() {
-    if (!getPara("login").matches("[a-zA-Z0-9]{4,12}")) {
+    List<User> user = User.dao.find(
+            "select * from user where login=?", getPara("login"));
+    if (user.size() != 0) {
+      renderText("该登录名称已有其他工作人员使用，请更换!");
+    } else if (!getPara("login").matches("[a-zA-Z0-9]{4,12}")) {
       renderText("登录名称必须为4到12位的数字或字母组合!");
     } else {
       renderText("OK");
@@ -370,5 +370,24 @@ public class UserController extends Controller {
     workbook.close();
     renderNull() ;
   }
-
+  /**
+   * 修改密码
+   *@param: did
+   */
+  public void pass() {
+    User u = (User) getSessionAttr("user");
+    if (!u.getStr("pass").equals(encodeMD5String(getPara("passBefore")))) {
+      renderText("输入的原密码错误！");
+    } else if (!getPara("passAfter1").equals(getPara("passAfter2"))) {
+      renderText("两次输入的新密码不一致！");
+    } else if (!getPara("passAfter1").trim().matches("[a-zA-Z0-9]{6,12}")) {
+      renderText("新密码必须为6到12位的数字或字母组合!");
+    } else {
+      if (u.set("pass", encodeMD5String(getPara("passAfter1").trim())).update()) {
+        renderText("OK");
+      } else {
+        renderText("发生未知错误，请检查数据库！");
+      }
+    }
+  }
 }

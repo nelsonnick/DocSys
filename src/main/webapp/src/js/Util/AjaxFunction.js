@@ -33,7 +33,7 @@ export const UserDownload = '/user/download';                // 检查导出    
 export const CurrentUser = '/getCurrentUser';                // 当前人员     --参数：无
 export const CurrentDepartment = '/getCurrentDepartment';    // 所属部门     --参数：无
 
-export const FileNew = '/file/new';                          // 最新编号     --参数：无
+export const FileNew = '/file/newNumber';                    // 最新编号     --参数：无
 export const FileAdd = '/file/add';                          // 新增档案     --参数：一大堆。。。。。
 export const FileNumber = '/file/number';                    // 检测编号     --参数：number
 export const FileEdit = '/file/edit';                        // 修改档案     --参数：一大堆。。。。。
@@ -52,7 +52,7 @@ export const PersonAge = '/person/age';                      // 检测年龄    
 
 export const FlowEdit = '/flow/edit';                        // 修改流动     --参数：一大堆。。。。。
 export const FlowDirect = '/flow/direct';                    // 检测来源     --参数：direct
-export const FlowReason = '/flow/reason';                    // 检测原因     --参数：direct
+export const FlowReason = '/flow/reason';                    // 检测原因     --参数：reason
 export const FlowCount = '/flow/count';                      // 数据总数     --参数：
 export const FlowQuery = '/flow/query';                      // 数据查询     --参数：
 export const FlowDownload = '/flow/download';                // 检查导出     --参数：

@@ -9,6 +9,8 @@ CREATE TABLE `Person` (
 `birth` datetime NULL,
 `remark` varchar(255) NULL,
 `fileAge` datetime NULL,
+`retire` varchar(255) CHARACTER SET utf8 NULL,
+`info` varchar(255) CHARACTER SET utf8 NULL,
 `state` varchar(255) NULL,
 PRIMARY KEY (`id`) 
 );
@@ -17,6 +19,7 @@ CREATE TABLE `File` (
 `id` int NOT NULL AUTO_INCREMENT,
 `pid` int NULL,
 `did` int NULL,
+`number` varchar(255) CHARACTER SET utf8 NULL,
 `state` varchar(255) NULL,
 `remark` varchar(255) NULL,
 PRIMARY KEY (`id`) 
@@ -36,6 +39,7 @@ PRIMARY KEY (`id`)
 CREATE TABLE `User` (
 `id` int NOT NULL AUTO_INCREMENT,
 `name` varchar(255) CHARACTER SET utf8 NULL,
+`number` varchar(255) CHARACTER SET utf8 NULL,
 `phone` varchar(255) CHARACTER SET utf8 NULL,
 `login` varchar(255) CHARACTER SET utf8 NULL,
 `pass` varchar(255) CHARACTER SET utf8 NULL,
@@ -51,8 +55,10 @@ CREATE TABLE `Flow` (
 `did` int NULL,
 `time` datetime NULL,
 `remark` varchar(255) NULL,
-`flow` varchar(255) CHARACTER SET utf8 NULL,
+`direct` varchar(255) CHARACTER SET utf8 NULL,
 `reason` varchar(255) CHARACTER SET utf8 NULL,
+`flow` varchar(255) CHARACTER SET utf8 NULL,
+`type` varchar(255) CHARACTER SET utf8 NULL,
 PRIMARY KEY (`id`) 
 );
 

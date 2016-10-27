@@ -6,6 +6,7 @@ class DataSearch extends React.Component {
     super(props);
     this.state = {
       fileDept: '',
+      fileState: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
@@ -15,9 +16,12 @@ class DataSearch extends React.Component {
   onChangeDept(fileDept) {
     this.setState({ fileDept });
   }
+  onChangeState(fileState) {
+    this.setState({ fileState });
+  }
   handleSubmit(e) {
     e.preventDefault();
-    this.props.setQuery(this.props.form.getFieldValue('personName'), this.props.form.getFieldValue('personNumber'), this.props.form.getFieldValue('fileNumber'), this.state.fileDept);
+    this.props.setQuery(this.props.form.getFieldValue('personName'), this.props.form.getFieldValue('personNumber'), this.props.form.getFieldValue('fileNumber'), this.state.fileDept, this.state.fileState);
   }
   handleReset(e) {
     e.preventDefault();
@@ -65,6 +69,20 @@ class DataSearch extends React.Component {
               </Select>
             )}
           </FormItem>
+          <FormItem label="档案状态：" >
+            {getFieldDecorator('fileState')(
+              <Select
+                onSelect={this.onChangeState}
+                showSearch
+                allowClear
+                style={{ width: 150 }}
+                placeholder="请输入档案状态"
+              >
+                <Option value="在档">在档</Option>
+                <Option value="已提">已提</Option>
+              </Select>
+            )}
+          </FormItem>
           <Button type="primary" htmlType="submit">查找</Button>
           <span>&nbsp;&nbsp;&nbsp;</span>
           <Button type="ghost" onClick={this.handleReset}>重置</Button>
@@ -85,6 +103,7 @@ DataSearch.propTypes = {
   personNumber: React.PropTypes.string,
   fileNumber: React.PropTypes.string,
   fileDept: React.PropTypes.string,
+  fileState: React.PropTypes.string,
   deptList: React.PropTypes.array,
   deptCount: React.PropTypes.string,
   form: React.PropTypes.object,

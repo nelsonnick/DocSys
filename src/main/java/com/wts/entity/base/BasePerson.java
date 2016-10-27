@@ -89,6 +89,22 @@ public abstract class BasePerson<M extends BasePerson<M>> extends Model<M> imple
 		return get("fileAge");
 	}
 
+	public void setRetire(java.lang.String retire) {
+		set("retire", retire);
+	}
+
+	public java.lang.String getRetire() {
+		return get("retire");
+	}
+
+	public void setInfo(java.lang.String info) {
+		set("info", info);
+	}
+
+	public java.lang.String getInfo() {
+		return get("info");
+	}
+
 	public void setState(java.lang.String state) {
 		set("state", state);
 	}

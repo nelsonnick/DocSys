@@ -49,12 +49,12 @@ public abstract class BaseFlow<M extends BaseFlow<M>> extends Model<M> implement
 		return get("remark");
 	}
 
-	public void setFlow(java.lang.String flow) {
-		set("flow", flow);
+	public void setDirect(java.lang.String direct) {
+		set("direct", direct);
 	}
 
-	public java.lang.String getFlow() {
-		return get("flow");
+	public java.lang.String getDirect() {
+		return get("direct");
 	}
 
 	public void setReason(java.lang.String reason) {
@@ -63,6 +63,22 @@ public abstract class BaseFlow<M extends BaseFlow<M>> extends Model<M> implement
 
 	public java.lang.String getReason() {
 		return get("reason");
+	}
+
+	public void setFlow(java.lang.String flow) {
+		set("flow", flow);
+	}
+
+	public java.lang.String getFlow() {
+		return get("flow");
+	}
+
+	public void setType(java.lang.String type) {
+		set("type", type);
+	}
+
+	public java.lang.String getType() {
+		return get("type");
 	}
 
 }

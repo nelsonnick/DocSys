@@ -50,8 +50,8 @@ export default class DataTable extends React.Component {
       width: 150,
       render: (text, record) => {
         const operate = [];
-        if (window.CurrentDepartment===record.dname.toString()) {
-          if (record.pstate.toString() === '在档'){
+        if (window.CurrentDepartment === record.dname.toString()) {
+          if (record.pstate.toString() === '在档') {
             operate.push(
               <EditLink
                 fileId={record.fid}
