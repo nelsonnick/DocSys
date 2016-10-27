@@ -1,8 +1,8 @@
 import React from 'react';
-import Blank from '../Pages/Others/Blank.js';
-import File from 'File/Main.js';
-import Flow from 'Flow/Main.js';
-import Pass from 'Pass/Main.js';
+import Blank from '../Component/Blank.js';
+import File from '../File/Main.js';
+import Flow from '../Flow/Main.js';
+import Pass from '../Pass/Main.js';
 export default class Right extends React.Component {
   render() {
     let tableCase;

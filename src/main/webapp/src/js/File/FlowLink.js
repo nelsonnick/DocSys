@@ -50,8 +50,9 @@ export default class FlowLink extends React.Component {
         'data': {
           'fid': values.fileId,
           'pid': values.personId,
-          'ftype': values.flowType,
-          'fdirect': values.flowDirect,
+          'ltype': values.flowType,
+          'ldirect': values.flowDirect || '',
+          'lreason': values.flowReason || '',
           'lremark': values.flowRemark || '',
         },
         'success': (data) => {
@@ -136,6 +137,7 @@ FlowLink.propTypes = {
   personId: React.PropTypes.string,
   personName: React.PropTypes.string,
   personNumber: React.PropTypes.string,
+  personPhone1: React.PropTypes.string,
   personPhone2: React.PropTypes.string,
   personAddress: React.PropTypes.string,
   fileAge: React.PropTypes.string,

@@ -1,96 +1,503 @@
-import { Form, Input, Select, Col } from 'antd';
 import React from 'react';
-const FormItem = Form.Item;
-const InputGroup = Input.Group;
-const Option = Select.Option;
+import { Row, Col, notification } from 'antd';
+import DataTable from './DataTable.js';
+import DataSearch from './DataSearch.js';
+import DataPagination from './DataPagination.js';
+import * as AjaxFunction from '../Util/AjaxFunction.js';
+import $ from 'jquery';
+import QueueAnim from 'rc-queue-anim';
 
-const selectAfter = (
-  <Select defaultValue=".com" style={{ width: 70 }}>
-    <Option value=".com">.com</Option>
-    <Option value=".jp">.jp</Option>
-    <Option value=".cn">.cn</Option>
-    <Option value=".org">.org</Option>
-  </Select>
-);
-class DocFlow extends React.Component {
+const openNotificationWithIcon = (type, msg, desc) => {
+  notification[type]({
+    message: msg,
+    description: desc,
+  });
+};
+
+export default class File extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      DataTable: [],     // 当前页的具体数据
+      PageSize: '9',     // 当前每页的条数
+      PageNumber: '1',   // 当前页的页码
+      DataCount: '0',    // 当前数据的总数量
+      DeptCount: '',     // 部门总数量
+      FileNumber: '',    // 当前搜索的档案编号
+      FileDept: '',      // 当前搜索的档案部门
+      PersonName: '',    // 当前搜索的市民姓名
+      PersonNumber: '',  // 当前搜索的证件号码
+      DeptList: [],      // 部门列表
+      Loading: true,     // 数据加载情况
+    };
+    this.getQuery = this.getQuery.bind(this);
+    this.getDownload = this.getDownload.bind(this);
+    this.resetPage = this.resetPage.bind(this);
+    this.onShowSizeChange = this.onShowSizeChange.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.AfterAddAndDelete = this.AfterAddAndDelete.bind(this);
+    this.AfterEditAndState = this.AfterEditAndState.bind(this);
+  }
+
+  componentWillMount() {
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.DepartmentList,
+      'dataType': 'text',
+      'success': (DeptList) => {
+        $.ajax({
+          'type': 'POST',
+          'url': AjaxFunction.DepartmentCount,
+          'dataType': 'text',
+          'data': {
+            'QueryString': '',
+          },
+          'success': (DeptCount) => {
+            $.ajax({
+              'type': 'POST',
+              'url': AjaxFunction.FlowQuery,
+              'dataType': 'json',
+              'data': {
+                'PageNumber': '1',
+                'PageSize': '9',
+                'PersonName': '',
+                'FileDept': '',
+                'PersonNumber': '',
+                'FileNumber': '',
+              },
+              'success': (dataTable) => {
+                $.ajax({
+                  'type': 'POST',
+                  'url': AjaxFunction.FlowCount,
+                  'dataType': 'text',
+                  'data': {
+                    'PageNumber': '1',
+                    'PageSize': '9',
+                    'PersonName': '',
+                    'FileDept': '',
+                    'PersonNumber': '',
+                    'FileNumber': '',
+                  },
+                  'success': (DataCount) => {
+                    this.setState(
+                      {
+                        Loading: false,
+                        DataCount,
+                        DeptCount,
+                        DataTable: dataTable,
+                        PageNumber: '1',
+                        PageSize: '9',
+                        PersonName: '',
+                        FileDept: '',
+                        PersonNumber: '',
+                        FileNumber: '',
+                        DeptList: eval(`(${DeptList})`),
+                      }
+                    );
+                  },
+                  'error': () => {
+                    openNotificationWithIcon('error', '请求错误', '无法读取数据总数，请检查网络情况');
+                    this.setState(
+                      {
+                        Loading: false,
+                      }
+                    );
+                  },
+                });
+              },
+              'error': () => {
+                openNotificationWithIcon('error', '请求错误', '无法读取当前数据，请检查网络情况');
+                this.setState(
+                  {
+                    Loading: false,
+                  }
+                );
+              },
+            });
+          },
+          'error': () => {
+            openNotificationWithIcon('error', '请求错误', '无法读取部门信息，请检查网络情况');
+            this.setState(
+              {
+                Loading: false,
+              }
+            );
+          },
+        });
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法读取部门总数，请检查网络情况');
+        this.setState(
+          {
+            Loading: false,
+          }
+        );
+      },
+    });
+  }
+  onChange(PageNumbers) {
+    this.setState(
+      {
+        Loading: true,
+      }
+    );
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.FlowQuery,
+      'dataType': 'json',
+      'data': {
+        'PageNumber': PageNumbers,
+        'PageSize': this.state.PageSize,
+        'PersonName': this.state.PersonName,
+        'FileDept': this.state.FileDept,
+        'PersonNumber': this.state.PersonNumber,
+        'FileNumber': this.state.FileNumber,
+      },
+      'success': (data) => {
+        this.setState(
+          {
+            Loading: false,
+            DataTable: data,
+            PageNumber: PageNumbers,
+          }
+        );
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法完成刷新列表，请检查网络情况');
+        this.setState(
+          {
+            DataTable: [],
+          }
+        );
+      },
+    });
+  }
+  onShowSizeChange(PageNumbers, PageSizes) {
+    this.setState(
+      {
+        Loading: true,
+      }
+    );
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.FlowQuery,
+      'dataType': 'json',
+      'data': {
+        'PageNumber': PageNumbers,
+        'PageSize': PageSizes,
+        'PersonName': this.state.PersonName,
+        'FileDept': this.state.FileDept,
+        'PersonNumber': this.state.PersonNumber,
+        'FileNumber': this.state.FileNumber,
+      },
+      'success': (data) => {
+        this.setState(
+          {
+            Loading: false,
+            DataTable: data,
+            PageNumber: PageNumbers,
+            PageSize: PageSizes,
+          }
+        );
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法完成刷新列表，请检查网络情况');
+        this.setState(
+          {
+            DataTable: [],
+          }
+        );
+      },
+    });
+  }
+  getQuery(PersonName = '', FileDept = '', FileNumber = '', PersonNumber = '') {
+    this.setState(
+      {
+        Loading: true,
+      }
+    );
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.FlowQuery,
+      'dataType': 'json',
+      'data': {
+        'PageNumber': '1',
+        'PageSize': this.state.PageSize,
+        PersonName,
+        FileDept,
+        FileNumber,
+        PersonNumber,
+      },
+      'success': (data) => {
+        this.setState(
+          {
+            PageNumber: '1',
+            DataTable: data,
+            PersonName,
+            FileDept,
+            FileNumber,
+            PersonNumber,
+          }
+        );
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法完成刷新列表，请检查网络情况');
+        this.setState(
+          {
+            DataTable: [],
+          }
+        );
+      },
+    });
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.FlowCount,
+      'dataType': 'text',
+      'data': {
+        PersonName,
+        FileDept,
+        FileNumber,
+        PersonNumber,
+      },
+      'success': (data) => {
+        this.setState(
+          {
+            Loading: false,
+            DataCount: data,
+          }
+        );
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法完成数据读取，请检查网络情况');
+        this.setState(
+          {
+            DataCount: '0',
+          }
+        );
+      },
+    });
+  }
+  getDownload() {
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.FlowDownload,
+      'dataType': 'text',
+      'data': {
+        'PersonName': this.state.PersonName,
+        'PersonNumber': this.state.PersonNumber,
+        'FileNumber': this.state.FileNumber,
+        'FileDept': this.state.FileDept,
+      },
+      'success': (data) => {
+        if (data.toString() === 'OK') {
+          $('#a').attr('href', '/flow/export');
+          document.getElementById('a').click();
+        } else {
+          openNotificationWithIcon('error', '导出失败', `无法进行导出操作： ${data.toString()}`);
+        }
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法读取数据，请检查网络情况');
+      },
+    });
+  }
+  resetPage() {
+    this.setState(
+      {
+        Loading: true,
+      }
+    );
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.FlowQuery,
+      'dataType': 'json',
+      'data': {
+        'PageNumber': '1',
+        'PageSize': this.state.PageSize,
+        'FileNumber': '',
+        'FileDept': '',
+        'PersonName': '',
+        'PersonNumber': '',
+      },
+      'success': (data) => {
+        this.setState(
+          {
+            DataTable: data,
+            PageNumber: '1',
+            PageSize: this.state.PageSize,
+            FileNumber: '',
+            FileDept: '',
+            PersonName: '',
+            PersonNumber: '',
+          }
+        );
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法完成刷新列表，请检查网络情况');
+      },
+    });
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.FlowCount,
+      'dataType': 'text',
+      'data': {
+        'PageNumber': '1',
+        'PageSize': '9',
+        'FileNumber': '',
+        'FileDept': '',
+        'PersonName': '',
+        'PersonNumber': '',
+      },
+      'success': (data) => {
+        this.setState(
+          {
+            Loading: false,
+            DataCount: data,
+          }
+        );
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法完成数据读取，请检查网络情况');
+        this.setState(
+          {
+            DataCount: '0',
+          }
+        );
+      },
+    });
+  }
+  AfterAddAndDelete() {
+    this.setState(
+      {
+        Loading: true,
+      }
+    );
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.FlowQuery,
+      'dataType': 'json',
+      'data': {
+        'PageNumber': '1',
+        'PageSize': this.state.PageSize,
+        'FileNumber': '',
+        'FileDept': '',
+        'PersonName': '',
+        'PersonNumber': '',
+      },
+      'success': (data) => {
+        this.setState(
+          {
+            PageNumber: '1',
+            DataTable: data,
+            FileNumber: '',
+            FileDept: '',
+            PersonName: '',
+            PersonNumber: '',
+          }
+        );
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法完成刷新列表，请检查网络情况');
+        this.setState(
+          {
+            DataTable: [],
+          }
+        );
+      },
+    });
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.FlowCount,
+      'dataType': 'text',
+      'data': {
+        'PageNumber': '1',
+        'PageSize': this.state.PageSize,
+        'FileNumber': '',
+        'FileDept': '',
+        'PersonName': '',
+        'PersonNumber': '',
+      },
+      'success': (data) => {
+        this.setState(
+          {
+            Loading: false,
+            DataCount: data,
+            PageNumber: '1',
+            FileNumber: '',
+            FileDept: '',
+            PersonName: '',
+            PersonNumber: '',
+          }
+        );
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法完成数据读取，请检查网络情况');
+        this.setState(
+          {
+            DataCount: '0',
+          }
+        );
+      },
+    });
+  }
+  AfterEditAndState() {
+    this.setState(
+      {
+        Loading: true,
+      }
+    );
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.FlowQuery,
+      'dataType': 'json',
+      'data': {
+        'PageNumber': this.state.PageNumber,
+        'PageSize': this.state.PageSize,
+        'FileNumber': this.state.FileNumber,
+        'FileDept': this.state.FileDept,
+        'PersonName': this.state.PersonName,
+        'PersonNumber': this.state.PersonNumber,
+      },
+      'success': (data) => {
+        this.setState(
+          {
+            Loading: false,
+            DataTable: data,
+          }
+        );
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法完成刷新列表，请检查网络情况');
+        this.setState(
+          {
+            DataTable: [],
+          }
+        );
+      },
+    });
+  }
   render() {
     return (
-      <Form horizontal>
-        <FormItem
-          label="标签输入框"
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 16 }}
-        >
-          <Input addonBefore="Http://" defaultValue="mysite.com" id="site1" />
-        </FormItem>
-
-        <FormItem
-          label="标签输入框"
-          labelCol={{ span: 6 }}
-          validateStatus="success"
-          wrapperCol={{ span: 16 }}
-        >
-          <Input addonBefore="Http://" addonAfter=".com" defaultValue="mysite" id="site2" />
-        </FormItem>
-
-        <FormItem
-          label="select 标签输入框"
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 16 }}
-        >
-          <Input addonAfter={selectAfter} placeholder="www.mysite" id="site4" />
-        </FormItem>
-
-        <FormItem
-          label="输入身份证"
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 16 }}
-        >
-          <InputGroup>
-            <Col span="6">
-              <Input id="certNo1" />
-            </Col>
-            <Col span="6">
-              <Input id="certNo2" />
-            </Col>
-            <Col span="6">
-              <Input id="certNo3" />
-            </Col>
-            <Col span="6">
-              <Input id="certNo4" />
-            </Col>
-          </InputGroup>
-        </FormItem>
-
-        <FormItem
-          label="电话号码"
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 16 }}
-        >
-          <InputGroup>
-            <Col span="4">
-              <Input id="tel1" defaultValue="086" />
-            </Col>
-            <Col span="2">
-              <p className="ant-form-split">--</p>
-            </Col>
-            <Col span="6">
-              <Input id="tel1" />
-            </Col>
-            <Col span="6">
-              <Input id="tel2" />
-            </Col>
-            <Col span="6">
-              <Input id="tel3" />
-            </Col>
-          </InputGroup>
-        </FormItem>
-      </Form>
+      <QueueAnim>
+        <div key="a">
+          <Row type="flex" justify="start">
+            <Col span={18}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} deptList={this.state.DeptList} personName={this.state.PersonName} personNumber={this.state.PersonNumber} fileNumber={this.state.FileNumber} fileDept={this.state.FileDept} deptCount={this.state.DeptCount} getDownload={this.getDownload} /></Col>
+            <a id="a" className="aa" />
+          </Row>
+          <Row>
+            <span style={{ 'font-size': '5px' }}>&nbsp;&nbsp;&nbsp;</span>
+          </Row>
+          <Row>
+            <DataTable tableData={this.state.DataTable} loading={this.state.Loading} afterState={this.AfterEditAndState} afterDelete={this.AfterAddAndDelete} deptList={this.state.DeptList} deptCount={this.state.DeptCount} />
+          </Row>
+          <Row>
+            <span style={{ 'font-size': '20px' }}>&nbsp;&nbsp;&nbsp;</span>
+          </Row>
+          <Row>
+            <DataPagination PageNumber={this.state.PageNumber} onShowSizeChange={this.onShowSizeChange} onChange={this.onChange} DataCount={this.state.DataCount} />
+          </Row>
+        </div>
+      </QueueAnim>
     );
   }
 }
-DocFlow = Form.create({})(DocFlow);
-export default DocFlow;
-DocFlow.propTypes = {
-  form: React.PropTypes.object,
-};

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, DatePicker } from 'antd';
+import { Form, Input, DatePicker, Select } from 'antd';
 import $ from 'jquery';
 const FormItem = Form.Item;
 import * as AjaxFunction from '../Util/AjaxFunction.js';
@@ -9,7 +9,7 @@ import moment from 'moment-timezone/moment-timezone';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 moment.tz.add('Asia/Shanghai|CST CDT|-80 -90|01010101010101010|-1c1I0 LX0 16p0 1jz0 1Myp0 Rb0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0|23e6');
-moment.tz.setDefault('Asia/Shanghai')
+moment.tz.setDefault('Asia/Shanghai');
 
 class EditFrom extends React.Component {
   constructor(props) {
@@ -24,31 +24,11 @@ class EditFrom extends React.Component {
     this.personPhone2Check = this.personPhone2Check.bind(this);
     this.personAddressCheck = this.personAddressCheck.bind(this);
     this.fileAgeCheck = this.fileAgeCheck.bind(this);
-    this.fileDirectCheck = this.fileDirectCheck.bind(this);
+    this.flowDirectCheck = this.flowDirectCheck.bind(this);
+    this.flowReasonCheck = this.flowReasonCheck.bind(this);
     this.getFileAge = this.getFileAge.bind(this);
   }
-  fileNumberCheck(rule, value, callback) {
-    if (!value) {
-      callback();
-    } else {
-      $.ajax({
-        'type': 'POST',
-        'url': AjaxFunction.FileNumber,
-        'dataType': 'text',
-        'data': { 'number': value },
-        'success': (data) => {
-          if (data.toString() === 'OK') {
-            callback();
-          } else {
-            callback(new Error(data.toString()));
-          }
-        },
-        'error': () => {
-          callback(new Error('无法执行后台验证，请重试'));
-        },
-      });
-    }
-  }
+
   personNameCheck(rule, value, callback) {
     if (!value) {
       callback();
@@ -181,13 +161,13 @@ class EditFrom extends React.Component {
       });
     }
   }
-  fileDirectCheck(rule, value, callback) {
+  flowDirectCheck(rule, value, callback) {
     if (!value) {
       callback();
     } else {
       $.ajax({
         'type': 'POST',
-        'url': AjaxFunction.FileDirect,
+        'url': AjaxFunction.FlowDirect,
         'dataType': 'text',
         'data': { 'direct': value },
         'success': (data) => {
@@ -203,21 +183,64 @@ class EditFrom extends React.Component {
       });
     }
   }
-  getFileAge(){
+  flowReasonCheck(rule, value, callback) {
+    if (!value) {
+      callback();
+    } else {
+      $.ajax({
+        'type': 'POST',
+        'url': AjaxFunction.FlowReason,
+        'dataType': 'text',
+        'data': { 'reason': value },
+        'success': (data) => {
+          if (data.toString() === 'OK') {
+            callback();
+          } else {
+            callback(new Error(data.toString()));
+          }
+        },
+        'error': () => {
+          callback(new Error('无法执行后台验证，请重试'));
+        },
+      });
+    }
+  }
+  getFileAge() {
     const number=this.refs.personNumber;
     const parse = '/d{17}[0-9,X]';
-    if (parse.exec(number)){
+    if (parse.exec(number)) {
       this.setState(
         {
-          FileAge: moment(number.substring(6,10) + '-' + number.substring(10,12) + '-' + number.substring(12,14), 'YYYY-MM-DD'),
+          FileAge: moment(number.substring(6, 10) + '-' + number.substring(10, 12) + '-' + number.substring(12, 14), 'YYYY-MM-DD'),
         }
       );
     }
   }
-
+  fileNumberCheck(rule, value, callback) {
+    if (!value) {
+      callback();
+    } else {
+      $.ajax({
+        'type': 'POST',
+        'url': AjaxFunction.FileNumber,
+        'dataType': 'text',
+        'data': { 'number': value },
+        'success': (data) => {
+          if (data.toString() === 'OK') {
+            callback();
+          } else {
+            callback(new Error(data.toString()));
+          }
+        },
+        'error': () => {
+          callback(new Error('无法执行后台验证，请重试'));
+        },
+      });
+    }
+  }
   render() {
     const { getFieldDecorator, getFieldError, isFieldValidating } = this.props.form;
-    const { fileId, fileNumber, fileRemark, personId, personName, personNumber, personPhone1, personPhone2, personAddress, fileAge, personRemark, departmentName } = this.props;
+    const { fileId, fileNumber, fileRemark, personId, personName, personNumber, personPhone1, personPhone2, personAddress, fileAge, personRemark, departmentName, personInfo, personRetire } = this.props;
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
@@ -352,12 +375,37 @@ class EditFrom extends React.Component {
           )}
         </FormItem>
         <FormItem
+          label="信息整理"
+          {...formItemLayout}
+          required
+        >
+          {getFieldDecorator('personInfo', { initialValue: personInfo })(
+            <Select size="large" >
+              <Option value="已完成">已完成</Option>
+              <Option value="未完成">未完成</Option>
+            </Select>
+          )}
+        </FormItem>
+        <FormItem
+          label="退休情况"
+          {...formItemLayout}
+          required
+        >
+          {getFieldDecorator('personRetire', { initialValue: personRetire })(
+            <Select size="large" >
+              <Option value="正常退休">正常退休</Option>
+              <Option value="提前退休">提前退休</Option>
+              <Option value="延后退休">延后退休</Option>
+            </Select>
+          )}
+        </FormItem>
+        <FormItem
           label="存档部门"
           {...formItemLayout}
           hasFeedback
           required
         >
-          {getFieldDecorator('departmentName', { initialValue: departmentName})(
+          {getFieldDecorator('departmentName', { initialValue: departmentName })(
             <Input disabled />
           )}
         </FormItem>
@@ -366,7 +414,7 @@ class EditFrom extends React.Component {
           {...formItemLayout}
           hasFeedback
         >
-          {getFieldDecorator('personRemark', { initialValue: personRemark})(
+          {getFieldDecorator('personRemark', { initialValue: personRemark })(
             <Input type="textarea" rows="3" placeholder="其他需要填写的信息" />
           )}
         </FormItem>
@@ -375,7 +423,7 @@ class EditFrom extends React.Component {
           {...formItemLayout}
           hasFeedback
         >
-          {getFieldDecorator('fileRemark', { initialValue: fileRemark})(
+          {getFieldDecorator('fileRemark', { initialValue: fileRemark })(
             <Input type="textarea" rows="3" placeholder="其他需要填写的信息" />
           )}
         </FormItem>
@@ -396,6 +444,8 @@ EditFrom.propTypes = {
   personPhone1: React.PropTypes.string,
   personPhone2: React.PropTypes.string,
   personAddress: React.PropTypes.string,
+  personInfo: React.PropTypes.string,
+  personRetire: React.PropTypes.string,
   fileAge: React.PropTypes.string,
   personRemark: React.PropTypes.string,
   departmentName: React.PropTypes.string,

@@ -55,6 +55,8 @@ export default class EditLink extends React.Component {
           'pphone1': values.personPhone1,
           'pphone2': values.personPhone2 || '',
           'paddress': values.personAddress,
+          'pinfo': values.personInfo,
+          'pretire': values.personRetire,
           'premark': values.personRemark || '',
           'fremark': values.fileRemark || '',
           'fileAge': values.fileAge,
@@ -97,7 +99,7 @@ export default class EditLink extends React.Component {
   }
 
   render() {
-    const { fileId, fileNumber, fileRemark, personId, personName, personNumber, personPhone1, personPhone2, personAddress, fileAge, personRemark, departmentName } = this.props;
+    const { fileId, fileNumber, fileRemark, personId, personName, personNumber, personPhone1, personPhone2, personAddress, fileAge, personRemark, departmentName, personInfo, personRetire } = this.props;
     return (
       <span>
         <a onClick={this.showModal} className="btn btn-primary btn-xs" >修改</a>
@@ -125,6 +127,8 @@ export default class EditLink extends React.Component {
             personPhone1={personPhone1}
             personPhone2={personPhone2}
             personAddress={personAddress}
+            personInfo={personInfo}
+            personRetire={personRetire}
             fileAge={fileAge}
             personRemark={personRemark}
             departmentName={departmentName}
@@ -141,8 +145,11 @@ EditLink.propTypes = {
   personId: React.PropTypes.string,
   personName: React.PropTypes.string,
   personNumber: React.PropTypes.string,
+  personPhone1: React.PropTypes.string,
   personPhone2: React.PropTypes.string,
   personAddress: React.PropTypes.string,
+  personInfo: React.PropTypes.string,
+  personRetire: React.PropTypes.string,
   fileAge: React.PropTypes.string,
   personRemark: React.PropTypes.string,
   departmentName: React.PropTypes.string,

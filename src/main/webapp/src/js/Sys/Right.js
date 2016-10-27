@@ -1,5 +1,5 @@
 import React from 'react';
-import Blank from '../Pages/Others/Blank.js';
+import Blank from '../Component/Blank.js';
 import Department from '../Department/Main.js';
 import User from '../User/Main.js';
 export default class Right extends React.Component {

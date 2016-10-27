@@ -1,8 +1,7 @@
 import { Modal, Button, notification } from 'antd';
-// import Btn from 'react-bootstrap/lib/Button';
 import React from 'react';
 import EditForm from './EditForm';
-import * as AjaxFunction from '../../../Util/AjaxFunction.js';
+import * as AjaxFunction from '../Util/AjaxFunction.js';
 import $ from 'jquery';
 
 const openNotificationWithIcon = (type, msg, desc) => {
@@ -17,8 +16,6 @@ export default class EditLink extends React.Component {
     super(props);
     this.state = {
       visible: false,
-      grand: '',
-      options: [],
     };
     this.showModal = this.showModal.bind(this);
     this.handleOk = this.handleOk.bind(this);
@@ -27,47 +24,11 @@ export default class EditLink extends React.Component {
   }
 
   showModal() {
-    $.ajax({
-      'type': 'POST',
-      'url': AjaxFunction.DepartmentCascade,
-      'dataType': 'text',
-      'success': (data) => {
-        this.setState(
-          {
-            options: eval(`(${data})`),
-          }
-        );
-        $.ajax({
-          'type': 'POST',
-          'url': AjaxFunction.DepartmentFatherGet,
-          'dataType': 'text',
-          'data': { 'father': this.props.departmentFather },
-          'success': (msg) => {
-            this.setState(
-              {
-                visible: true,
-                grand: msg,
-              }
-            );
-          },
-          'error': () => {
-            openNotificationWithIcon('error', '请求错误', '无法获取上级部门信息，请检查网络情况');
-          },
-        });
-      },
-      'error': (XMLHttpRequest, textStatus) => {
-        openNotificationWithIcon('error', '请求错误', '无法获取部门信息，请检查网络情况');
-        console.log(XMLHttpRequest.status);
-        console.log(XMLHttpRequest.readyState);
-        console.log(textStatus);
-        this.setState(
-          {
-            options: '',
-            visible: false,
-          }
-        );
-      },
-    });
+    this.setState(
+      {
+        visible: true,
+      }
+    );
   }
 
   handleOk() {
@@ -82,27 +43,17 @@ export default class EditLink extends React.Component {
         });
         return;
       }
-      let fatherId;
-      if (values.departmentFather.length === 1) {
-        fatherId = values.departmentFather[0];
-      } else if (values.departmentFather.length === 2) {
-        fatherId = values.departmentFather[1];
-      } else if (values.departmentFather.length === 3) {
-        fatherId = values.departmentFather[2];
-      } else {
-        fatherId = '';
-      }
       $.ajax({
         'type': 'POST',
-        'url': AjaxFunction.DepartmentEdit,
+        'url': AjaxFunction.FlowEdit,
         'dataType': 'text',
         'data': {
-          'id': values.departmentId,
-          'name': values.departmentName,
-          'phone': values.departmentPhone,
-          'address': values.departmentAddress,
-          'other': values.departmentOther || '',
-          'father': fatherId,
+          'lid': values.flowId,
+          'lreason': values.flowReason || '',
+          'lremark': values.flowRemark || '',
+          'ltype': values.flowType || '',
+          'ldirect': values.flowDirect || '',
+          'uid': values.userId,
         },
         'success': (data) => {
           if (data.toString() === 'OK') {
@@ -142,13 +93,13 @@ export default class EditLink extends React.Component {
   }
 
   render() {
-    const { departmentId, departmentName, departmentPhone, departmentAddress, departmentState, departmentOther, departmentFather, departmentLevel } = this.props;
+    const { userId, flowId, fileNumber, personName, personNumber, departmentName, flowReason, flowDirect, flowType, flowRemark, flowFlow } = this.props;
     return (
       <span>
         <a onClick={this.showModal} className="btn btn-primary btn-xs" >修改</a>
         <Modal
           maskClosable={false}
-          title="修改部门信息"
+          title="修改变更信息"
           visible={this.state.visible}
           onOk={this.handleOk}
           confirmLoading={this.state.confirmLoading}
@@ -161,16 +112,17 @@ export default class EditLink extends React.Component {
         >
           <EditForm
             ref="EditForm"
-            departmentId={departmentId.toString()}
+            userId={userId.toString()}
+            flowId={flowId.toString()}
+            fileNumber={fileNumber}
+            personName={personName}
+            personNumber={personNumber}
             departmentName={departmentName}
-            departmentAddress={departmentAddress}
-            departmentPhone={departmentPhone}
-            departmentState={departmentState}
-            departmentOther={departmentOther}
-            departmentFather={departmentFather.toString()}
-            departmentLevel={departmentLevel.toString()}
-            departmentGrand={this.state.grand}
-            options={this.state.options}
+            flowReason={flowReason}
+            flowDirect={flowDirect}
+            flowType={flowType}
+            flowFlow={flowFlow}
+            flowRemark={flowRemark}
           />
         </Modal>
       </span>
@@ -178,13 +130,16 @@ export default class EditLink extends React.Component {
   }
 }
 EditLink.propTypes = {
-  departmentId: React.PropTypes.string,
+  userId: React.PropTypes.string,
+  flowId: React.PropTypes.string,
+  fileNumber: React.PropTypes.string,
+  personName: React.PropTypes.string,
+  personNumber: React.PropTypes.string,
   departmentName: React.PropTypes.string,
-  departmentAddress: React.PropTypes.string,
-  departmentPhone: React.PropTypes.string,
-  departmentState: React.PropTypes.string,
-  departmentOther: React.PropTypes.string,
-  departmentFather: React.PropTypes.string,
-  departmentLevel: React.PropTypes.string,
+  flowReason: React.PropTypes.string,
+  flowDirect: React.PropTypes.string,
+  flowType: React.PropTypes.string,
+  flowRemark: React.PropTypes.string,
+  flowFlow: React.PropTypes.string,
   afterEdit: React.PropTypes.func,
 };

@@ -10,7 +10,7 @@ import moment from 'moment-timezone/moment-timezone';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 moment.tz.add('Asia/Shanghai|CST CDT|-80 -90|01010101010101010|-1c1I0 LX0 16p0 1jz0 1Myp0 Rb0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0|23e6');
-moment.tz.setDefault('Asia/Shanghai')
+moment.tz.setDefault('Asia/Shanghai');
 
 class FlowFrom extends React.Component {
   constructor(props) {
@@ -27,28 +27,6 @@ class FlowFrom extends React.Component {
     this.fileAgeCheck = this.fileAgeCheck.bind(this);
     this.fileDirectCheck = this.fileDirectCheck.bind(this);
     this.getFileAge = this.getFileAge.bind(this);
-  }
-  fileNumberCheck(rule, value, callback) {
-    if (!value) {
-      callback();
-    } else {
-      $.ajax({
-        'type': 'POST',
-        'url': AjaxFunction.FileNumber,
-        'dataType': 'text',
-        'data': { 'number': value },
-        'success': (data) => {
-          if (data.toString() === 'OK') {
-            callback();
-          } else {
-            callback(new Error(data.toString()));
-          }
-        },
-        'error': () => {
-          callback(new Error('无法执行后台验证，请重试'));
-        },
-      });
-    }
   }
   personNameCheck(rule, value, callback) {
     if (!value) {
@@ -204,18 +182,39 @@ class FlowFrom extends React.Component {
       });
     }
   }
-  getFileAge(){
-    const number=this.refs.personNumber;
+  getFileAge() {
+    const number = this.refs.personNumber;
     const parse = '/d{17}[0-9,X]';
-    if (parse.exec(number)){
+    if (parse.exec(number)) {
       this.setState(
         {
-          FileAge: moment(number.substring(6,10) + '-' + number.substring(10,12) + '-' + number.substring(12,14), 'YYYY-MM-DD'),
+          FileAge: moment(number.substring(6, 10) + '-' + number.substring(10, 12) + '-' + number.substring(12, 14), 'YYYY-MM-DD'),
         }
       );
     }
   }
-
+  fileNumberCheck(rule, value, callback) {
+    if (!value) {
+      callback();
+    } else {
+      $.ajax({
+        'type': 'POST',
+        'url': AjaxFunction.FileNumber,
+        'dataType': 'text',
+        'data': { 'number': value },
+        'success': (data) => {
+          if (data.toString() === 'OK') {
+            callback();
+          } else {
+            callback(new Error(data.toString()));
+          }
+        },
+        'error': () => {
+          callback(new Error('无法执行后台验证，请重试'));
+        },
+      });
+    }
+  }
   render() {
     const { getFieldDecorator, getFieldError, isFieldValidating } = this.props.form;
     const { fileId, fileNumber, fileRemark, personId, personName, personNumber, personPhone1, personPhone2, personAddress, fileAge, personRemark, departmentName } = this.props;
@@ -358,7 +357,7 @@ class FlowFrom extends React.Component {
           hasFeedback
           required
         >
-          {getFieldDecorator('departmentName', { initialValue: departmentName})(
+          {getFieldDecorator('departmentName', { initialValue: departmentName })(
             <Input disabled />
           )}
         </FormItem>
@@ -396,7 +395,7 @@ class FlowFrom extends React.Component {
           {...formItemLayout}
           hasFeedback
         >
-          {getFieldDecorator('personRemark', { initialValue: personRemark})(
+          {getFieldDecorator('personRemark', { initialValue: personRemark })(
             <Input type="textarea" rows="3" placeholder="其他需要填写的信息" disabled />
           )}
         </FormItem>
@@ -405,12 +404,12 @@ class FlowFrom extends React.Component {
           {...formItemLayout}
           hasFeedback
         >
-          {getFieldDecorator('fileRemark', { initialValue: fileRemark})(
+          {getFieldDecorator('fileRemark', { initialValue: fileRemark })(
             <Input type="textarea" rows="3" placeholder="其他需要填写的信息" disabled />
           )}
         </FormItem>
         <FormItem
-          label="转入备注"
+          label="转出备注"
           {...formItemLayout}
           hasFeedback
         >

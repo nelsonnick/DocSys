@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'antd';
+import { Table, message } from 'antd';
 import EditLink from './EditLink.js';
 import FlowLink from './FlowLink.js';
 import BackLink from './BackLink.js';
@@ -29,17 +29,17 @@ export default class DataTable extends React.Component {
       dataIndex: 'pname',
       key: 'pname',
       width: 100,
-    },{
+    }, {
       title: '证件号码',
       dataIndex: 'pnumber',
       key: 'pnumber',
       width: 100,
-    },{
+    }, {
       title: '档案位置',
       dataIndex: 'dname',
       key: 'dname',
       width: 100,
-    },{
+    }, {
       title: '档案状态',
       dataIndex: 'fstate',
       key: 'fstate',
@@ -50,7 +50,7 @@ export default class DataTable extends React.Component {
       width: 150,
       render: (text, record) => {
         const operate = [];
-        if (window.CurrentDepartment===record.dname.toString()){
+        if (window.CurrentDepartment===record.dname.toString()) {
           if (record.pstate.toString() === '在档'){
             operate.push(
               <EditLink
@@ -64,7 +64,9 @@ export default class DataTable extends React.Component {
                 personState={record.pstate}
                 personPhone1={record.pphone1}
                 personPhone2={record.pphone2}
-                personAddress={record.address}
+                personAddress={record.paddress}
+                personInfo={record.pinfo}
+                personRetire={record.pretire}
                 fileAge={record.fileAge}
                 personRemark={record.premark}
                 departmentId={record.did}
@@ -85,7 +87,7 @@ export default class DataTable extends React.Component {
                 personState={record.pstate}
                 personPhone1={record.pphone1}
                 personPhone2={record.pphone2}
-                personAddress={record.address}
+                personAddress={record.paddress}
                 fileAge={record.fileAge}
                 personRemark={record.premark}
                 departmentId={record.did}
@@ -94,8 +96,8 @@ export default class DataTable extends React.Component {
               />
             );
             operate.push(<span className="ant-divider" />);
-          } else if  (record.pstate.toString() === '已提'){
-            if (record.pstate.toString() === '1'){
+          } else if (record.pstate.toString() === '已提') {
+            if (record.pstate.toString() === '1') {
               operate.push(
                 <BackLink
                   fileId={record.fid}
@@ -108,7 +110,7 @@ export default class DataTable extends React.Component {
                   personState={record.pstate}
                   personPhone1={record.pphone1}
                   personPhone2={record.pphone2}
-                  personAddress={record.address}
+                  personAddress={record.paddress}
                   fileAge={record.fileAge}
                   personRemark={record.premark}
                   departmentId={record.did}
@@ -117,7 +119,7 @@ export default class DataTable extends React.Component {
                 />
               );
               operate.push(<span className="ant-divider" />);
-            } else if (record.pstate.toString() === '0'){
+            } else if (record.pstate.toString() === '0') {
               operate.push(<span className="ant-divider" />);
             } else {
               operate.push(<span className="ant-divider" />);

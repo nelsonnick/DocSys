@@ -64,13 +64,16 @@ export default class AddButton extends React.Component {
           'pphone1': values.personPhone1,
           'pphone2': values.personPhone2 || '',
           'paddress': values.personAddress,
+          'pinfo': values.personInfo,
+          'pretire': values.personRetire,
           'premark': values.personRemark || '',
           'fnumber': values.fileNumber,
           'fremark': values.fileRemark || '',
           'lremark': values.flowRemark || '',
+          'lreason': values.flowReason || '',
           'fileAge': values.fileAge,
-          'ftype': values.flowType,
-          'fdirect': values.fileDirect || '',
+          'ltype': values.flowType,
+          'ldirect': values.flowDirect || '',
         },
         'success': (data) => {
           if (data.toString() === 'OK') {

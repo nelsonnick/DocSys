@@ -1,48 +1,123 @@
-import { Form, Input, Button, Checkbox } from 'antd';
 import React from 'react';
+import { Form, Input, Button, notification } from 'antd';
+import $ from 'jquery';
 const FormItem = Form.Item;
-
-class PassCont extends React.Component {
+import * as AjaxFunction from '../Util/AjaxFunction.js';
+const openNotificationWithIcon = (type, msg, desc) => {
+  notification[type]({
+    message: msg,
+    description: desc,
+  });
+};
+class PassFrom extends React.Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
-  handleSubmit(e) {
-    e.preventDefault();
-    console.log('收到表单值：', this.props.form.getFieldsValue());
+  handleSubmit() {
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.UserPass,
+      'dataType': 'text',
+      'data': {
+        'passBefore': this.props.form.getFieldValue('passBefore'),
+        'passAfter1': this.props.form.getFieldValue('passAfter1'),
+        'passAfter2': this.props.form.getFieldValue('passAfter2'),
+      },
+      'success': (data) => {
+        if (data.toString() === 'OK') {
+          this.props.form.resetFields();
+          openNotificationWithIcon('success', '修改成功', '修改成功，请重新登录');
+          $('#c').attr('href', '/logout');
+          document.getElementById('c').click();
+        } else {
+          openNotificationWithIcon('error', '修改失败', data.toString());
+          this.setState({
+            confirmLoading: false,
+          });
+        }
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法完成修改操作，请检查网络情况');
+        this.setState({
+          confirmLoading: false,
+        });
+      },
+    });
   }
+
+  handleReset() {
+    this.props.form.resetFields();
+  }
+
   render() {
-    const { getFieldProps } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
+
+    const formItemLayout = {
+      labelCol: { span: 6 },
+      wrapperCol: { span: 14 },
+    };
+
     return (
-      <Form inline onSubmit={this.handleSubmit}>
+      <Form horizontal>
         <FormItem
-          label="账户"
+          label="原始密码"
+          {...formItemLayout}
+          hasFeedback
+          required
         >
-          <Input
-            placeholder="请输入账户名"
-            {...getFieldProps('userName')}
-          />
+          {getFieldDecorator('passBefore', {
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+            ],
+          })(
+            <Input placeholder="请输入您的原始密码" type="password" />
+          )}
         </FormItem>
         <FormItem
-          label="密码"
+          label="新密码"
+          {...formItemLayout}
+          hasFeedback
+          required
         >
-          <Input
-            type="password"
-            placeholder="请输入密码"
-            {...getFieldProps('password')}
-          />
+          {getFieldDecorator('passAfter1', {
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+            ],
+          })(
+            <Input placeholder="请输入您的新密码" type="password" />
+          )}
         </FormItem>
-        <FormItem>
-          <Checkbox {...getFieldProps('agreement')}>记住我</Checkbox>
+        <FormItem
+          label="新密码确认"
+          {...formItemLayout}
+          hasFeedback
+          required
+        >
+          {getFieldDecorator('passAfter2', {
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+            ],
+          })(
+            <Input placeholder="请再次输入您的新密码" type="password" />
+          )}
         </FormItem>
-        <Button type="primary" htmlType="submit">登录</Button>
+        <FormItem
+          {...formItemLayout}
+        >
+          <Button type="primary" onClick={this.handleSubmit}>修改</Button>
+          &nbsp;&nbsp;&nbsp;
+          <Button type="ghost" onClick={this.handleReset}>重置</Button>
+          <span>&nbsp;&nbsp;&nbsp;</span>
+          <a id="c"> </a>
+        </FormItem>
       </Form>
     );
   }
 }
-
-PassCont = Form.create({})(PassCont);
-export default PassCont;
-PassCont.propTypes = {
+PassFrom = Form.create({})(PassFrom);
+export default PassFrom;
+PassFrom.propTypes = {
   form: React.PropTypes.object,
 };

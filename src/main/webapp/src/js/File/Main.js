@@ -25,7 +25,7 @@ export default class File extends React.Component {
       DataCount: '0',    // 当前数据的总数量
       DeptCount: '',     // 部门总数量
       FileNumber: '',    // 当前搜索的档案编号
-      UserDept: '',      // 当前搜索的用户部门
+      FileDept: '',      // 当前搜索的档案部门
       PersonName: '',    // 当前搜索的市民姓名
       PersonNumber: '',  // 当前搜索的证件号码
       DeptList: [],      // 部门列表
@@ -62,7 +62,7 @@ export default class File extends React.Component {
                 'PageNumber': '1',
                 'PageSize': '9',
                 'PersonName': '',
-                'UserDept': '',
+                'FileDept': '',
                 'PersonNumber': '',
                 'FileNumber': '',
               },
@@ -75,7 +75,7 @@ export default class File extends React.Component {
                     'PageNumber': '1',
                     'PageSize': '9',
                     'PersonName': '',
-                    'UserDept': '',
+                    'FileDept': '',
                     'PersonNumber': '',
                     'FileNumber': '',
                   },
@@ -89,7 +89,7 @@ export default class File extends React.Component {
                         PageNumber: '1',
                         PageSize: '9',
                         PersonName: '',
-                        UserDept: '',
+                        FileDept: '',
                         PersonNumber: '',
                         FileNumber: '',
                         DeptList: eval(`(${DeptList})`),
@@ -150,7 +150,7 @@ export default class File extends React.Component {
         'PageNumber': PageNumbers,
         'PageSize': this.state.PageSize,
         'PersonName': this.state.PersonName,
-        'UserDept': this.state.UserDept,
+        'FileDept': this.state.FileDept,
         'PersonNumber': this.state.PersonNumber,
         'FileNumber': this.state.FileNumber,
       },
@@ -187,7 +187,7 @@ export default class File extends React.Component {
         'PageNumber': PageNumbers,
         'PageSize': PageSizes,
         'PersonName': this.state.PersonName,
-        'UserDept': this.state.UserDept,
+        'FileDept': this.state.FileDept,
         'PersonNumber': this.state.PersonNumber,
         'FileNumber': this.state.FileNumber,
       },
@@ -211,7 +211,7 @@ export default class File extends React.Component {
       },
     });
   }
-  getQuery(PersonName = '', UserDept = '', FileNumber = '', PersonNumber = '') {
+  getQuery(PersonName = '', FileDept = '', FileNumber = '', PersonNumber = '') {
     this.setState(
       {
         Loading: true,
@@ -225,7 +225,7 @@ export default class File extends React.Component {
         'PageNumber': '1',
         'PageSize': this.state.PageSize,
         PersonName,
-        UserDept,
+        FileDept,
         FileNumber,
         PersonNumber,
       },
@@ -235,7 +235,7 @@ export default class File extends React.Component {
             PageNumber: '1',
             DataTable: data,
             PersonName,
-            UserDept,
+            FileDept,
             FileNumber,
             PersonNumber,
           }
@@ -256,7 +256,7 @@ export default class File extends React.Component {
       'dataType': 'text',
       'data': {
         PersonName,
-        UserDept,
+        FileDept,
         FileNumber,
         PersonNumber,
       },
@@ -287,7 +287,7 @@ export default class File extends React.Component {
         'PersonName': this.state.PersonName,
         'PersonNumber': this.state.PersonNumber,
         'FileNumber': this.state.FileNumber,
-        'UserDept': this.state.UserDept,
+        'FileDept': this.state.FileDept,
       },
       'success': (data) => {
         if (data.toString() === 'OK') {
@@ -316,7 +316,7 @@ export default class File extends React.Component {
         'PageNumber': '1',
         'PageSize': this.state.PageSize,
         'FileNumber': '',
-        'UserDept': '',
+        'FileDept': '',
         'PersonName': '',
         'PersonNumber': '',
       },
@@ -327,7 +327,7 @@ export default class File extends React.Component {
             PageNumber: '1',
             PageSize: this.state.PageSize,
             FileNumber: '',
-            UserDept: '',
+            FileDept: '',
             PersonName: '',
             PersonNumber: '',
           }
@@ -345,7 +345,7 @@ export default class File extends React.Component {
         'PageNumber': '1',
         'PageSize': '9',
         'FileNumber': '',
-        'UserDept': '',
+        'FileDept': '',
         'PersonName': '',
         'PersonNumber': '',
       },
@@ -381,7 +381,7 @@ export default class File extends React.Component {
         'PageNumber': '1',
         'PageSize': this.state.PageSize,
         'FileNumber': '',
-        'UserDept': '',
+        'FileDept': '',
         'PersonName': '',
         'PersonNumber': '',
       },
@@ -391,7 +391,7 @@ export default class File extends React.Component {
             PageNumber: '1',
             DataTable: data,
             FileNumber: '',
-            UserDept: '',
+            FileDept: '',
             PersonName: '',
             PersonNumber: '',
           }
@@ -414,7 +414,7 @@ export default class File extends React.Component {
         'PageNumber': '1',
         'PageSize': this.state.PageSize,
         'FileNumber': '',
-        'UserDept': '',
+        'FileDept': '',
         'PersonName': '',
         'PersonNumber': '',
       },
@@ -425,7 +425,7 @@ export default class File extends React.Component {
             DataCount: data,
             PageNumber: '1',
             FileNumber: '',
-            UserDept: '',
+            FileDept: '',
             PersonName: '',
             PersonNumber: '',
           }
@@ -455,7 +455,7 @@ export default class File extends React.Component {
         'PageNumber': this.state.PageNumber,
         'PageSize': this.state.PageSize,
         'FileNumber': this.state.FileNumber,
-        'UserDept': this.state.UserDept,
+        'FileDept': this.state.FileDept,
         'PersonName': this.state.PersonName,
         'PersonNumber': this.state.PersonNumber,
       },
@@ -483,7 +483,7 @@ export default class File extends React.Component {
         <div key="a">
           <Row type="flex" justify="start">
             <Col span={6}><AddButton afterAdd={this.AfterAddAndDelete} deptList={this.state.DeptList} deptCount={this.state.DeptCount} /></Col>
-            <Col span={18}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} deptList={this.state.DeptList} userName={this.state.UserName} userDept={this.state.UserDept} deptCount={this.state.DeptCount} getDownload={this.getDownload} /></Col>
+            <Col span={18}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} deptList={this.state.DeptList} personName={this.state.PersonName} personNumber={this.state.PersonNumber} fileNumber={this.state.FileNumber} fileDept={this.state.FileDept} deptCount={this.state.DeptCount} getDownload={this.getDownload} /></Col>
             <a id="a" className="aa" />
           </Row>
           <Row>
