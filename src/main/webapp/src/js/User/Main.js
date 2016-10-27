@@ -49,7 +49,7 @@ export default class User extends React.Component {
           'url': AjaxFunction.DepartmentCount,
           'dataType': 'text',
           'data': {
-            'QueryString': '',
+            'DeptName': '',
           },
           'success': (DeptCount) => {
             $.ajax({

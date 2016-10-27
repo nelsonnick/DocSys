@@ -21,10 +21,10 @@ export default class Department extends React.Component {
     super(props);
     this.state = {
       DataTable: [],     // 当前页的具体数据
-      PageSize: '9',    // 当前每页的条数
+      PageSize: '9',     // 当前每页的条数
       PageNumber: '1',   // 当前页的页码
       DataCount: '0',    // 当前数据的总数量
-      QueryString: '',   // 当前的搜索字符
+      DeptName: '',      // 当前的搜索字符
       Loading: true,     // 数据加载情况
     };
     this.getQuery = this.getQuery.bind(this);
@@ -44,7 +44,7 @@ export default class Department extends React.Component {
       'data': {
         'PageNumber': '1',
         'PageSize': '9',
-        'QueryString': '',
+        'DeptName': '',
       },
       'success': (data) => {
         this.setState(
@@ -52,7 +52,7 @@ export default class Department extends React.Component {
             DataTable: data,
             PageNumber: '1',
             PageSize: '9',
-            QueryString: '',
+            DeptName: '',
           }
         );
       },
@@ -67,7 +67,7 @@ export default class Department extends React.Component {
       'data': {
         'PageNumber': this.state.PageNumber,
         'PageSize': this.state.PageSize,
-        'QueryString': this.state.QueryString,
+        'DeptName': this.state.DeptName,
       },
       'success': (data) => {
         this.setState(
@@ -101,7 +101,7 @@ export default class Department extends React.Component {
       'data': {
         'PageNumber': PageNumbers,
         'PageSize': this.state.PageSize,
-        'QueryString': this.state.QueryString,
+        'DeptName': this.state.DeptName,
       },
       'success': (data) => {
         this.setState(
@@ -157,7 +157,7 @@ export default class Department extends React.Component {
       },
     });
   }
-  getQuery(QueryStrings = '') {
+  getQuery(DeptName = '') {
     this.setState(
       {
         Loading: true,
@@ -170,14 +170,14 @@ export default class Department extends React.Component {
       'data': {
         'PageNumber': '1',
         'PageSize': this.state.PageSize,
-        'QueryString': QueryStrings,
+        DeptName,
       },
       'success': (data) => {
         this.setState(
           {
             PageNumber: '1',
             DataTable: data,
-            QueryString: QueryStrings,
+            DeptName,
           }
         );
       },
@@ -195,7 +195,7 @@ export default class Department extends React.Component {
       'url': AjaxFunction.DepartmentCount,
       'dataType': 'text',
       'data': {
-        'QueryString': QueryStrings,
+        DeptName,
       },
       'success': (data) => {
         this.setState(
@@ -221,11 +221,10 @@ export default class Department extends React.Component {
       'url': AjaxFunction.DepartmentDownload,
       'dataType': 'text',
       'data': {
-        'QueryString': this.state.QueryString,
+        'DeptName': this.state.DeptName,
       },
       'success': (data) => {
         if (data.toString() === 'OK') {
-          console.log('进来了');
           $('#a').attr('href', '/department/export');
           document.getElementById('a').click();
         } else {
@@ -250,7 +249,7 @@ export default class Department extends React.Component {
       'data': {
         'PageNumber': '1',
         'PageSize': this.state.PageSize,
-        'QueryString': '',
+        'DeptName': '',
       },
       'success': (data) => {
         this.setState(
@@ -258,17 +257,12 @@ export default class Department extends React.Component {
             DataTable: data,
             PageNumber: '1',
             PageSize: this.state.PageSize,
-            QueryString: '',
+            DeptName: '',
           }
         );
       },
       'error': () => {
         openNotificationWithIcon('error', '请求错误', '无法完成刷新列表，请检查网络情况');
-        // this.setState(
-        //   {
-        //     DataTable: tableDat, // 这里暂时用演示数据
-        //   }
-        // );
       },
     });
     $.ajax({
@@ -278,7 +272,7 @@ export default class Department extends React.Component {
       'data': {
         'PageNumber': '1',
         'PageSize': '9',
-        'QueryString': '',
+        'DeptName': '',
       },
       'success': (data) => {
         this.setState(
@@ -311,14 +305,14 @@ export default class Department extends React.Component {
       'data': {
         'PageNumber': '1',
         'PageSize': this.state.PageSize,
-        'QueryString': '',
+        'DeptName': '',
       },
       'success': (data) => {
         this.setState(
           {
             PageNumber: '1',
             DataTable: data,
-            QueryString: '',
+            DeptName: '',
           }
         );
       },
@@ -338,7 +332,7 @@ export default class Department extends React.Component {
       'data': {
         'PageNumber': '1',
         'PageSize': this.state.PageSize,
-        'QueryString': '',
+        'DeptName': '',
       },
       'success': (data) => {
         this.setState(
@@ -346,7 +340,7 @@ export default class Department extends React.Component {
             Loading: false,
             DataCount: data,
             PageNumber: '1',
-            QueryString: '',
+            DeptName: '',
           }
         );
       },
@@ -373,7 +367,7 @@ export default class Department extends React.Component {
       'data': {
         'PageNumber': this.state.PageNumber,
         'PageSize': this.state.PageSize,
-        'QueryString': this.state.QueryString,
+        'DeptName': this.state.DeptName,
       },
       'success': (data) => {
         this.setState(
@@ -399,8 +393,8 @@ export default class Department extends React.Component {
       <QueueAnim>
         <div key="a">
           <Row type="flex" justify="start">
-            <Col span={6}><AddButton afterAdd={this.AfterAddAndDelete} QueryString={this.state.QueryString} /></Col>
-            <Col span={18}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} getDownload={this.getDownload} /></Col>
+            <Col span={6}><AddButton afterAdd={this.AfterAddAndDelete} deptName={this.state.DeptName} /></Col>
+            <Col span={18}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} getDownload={this.getDownload} deptName={this.state.DeptName} /></Col>
             <a id="a" className="aa" />
           </Row>
           <Row>

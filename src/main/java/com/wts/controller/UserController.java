@@ -3,7 +3,7 @@ package com.wts.controller;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.wts.entity.*;
+import com.wts.entity.model.*;
 import com.wts.util.IDNumber;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -124,7 +124,7 @@ public class UserController extends Controller {
     } else if (user2.size() != 0) {
       renderText("该登录名称已有其他工作人员使用，请更换!");
     } else if (getPara("name").length()<2) {
-      renderText("用户名称必须为两个以上汉字，请核实!");
+      renderText("用户名称必须为两个以上汉字!");
     } else if (!getPara("login").matches("[a-zA-Z0-9]{4,12}")) {
       renderText("登录名称必须为4到12位的数字或字母组合!");
     } else if (!getPara("phone").matches("\\d{11}")) {

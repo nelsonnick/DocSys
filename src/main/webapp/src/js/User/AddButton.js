@@ -35,7 +35,7 @@ export default class AddButton extends React.Component {
           'url': AjaxFunction.DepartmentCount,
           'dataType': 'text',
           'data': {
-            'QueryString': '',
+            'DeptName': '',
           },
           'success': (DeptCount) => {
             this.setState(

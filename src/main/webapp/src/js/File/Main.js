@@ -52,7 +52,7 @@ export default class File extends React.Component {
           'url': AjaxFunction.DepartmentCount,
           'dataType': 'text',
           'data': {
-            'QueryString': '',
+            'DeptName': '',
           },
           'success': (DeptCount) => {
             $.ajax({
@@ -267,7 +267,7 @@ export default class File extends React.Component {
         FileDept,
         FileNumber,
         PersonNumber,
-        FileState
+        FileState,
       },
       'success': (data) => {
         this.setState(

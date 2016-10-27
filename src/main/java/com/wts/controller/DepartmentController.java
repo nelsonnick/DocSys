@@ -4,7 +4,7 @@ package com.wts.controller;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.wts.entity.Department;
+import com.wts.entity.model.Department;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -23,15 +23,16 @@ public class DepartmentController extends Controller {
    *@param: QueryString
    */
   public void query() {
-    Page<Department> departments=Department.dao.paginate(getParaToInt("PageNumber"),getParaToInt("PageSize"),getPara("QueryString"));
+    Page<Department> departments=Department.dao.paginate2(getParaToInt("PageNumber"),getParaToInt("PageSize"),getPara("DeptName"));
+    System.out.println(departments);
     renderJson(departments.getList());
   }
   /**
    * 查询部门数量
-   *@param: QueryString
+   *@param: DeptName
    */
   public void count() {
-    String count = Db.queryLong("select count(*) from department where name like '%"+ getPara("QueryString") +"%' and state<>'删除' ").toString();
+    String count = Db.queryLong("select count(*) from department where name like '%"+ getPara("DeptName") +"%' and state<>'删除' ").toString();
     renderText(count);
   }
   /**

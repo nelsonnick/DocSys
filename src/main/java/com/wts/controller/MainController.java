@@ -1,8 +1,10 @@
 package com.wts.controller;
 
 import com.jfinal.core.Controller;
-import com.wts.entity.User;
+import com.wts.entity.model.User;
 import com.wts.util.DepartmentGet;
+
+import static com.wts.util.EncryptUtils.encodeMD5String;
 
 public class MainController extends Controller {
     /**
@@ -27,13 +29,14 @@ public class MainController extends Controller {
                 setSessionAttr("departmentName","系统后台");
                 render("/dist/sys.html");
             }else{
-                User user=User.dao.findFirst("select * from user where login=? and password=? and active='激活'", getPara("login"),getPara("password"));
+                User user=User.dao.findFirst("select * from user where login=? and pass=? and state='激活'", getPara("login"),encodeMD5String(getPara("password")));
+                System.out.println(user);
                 if (user!=null){
                     setSessionAttr("user",user);
                     setSessionAttr("userName",((User) getSessionAttr("user")).getStr("name"));
                     setSessionAttr("userDid", ((User) getSessionAttr("user")).getStr("did"));
                     setSessionAttr("departmentName", DepartmentGet.getDepartmentName(((User) getSessionAttr("user")).getStr("did")));
-                    render("/home.html");
+                    render("/dist/com.html");
                 }else{
                     setAttr("error","用户名或密码错误，请重新输入!");
                     render("/dist/login.html");

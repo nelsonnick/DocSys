@@ -6,18 +6,23 @@ class DataSearch extends React.Component {
     super(props);
     this.state = {
       fileDept: '',
+      flowFlow: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.onChangeDept = this.onChangeDept.bind(this);
+    this.onChangeFlow = this.onChangeFlow.bind(this);
     this.download = this.download.bind(this);
   }
   onChangeDept(fileDept) {
     this.setState({ fileDept });
   }
+  onChangeFlow(flowFlow) {
+    this.setState({ flowFlow });
+  }
   handleSubmit(e) {
     e.preventDefault();
-    this.props.setQuery(this.props.form.getFieldValue('personName'), this.props.form.getFieldValue('personNumber'), this.props.form.getFieldValue('fileNumber'), this.state.fileDept);
+    this.props.setQuery(this.props.form.getFieldValue('personName'), this.props.form.getFieldValue('personNumber'), this.props.form.getFieldValue('fileNumber'), this.state.fileDept, this.state.flowFlow);
   }
   handleReset(e) {
     e.preventDefault();
@@ -62,6 +67,20 @@ class DataSearch extends React.Component {
                 placeholder="请输入所属部门"
               >
                 {children}
+              </Select>
+            )}
+          </FormItem>
+          <FormItem label="档案流向：" >
+            {getFieldDecorator('flowFlow')(
+              <Select
+                onSelect={this.onChangeFlow}
+                showSearch
+                allowClear
+                style={{ width: 150 }}
+                placeholder="请输入档案流向"
+              >
+                <Option value="转入">转入</Option>
+                <Option value="转出">转出</Option>
               </Select>
             )}
           </FormItem>

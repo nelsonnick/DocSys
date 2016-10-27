@@ -25,6 +25,7 @@ export default class File extends React.Component {
       DeptCount: '',     // 部门总数量
       FileNumber: '',    // 当前搜索的档案编号
       FileDept: '',      // 当前搜索的档案部门
+      FlowFlow: '',      // 当前搜索的档案流向
       PersonName: '',    // 当前搜索的市民姓名
       PersonNumber: '',  // 当前搜索的证件号码
       DeptList: [],      // 部门列表
@@ -50,7 +51,7 @@ export default class File extends React.Component {
           'url': AjaxFunction.DepartmentCount,
           'dataType': 'text',
           'data': {
-            'QueryString': '',
+            'DeptName': '',
           },
           'success': (DeptCount) => {
             $.ajax({
@@ -64,6 +65,7 @@ export default class File extends React.Component {
                 'FileDept': '',
                 'PersonNumber': '',
                 'FileNumber': '',
+                'FlowFlow': '',
               },
               'success': (dataTable) => {
                 $.ajax({
@@ -77,6 +79,7 @@ export default class File extends React.Component {
                     'FileDept': '',
                     'PersonNumber': '',
                     'FileNumber': '',
+                    'FlowFlow': '',
                   },
                   'success': (DataCount) => {
                     this.setState(
@@ -91,6 +94,7 @@ export default class File extends React.Component {
                         FileDept: '',
                         PersonNumber: '',
                         FileNumber: '',
+                        FlowFlow: '',
                         DeptList: eval(`(${DeptList})`),
                       }
                     );
@@ -152,6 +156,7 @@ export default class File extends React.Component {
         'FileDept': this.state.FileDept,
         'PersonNumber': this.state.PersonNumber,
         'FileNumber': this.state.FileNumber,
+        'FlowFlow': this.state.FlowFlow,
       },
       'success': (data) => {
         this.setState(
@@ -189,6 +194,7 @@ export default class File extends React.Component {
         'FileDept': this.state.FileDept,
         'PersonNumber': this.state.PersonNumber,
         'FileNumber': this.state.FileNumber,
+        'FlowFlow': this.state.FlowFlow,
       },
       'success': (data) => {
         this.setState(
@@ -210,7 +216,7 @@ export default class File extends React.Component {
       },
     });
   }
-  getQuery(PersonName = '', FileDept = '', FileNumber = '', PersonNumber = '') {
+  getQuery(PersonName = '', PersonNumber = '', FileNumber = '', FileDept = '', FlowFlow = '') {
     this.setState(
       {
         Loading: true,
@@ -227,6 +233,7 @@ export default class File extends React.Component {
         FileDept,
         FileNumber,
         PersonNumber,
+        FlowFlow,
       },
       'success': (data) => {
         this.setState(
@@ -237,6 +244,7 @@ export default class File extends React.Component {
             FileDept,
             FileNumber,
             PersonNumber,
+            FlowFlow,
           }
         );
       },
@@ -258,6 +266,7 @@ export default class File extends React.Component {
         FileDept,
         FileNumber,
         PersonNumber,
+        FlowFlow,
       },
       'success': (data) => {
         this.setState(
@@ -287,6 +296,7 @@ export default class File extends React.Component {
         'PersonNumber': this.state.PersonNumber,
         'FileNumber': this.state.FileNumber,
         'FileDept': this.state.FileDept,
+        'FlowFlow': this.state.FlowFlow,
       },
       'success': (data) => {
         if (data.toString() === 'OK') {
@@ -318,6 +328,7 @@ export default class File extends React.Component {
         'FileDept': '',
         'PersonName': '',
         'PersonNumber': '',
+        'FlowFlow': '',
       },
       'success': (data) => {
         this.setState(
@@ -329,6 +340,7 @@ export default class File extends React.Component {
             FileDept: '',
             PersonName: '',
             PersonNumber: '',
+            FlowFlow: '',
           }
         );
       },
@@ -347,6 +359,7 @@ export default class File extends React.Component {
         'FileDept': '',
         'PersonName': '',
         'PersonNumber': '',
+        'FlowFlow': '',
       },
       'success': (data) => {
         this.setState(
@@ -383,6 +396,7 @@ export default class File extends React.Component {
         'FileDept': '',
         'PersonName': '',
         'PersonNumber': '',
+        'FlowFlow': '',
       },
       'success': (data) => {
         this.setState(
@@ -393,6 +407,7 @@ export default class File extends React.Component {
             FileDept: '',
             PersonName: '',
             PersonNumber: '',
+            FlowFlow: '',
           }
         );
       },
@@ -416,6 +431,7 @@ export default class File extends React.Component {
         'FileDept': '',
         'PersonName': '',
         'PersonNumber': '',
+        'FlowFlow': '',
       },
       'success': (data) => {
         this.setState(
@@ -427,6 +443,7 @@ export default class File extends React.Component {
             FileDept: '',
             PersonName: '',
             PersonNumber: '',
+            FlowFlow: '',
           }
         );
       },
@@ -457,6 +474,7 @@ export default class File extends React.Component {
         'FileDept': this.state.FileDept,
         'PersonName': this.state.PersonName,
         'PersonNumber': this.state.PersonNumber,
+        'FlowFlow': this.state.FlowFlow,
       },
       'success': (data) => {
         this.setState(

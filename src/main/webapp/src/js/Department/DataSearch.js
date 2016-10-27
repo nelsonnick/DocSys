@@ -29,7 +29,7 @@ class DataSearch extends React.Component {
       <Row type="flex" justify="end">
         <Form inline onSubmit={this.handleSubmit}>
           <FormItem label="部门名称：" >
-            <Input placeholder="请输入部门名称" initialValue={this.props.QueryString} {...getFieldProps('departmentName')} />
+            <Input placeholder="请输入部门名称" initialValue={this.props.deptName} {...getFieldProps('departmentName')} />
           </FormItem>
           <Button type="primary" htmlType="submit">查找</Button>
           <span>&nbsp;&nbsp;&nbsp;</span>
@@ -47,6 +47,6 @@ DataSearch.propTypes = {
   setQuery: React.PropTypes.func,
   getDownload: React.PropTypes.func,
   resetPage: React.PropTypes.func,
-  QueryString: React.PropTypes.string,
+  deptName: React.PropTypes.string,
   form: React.PropTypes.object,
 };

@@ -8,7 +8,7 @@ public class DepartmentGet {
         if (department==null){
             return "未识别";
         }else{
-            return department.getName();
+            return department.getStr("name");
         }
     }
 }
