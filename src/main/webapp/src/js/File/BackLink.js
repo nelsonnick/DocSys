@@ -62,13 +62,9 @@ export default class BackLink extends React.Component {
         'data': {
           'fnumber': values.fileNumber,
           'pid': values.personId,
-          'pphone1': values.personPhone1,
-          'pphone2': values.personPhone2 || '',
-          'paddress': values.personAddress,
           'ltype': values.flowType,
           'ldirect': values.flowDirect || '',
           'lreason': values.flowReason || '',
-          'premark': values.personRemark || '',
           'fremark': values.fileRemark || '',
           'lremark': values.flowRemark || '',
         },
@@ -113,7 +109,7 @@ export default class BackLink extends React.Component {
     const { personId, personName, personNumber, personPhone1, personPhone2, personAddress, fileAge, personRemark } = this.props;
     return (
       <span>
-        <a onClick={this.showModal} className="btn btn-primary btn-xs" >重存</a>
+        <a onClick={this.showModal} className="btn btn-success btn-xs" >重存</a>
         <Modal
           maskClosable={false}
           title="重新存档"

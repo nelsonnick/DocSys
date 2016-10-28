@@ -8,6 +8,9 @@ const Option = Select.Option;
 class FlowFrom extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      FileAge: '',
+    };
     this.fileAgeCheck = this.fileAgeCheck.bind(this);
     this.fileNumberCheck = this.fileNumberCheck.bind(this);
     this.personNameCheck = this.personNameCheck.bind(this);
@@ -17,6 +20,14 @@ class FlowFrom extends React.Component {
     this.personAddressCheck = this.personAddressCheck.bind(this);
     this.fileDirectCheck = this.fileDirectCheck.bind(this);
     this.flowReasonCheck = this.flowReasonCheck.bind(this);
+  }
+  componentWillMount() {
+    const a = this.props.toString();
+    this.setState(
+      {
+        FileAge: a.substring(0, 4) & a.substring(5, 7) & a.substring(8, 10),
+      }
+    );
   }
   personNumberCheck(rule, value, callback) {
     if (!value) {
@@ -298,7 +309,7 @@ class FlowFrom extends React.Component {
               required
               help={isFieldValidating('fileAge') ? '校验中...' : (getFieldError('fileAge') || [])}
             >
-              {getFieldDecorator('fileAge', { initialValue: fileAge,
+              {getFieldDecorator('fileAge', { initialValue: this.state.FileAge,
                 rules: [
                   { required: true, whitespace: true, message: '必填项' },
                   { validator: this.fileAgeCheck },

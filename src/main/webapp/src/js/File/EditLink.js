@@ -102,7 +102,7 @@ export default class EditLink extends React.Component {
     const { fileId, fileNumber, fileRemark, personId, personName, personNumber, personPhone1, personPhone2, personAddress, fileAge, personRemark, departmentName, personInfo, personRetire } = this.props;
     return (
       <span>
-        <a onClick={this.showModal} className="btn btn-primary btn-xs" >修改</a>
+        <a onClick={this.showModal} className="btn btn-warning btn-xs" >修改</a>
         <Modal
           maskClosable={false}
           title="修改档案信息"

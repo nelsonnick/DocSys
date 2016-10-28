@@ -96,7 +96,7 @@ export default class FlowLink extends React.Component {
     const { fileId, fileNumber, fileRemark, personId, personName, personNumber, personPhone1, personPhone2, personAddress, fileAge, personRemark, departmentName } = this.props;
     return (
       <span>
-        <a onClick={this.showModal} className="btn btn-primary btn-xs" >提取</a>
+        <a onClick={this.showModal} className="btn btn-danger btn-xs" >提取</a>
         <Modal
           maskClosable={false}
           title="档案提取"

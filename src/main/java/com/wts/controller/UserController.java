@@ -272,13 +272,17 @@ public class UserController extends Controller {
     String username,userdept;
     if (getPara("UserName").equals("") || getPara("UserName")==null) {
       username = "";
+      setSessionAttr("UserName", "");
     }else{
       username = " name like '%"+getPara("UserName")+"%'";
+      setSessionAttr("UserName", getPara("UserName"));
     }
     if (getPara("UserDept").equals("") || getPara("UserDept")==null) {
       userdept = "";
+      setSessionAttr("UserDept", "");
     }else{
       userdept = " did = "+getPara("UserDept");
+      setSessionAttr("UserDept", getPara("UserDept"));
     }
 
     if (username.equals("") && userdept.equals("")) {
@@ -290,22 +294,11 @@ public class UserController extends Controller {
     }else{
       users = User.dao.find("select * from user where" + username + " and " + userdept);
     }
-    System.out.println(users);
     if (users.size()>100) {
       setSessionAttr("UserName", "");
       setSessionAttr("UserDept", "");
       renderText("导出数据数量超过上限！");
     }else{
-      if(getPara("UserName").equals("") || getPara("UserName")==null){
-        setSessionAttr("UserName", "");
-      }else {
-        setSessionAttr("UserName", getPara("UserName"));
-      }
-      if(getPara("UserDept").equals("") || getPara("UserDept")==null){
-        setSessionAttr("UserDept", "");
-      }else {
-        setSessionAttr("UserDept", getPara("UserDept"));
-      }
       renderText("OK");
     }
   }

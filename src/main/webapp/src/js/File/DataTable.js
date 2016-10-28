@@ -51,7 +51,7 @@ export default class DataTable extends React.Component {
       render: (text, record) => {
         const operate = [];
         if (window.CurrentDepartment === record.dname.toString()) {
-          if (record.pstate.toString() === '在档') {
+          if (record.pstate.toString() === '在档' && record.fstate.toString() === '在档') {
             operate.push(
               <EditLink
                 fileId={record.fid}
@@ -95,35 +95,27 @@ export default class DataTable extends React.Component {
                 afterEdit={this.afterEdit}
               />
             );
-            operate.push(<span className="ant-divider" />);
-          } else if (record.pstate.toString() === '已提') {
-            if (record.pstate.toString() === '1') {
-              operate.push(
-                <BackLink
-                  fileId={record.fid}
-                  fileNumber={record.fnumber}
-                  fileState={record.fstate}
-                  fileRemark={record.fremark}
-                  personId={record.pid}
-                  personName={record.pname}
-                  personNumber={record.pnumber}
-                  personState={record.pstate}
-                  personPhone1={record.pphone1}
-                  personPhone2={record.pphone2}
-                  personAddress={record.paddress}
-                  fileAge={record.fileAge}
-                  personRemark={record.premark}
-                  departmentId={record.did}
-                  departmentName={record.dname}
-                  afterEdit={this.afterEdit}
-                />
-              );
-              operate.push(<span className="ant-divider" />);
-            } else if (record.pstate.toString() === '0') {
-              operate.push(<span className="ant-divider" />);
-            } else {
-              operate.push(<span className="ant-divider" />);
-            }
+          } else if (record.pstate.toString() === '已提' && record.fstate.toString() === '已提') {
+            operate.push(
+              <BackLink
+                fileId={record.fid}
+                fileNumber={record.fnumber}
+                fileState={record.fstate}
+                fileRemark={record.fremark}
+                personId={record.pid}
+                personName={record.pname}
+                personNumber={record.pnumber}
+                personState={record.pstate}
+                personPhone1={record.pphone1}
+                personPhone2={record.pphone2}
+                personAddress={record.paddress}
+                fileAge={record.fileAge}
+                personRemark={record.premark}
+                departmentId={record.did}
+                departmentName={record.dname}
+                afterEdit={this.afterEdit}
+              />
+            );
           } else {
             operate.push(<span className="ant-divider" />);
           }

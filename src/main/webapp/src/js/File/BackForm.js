@@ -9,6 +9,9 @@ const Option = Select.Option;
 class BackFrom extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      FileAge: '',
+    };
     this.fileAgeCheck = this.fileAgeCheck.bind(this);
     this.fileNumberCheck = this.fileNumberCheck.bind(this);
     this.personNameCheck = this.personNameCheck.bind(this);
@@ -18,6 +21,14 @@ class BackFrom extends React.Component {
     this.personAddressCheck = this.personAddressCheck.bind(this);
     this.flowDirectCheck = this.flowDirectCheck.bind(this);
     this.flowReasonCheck = this.flowReasonCheck.bind(this);
+  }
+  componentWillMount() {
+    const a = this.props.toString();
+    this.setState(
+      {
+        FileAge: a.substring(0, 4) & a.substring(5, 7) & a.substring(8, 10),
+      }
+    );
   }
   personNumberCheck(rule, value, callback) {
     if (!value) {
@@ -281,7 +292,7 @@ class BackFrom extends React.Component {
                   { validator: this.personNumberCheck },
                 ],
               })(
-                <Input placeholder="请输入市民证件号码" maxlength="18" onChange={this.getFileAge} ref="personNumber" disabled />
+                <Input placeholder="请输入市民证件号码" maxlength="18" disabled />
               )}
             </FormItem>
             <FormItem
@@ -291,7 +302,7 @@ class BackFrom extends React.Component {
               required
               help={isFieldValidating('fileAge') ? '校验中...' : (getFieldError('fileAge') || [])}
             >
-              {getFieldDecorator('fileAge', { initialValue: fileAge,
+              {getFieldDecorator('fileAge', { initialValue: this.state.FileAge,
                 rules: [
                   { required: true, whitespace: true, message: '必填项' },
                   { validator: this.fileAgeCheck },
@@ -313,7 +324,7 @@ class BackFrom extends React.Component {
                   { validator: this.personPhone1Check },
                 ],
               })(
-                <Input placeholder="请输入市民手机号码" maxlength="11" />
+                <Input placeholder="请输入市民手机号码" maxlength="11" disabled />
               )}
             </FormItem>
             <FormItem
@@ -327,7 +338,7 @@ class BackFrom extends React.Component {
                   { validator: this.personPhone2Check },
                 ],
               })(
-                <Input placeholder="请输入市民固定电话" maxlength="11" />
+                <Input placeholder="请输入市民固定电话" maxlength="11" disabled />
               )}
             </FormItem>
             <FormItem
@@ -343,7 +354,7 @@ class BackFrom extends React.Component {
                   { validator: this.personAddressCheck },
                 ],
               })(
-                <Input placeholder="请输入市民联系地址" />
+                <Input placeholder="请输入市民联系地址" disabled />
               )}
             </FormItem>
             <FormItem
@@ -408,7 +419,7 @@ class BackFrom extends React.Component {
               hasFeedback
             >
               {getFieldDecorator('personRemark', { initialValue: personRemark })(
-                <Input type="textarea" rows="3" placeholder="其他需要填写的信息" />
+                <Input type="textarea" rows="3" placeholder="其他需要填写的信息" disabled />
               )}
             </FormItem>
             <FormItem

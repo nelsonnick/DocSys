@@ -7,6 +7,9 @@ import * as AjaxFunction from '../Util/AjaxFunction.js';
 class EditFrom extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      FileAge: '',
+    };
     this.fileAgeCheck = this.fileAgeCheck.bind(this);
     this.fileNumberCheck = this.fileNumberCheck.bind(this);
     this.personNameCheck = this.personNameCheck.bind(this);
@@ -16,6 +19,14 @@ class EditFrom extends React.Component {
     this.personAddressCheck = this.personAddressCheck.bind(this);
     this.flowDirectCheck = this.flowDirectCheck.bind(this);
     this.flowReasonCheck = this.flowReasonCheck.bind(this);
+  }
+  componentWillMount() {
+    const a = this.props.toString();
+    this.setState(
+      {
+        FileAge: a.substring(0, 4) & a.substring(5, 7) & a.substring(8, 10),
+      }
+    );
   }
   personNumberCheck(rule, value, callback) {
     if (!value) {
@@ -227,22 +238,6 @@ class EditFrom extends React.Component {
         <Row>
           <Col span={12}>
             <FormItem
-              label=""
-              {...formItemLayout}
-            >
-              {getFieldDecorator('fileId', { initialValue: fileId })(
-                <Input type="hidden" />
-              )}
-            </FormItem>
-            <FormItem
-              label=""
-              {...formItemLayout}
-            >
-              {getFieldDecorator('personId', { initialValue: personId })(
-                <Input type="hidden" />
-              )}
-            </FormItem>
-            <FormItem
               label="档案编号"
               {...formItemLayout}
               hasFeedback
@@ -287,7 +282,7 @@ class EditFrom extends React.Component {
                   { validator: this.personNumberCheck },
                 ],
               })(
-                <Input placeholder="请输入市民证件号码" maxlength="18" onChange={this.getFileAge} />
+                <Input placeholder="请输入市民证件号码" maxlength="18" />
               )}
             </FormItem>
             <FormItem
@@ -297,7 +292,7 @@ class EditFrom extends React.Component {
               required
               help={isFieldValidating('fileAge') ? '校验中...' : (getFieldError('fileAge') || [])}
             >
-              {getFieldDecorator('fileAge', { initialValue: fileAge,
+              {getFieldDecorator('fileAge', { initialValue: this.state.FileAge,
                 rules: [
                   { required: true, whitespace: true, message: '必填项' },
                   { validator: this.fileAgeCheck },
@@ -352,8 +347,6 @@ class EditFrom extends React.Component {
                 <Input placeholder="请输入市民联系地址" />
               )}
             </FormItem>
-          </Col>
-          <Col span={12}>
             <FormItem
               label="信息整理"
               {...formItemLayout}
@@ -366,6 +359,8 @@ class EditFrom extends React.Component {
                 </Select>
               )}
             </FormItem>
+          </Col>
+          <Col span={12}>
             <FormItem
               label="退休情况"
               {...formItemLayout}
@@ -405,6 +400,22 @@ class EditFrom extends React.Component {
             >
               {getFieldDecorator('fileRemark', { initialValue: fileRemark })(
                 <Input type="textarea" rows="3" placeholder="其他需要填写的信息" />
+              )}
+            </FormItem>
+            <FormItem
+              label=""
+              {...formItemLayout}
+            >
+              {getFieldDecorator('fileId', { initialValue: fileId })(
+                <Input type="hidden" />
+              )}
+            </FormItem>
+            <FormItem
+              label=""
+              {...formItemLayout}
+            >
+              {getFieldDecorator('personId', { initialValue: personId })(
+                <Input type="hidden" />
               )}
             </FormItem>
           </Col>
