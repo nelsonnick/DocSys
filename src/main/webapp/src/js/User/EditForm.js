@@ -1,9 +1,10 @@
 import React from 'react';
 import { Form, Input, Select } from 'antd';
 import $ from 'jquery';
+import * as AjaxFunction from '../Util/AjaxFunction.js';
 const FormItem = Form.Item;
 const Option = Select.Option;
-import * as AjaxFunction from '../Util/AjaxFunction.js';
+
 class EditFrom extends React.Component {
   constructor(props) {
     super(props);

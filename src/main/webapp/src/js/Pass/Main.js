@@ -9,7 +9,7 @@ const openNotificationWithIcon = (type, msg, desc) => {
     description: desc,
   });
 };
-class PassFrom extends React.Component {
+class Pass extends React.Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -103,9 +103,7 @@ class PassFrom extends React.Component {
             <Input placeholder="请再次输入您的新密码" type="password" />
           )}
         </FormItem>
-        <FormItem
-          {...formItemLayout}
-        >
+        <FormItem wrapperCol={{ span: 12, offset: 7 }}>
           <Button type="primary" onClick={this.handleSubmit}>修改</Button>
           &nbsp;&nbsp;&nbsp;
           <Button type="ghost" onClick={this.handleReset}>重置</Button>
@@ -116,8 +114,8 @@ class PassFrom extends React.Component {
     );
   }
 }
-PassFrom = Form.create({})(PassFrom);
-export default PassFrom;
-PassFrom.propTypes = {
+Pass = Form.create({})(Pass);
+export default Pass;
+Pass.propTypes = {
   form: React.PropTypes.object,
 };

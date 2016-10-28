@@ -117,6 +117,8 @@ export default class BackLink extends React.Component {
         <Modal
           maskClosable={false}
           title="重新存档"
+          style={{ top: 20 }}
+          width={600}
           visible={this.state.visible}
           onOk={this.handleOk}
           confirmLoading={this.state.confirmLoading}

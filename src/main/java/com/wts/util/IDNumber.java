@@ -543,7 +543,16 @@ public class IDNumber {
     }
     return "F";// 女
   }
-
+  public static String get(String IDNumber) {
+    if (IDNumber.substring(16, 17).equals("1")
+            || IDNumber.substring(16, 17).equals("3")
+            || IDNumber.substring(16, 17).equals("5")
+            || IDNumber.substring(16, 17).equals("7")
+            || IDNumber.substring(16, 17).equals("9")) {
+      return "男";//
+    }
+    return "女";//
+  }
   public static String getRetireMonth(String IDNumber, Date DocunmentBirth) {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
     String str = sdf.format(DocunmentBirth);
@@ -616,6 +625,15 @@ public class IDNumber {
     }
     return null;
   }
-
+  public static Date getFileDate(String DateNumber) {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    try {
+      Date date = sdf.parse(DateNumber);
+      return date;
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
 
 }

@@ -100,6 +100,8 @@ export default class FlowLink extends React.Component {
         <Modal
           maskClosable={false}
           title="档案提取"
+          style={{ top: 20 }}
+          width={600}
           visible={this.state.visible}
           onOk={this.handleOk}
           confirmLoading={this.state.confirmLoading}

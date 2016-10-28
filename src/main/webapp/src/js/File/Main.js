@@ -499,8 +499,8 @@ export default class File extends React.Component {
       <QueueAnim>
         <div key="a">
           <Row type="flex" justify="start">
-            <Col span={6}><AddButton afterAdd={this.AfterAddAndDelete} deptList={this.state.DeptList} deptCount={this.state.DeptCount} /></Col>
-            <Col span={18}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} deptList={this.state.DeptList} personName={this.state.PersonName} personNumber={this.state.PersonNumber} fileNumber={this.state.FileNumber} fileDept={this.state.FileDept} deptCount={this.state.DeptCount} getDownload={this.getDownload} /></Col>
+            <Col span={4}><AddButton afterAdd={this.AfterAddAndDelete} deptList={this.state.DeptList} deptCount={this.state.DeptCount} /></Col>
+            <Col span={20}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} deptList={this.state.DeptList} personName={this.state.PersonName} personNumber={this.state.PersonNumber} fileNumber={this.state.FileNumber} fileDept={this.state.FileDept} deptCount={this.state.DeptCount} getDownload={this.getDownload} /></Col>
             <a id="a" className="aa" />
           </Row>
           <Row>

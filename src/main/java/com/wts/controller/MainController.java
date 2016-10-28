@@ -2,16 +2,30 @@ package com.wts.controller;
 
 import com.jfinal.core.Controller;
 import com.wts.entity.model.User;
-import com.wts.util.DepartmentGet;
+import com.wts.util.Util;
 
 import static com.wts.util.EncryptUtils.encodeMD5String;
 
 public class MainController extends Controller {
+public void l(){
+  User user=new User();
+  user.set("name","管理员");
+  user.set("did","0");
+  setSessionAttr("user",user);
+  System.out.println(getSessionAttr("user").toString());
+  renderText(getSessionAttr("user").toString());
+}
     /**
      * 主界面
      * */
     public void index() {
         render("/dist/login.html");
+    }
+    public void sys() {
+        render("/dist/sys.html");
+    }
+    public void com() {
+        render("/dist/com.html");
     }
     public void img() {
         renderCaptcha();
@@ -21,22 +35,15 @@ public class MainController extends Controller {
         if (result){
             if (getPara("login").equals("admin") && getPara("password").equals("admin")){
                 User user=new User();
-                user.setName("管理员");
-                user.setDid(0);
+                user.set("name","管理员");
+                user.set("did","0");
                 setSessionAttr("user",user);
-                setSessionAttr("userName",user.getName());
-                setSessionAttr("userDid",user.getDid());
-                setSessionAttr("departmentName","系统后台");
-                render("/dist/sys.html");
+                redirect("/sys");
             }else{
                 User user=User.dao.findFirst("select * from user where login=? and pass=? and state='激活'", getPara("login"),encodeMD5String(getPara("password")));
-                System.out.println(user);
                 if (user!=null){
                     setSessionAttr("user",user);
-                    setSessionAttr("userName",((User) getSessionAttr("user")).getStr("name"));
-                    setSessionAttr("userDid", ((User) getSessionAttr("user")).getStr("did"));
-                    setSessionAttr("departmentName", DepartmentGet.getDepartmentName(((User) getSessionAttr("user")).getStr("did")));
-                    render("/dist/com.html");
+                    redirect("/com");
                 }else{
                     setAttr("error","用户名或密码错误，请重新输入!");
                     render("/dist/login.html");
@@ -48,25 +55,22 @@ public class MainController extends Controller {
         }
     }
     public void getCurrentUser(){
-        System.out.println(getSessionAttr("userName"));
-        if (getSessionAttr("userName").equals("") || getSessionAttr("userName")==null){
+        if (getSessionAttr("user").equals("") || getSessionAttr("user")==null){
             renderText("无法识别");
         }else{
-            renderText(getSessionAttr("userName").toString());
+            renderText(((User) getSessionAttr("user")).getStr("name"));
         }
     }
     public void getCurrentDepartment(){
-        if (getSessionAttr("departmentName").equals("") || getSessionAttr("departmentName")==null){
+
+        if (getSessionAttr("user").equals("") || getSessionAttr("user")==null){
             renderText("无法识别");
         }else{
-            renderText(getSessionAttr("departmentName").toString());
+            renderText(Util.getDepartmentName(((User) getSessionAttr("user")).get("did").toString().trim()));
         }
     }
     public void logout() {
-        setSessionAttr("user",null);
-        setSessionAttr("userName",null);
-        setSessionAttr("userDid",null);
-        setSessionAttr("departmentName",null);
+        removeSessionAttr("user");
         redirect("/index");
     }
 }

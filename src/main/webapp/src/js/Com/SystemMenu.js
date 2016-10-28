@@ -44,9 +44,9 @@ export default class SystemMenu extends React.Component {
             selectedKeys={[this.state.current]}
             mode="inline"
           >
-            <Menu.Item key="Department"><span><Icon type="bars" />档案管理</span></Menu.Item>
-            <Menu.Item key="User"><span><Icon type="mail" />档案流转</span></Menu.Item>
-            <Menu.Item key="User"><span><Icon type="ellipsis" />密码变更</span></Menu.Item>
+            <Menu.Item key="File"><span><Icon type="bars" />档案管理</span></Menu.Item>
+            <Menu.Item key="Flow"><span><Icon type="mail" />档案流转</span></Menu.Item>
+            <Menu.Item key="Pass"><span><Icon type="setting" />密码变更</span></Menu.Item>
           </Menu>
         </div>
       </QueueAnim>

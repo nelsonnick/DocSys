@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Input, Select } from 'antd';
 import $ from 'jquery';
-const FormItem = Form.Item;
 import * as AjaxFunction from '../Util/AjaxFunction.js';
+const FormItem = Form.Item;
 class AddFrom extends React.Component {
   constructor(props) {
     super(props);

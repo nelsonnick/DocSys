@@ -1,11 +1,13 @@
 package com.wts.controller;
 
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wts.entity.model.*;
 import com.wts.util.IDNumber;
-
+import com.wts.util.Util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -30,10 +32,10 @@ public class FileController extends Controller {
   public void newNumber() {
     SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
     Date date=new Date();
-    String nn = Department.dao.findById(((User) getSessionAttr("user")).getStr("did")).getStr("number")+df.format(date);
+    String nn = Department.dao.findById(((User) getSessionAttr("user")).get("did").toString().trim()).getStr("number")+df.format(date);
     List<File> files = File.dao.find(
             "select * from file where number like '%"+nn+"%'");
-    renderText(nn+String.valueOf(files.size()+1));
+    renderText(nn+ Util.getNumber(String.valueOf(files.size()+1)));
   }
   /**
    * 查询档案
@@ -82,7 +84,9 @@ public class FileController extends Controller {
    *@param: ltype
    *@param: ldirect
    */
+  @Before(Tx.class)
   public void add() {
+    String a = "^(?:(?!0000)[0-9]{4}(?:(?:0[1-9]|1[0-2])(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$";
     List<File> files = File.dao.find(
             "select * from file where number=?", getPara("fnumber"));
     List<Person> persons = Person.dao.find(
@@ -101,7 +105,9 @@ public class FileController extends Controller {
       renderText("证件号码错误，请核实！");
     } else if (getPara("paddress").length()<2) {
       renderText("联系地址应该在两个字符以上！");
-    } else {
+    }else if (!getPara("fileAge").matches(a)) {
+      renderText("档案年龄日期有误!");
+    }else{
       Person p = new Person();
       p.set("name", getPara("pname").trim())
               .set("number", getPara("pnumber").trim())
@@ -109,26 +115,31 @@ public class FileController extends Controller {
               .set("phone2", getPara("pphone2").trim())
               .set("address", getPara("paddress").trim())
               .set("remark", getPara("premark").trim())
-              .set("fileAge", getPara("fileAge").trim())
+              .set("info", getPara("pinfo").trim())
+              .set("retire", getPara("pretire").trim())
+              .set("fileAge", IDNumber.getFileDate(getPara("fileAge").trim()))
               .set("state", "1")
-              .set("sex", IDNumber.getMF(getPara("pnumber").trim()))
-              .set("birth", IDNumber.getBirthDate(getPara("pnumber").trim())).save();
+              .set("sex", IDNumber.get(getPara("pnumber").trim()))
+              .set("birth", IDNumber.getBirthDate(getPara("pnumber").trim()))
+              .save();
       File f = new File();
       f.set("number", getPara("fnumber").trim())
               .set("state", "在档")
               .set("remark", getPara("fremark").trim())
-              .set("did", ((User) getSessionAttr("user")).getStr("did"))
-              .set("pid",p.getId()).save();
+              .set("did", ((User) getSessionAttr("user")).get("did").toString())
+              .set("pid",p.get("id"))
+              .save();
       Flow l = new Flow();
       l.set("remark", getPara("lremark").trim())
               .set("type", getPara("ltype").trim())
               .set("direct", getPara("ldirect").trim())
-              .set("direct", getPara("ldirect").trim())
               .set("reason", getPara("lreason").trim())
-              .set("did", ((User) getSessionAttr("user")).getStr("did"))
-              .set("uid", ((User) getSessionAttr("user")).getStr("id"))
-              .set("time", new Date())
-              .set("fid",f.getId()).save();
+              .set("did", ((User) getSessionAttr("user")).get("did").toString())
+              .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+              //.set("time", new Date())
+              .set("fid",f.get("id"))
+              .set("flow","转入")
+              .save();
       renderText("OK");
     }
   }

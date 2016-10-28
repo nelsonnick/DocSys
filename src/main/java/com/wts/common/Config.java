@@ -6,6 +6,7 @@ import com.jfinal.core.JFinal;
 import com.jfinal.ext.handler.ContextPathHandler;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.jfinal.plugin.activerecord.tx.TxByMethods;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.wts.controller.*;
 import com.wts.entity.model._MappingKit;
@@ -46,7 +47,7 @@ public class Config extends JFinalConfig {
 
         // 配置ActiveRecord插件
         ActiveRecordPlugin arp = new ActiveRecordPlugin(c3p0Plugin);
-        arp.setShowSql(true);
+        arp.setShowSql(false);
         me.add(arp);
 //        arp.addMapping("department", Department.class);
 //        arp.addMapping("user", User.class);
@@ -57,7 +58,7 @@ public class Config extends JFinalConfig {
      * 配置全局拦截器
      */
     public void configInterceptor(Interceptors me) {
-
+        me.add(new TxByMethods("save","update"));
     }
 
     /**

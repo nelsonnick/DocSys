@@ -499,7 +499,8 @@ export default class File extends React.Component {
       <QueueAnim>
         <div key="a">
           <Row type="flex" justify="start">
-            <Col span={18}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} deptList={this.state.DeptList} personName={this.state.PersonName} personNumber={this.state.PersonNumber} fileNumber={this.state.FileNumber} fileDept={this.state.FileDept} deptCount={this.state.DeptCount} getDownload={this.getDownload} /></Col>
+            <Col span={4}>&nbsp;</Col>
+            <Col span={20}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} deptList={this.state.DeptList} personName={this.state.PersonName} personNumber={this.state.PersonNumber} fileNumber={this.state.FileNumber} fileDept={this.state.FileDept} deptCount={this.state.DeptCount} getDownload={this.getDownload} /></Col>
             <a id="a" className="aa" />
           </Row>
           <Row>
@@ -509,7 +510,7 @@ export default class File extends React.Component {
             <DataTable tableData={this.state.DataTable} loading={this.state.Loading} afterState={this.AfterEditAndState} afterDelete={this.AfterAddAndDelete} deptList={this.state.DeptList} deptCount={this.state.DeptCount} />
           </Row>
           <Row>
-            <span style={{ 'font-size': '20px' }}>&nbsp;&nbsp;&nbsp;</span>
+            <span style={{ 'font-size': '20px' }}>v&nbsp;&nbsp;</span>
           </Row>
           <Row>
             <DataPagination PageNumber={this.state.PageNumber} onShowSizeChange={this.onShowSizeChange} onChange={this.onChange} DataCount={this.state.DataCount} />

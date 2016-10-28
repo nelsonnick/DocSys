@@ -48,7 +48,7 @@ export const PersonNumber = '/person/number';                // 检测证件    
 export const PersonPhone1 = '/person/phone1';                // 检测电话     --参数：phone
 export const PersonPhone2 = '/person/phone2';                // 检测电话     --参数：phone
 export const PersonAddress = '/person/address';              // 检测地址     --参数：address
-export const PersonAge = '/person/age';                      // 检测年龄     --参数：age
+export const PersonAge = '/person/age';                      // 检测年龄     --参数：fileAge
 
 export const FlowEdit = '/flow/edit';                        // 修改流动     --参数：一大堆。。。。。
 export const FlowDirect = '/flow/direct';                    // 检测来源     --参数：direct

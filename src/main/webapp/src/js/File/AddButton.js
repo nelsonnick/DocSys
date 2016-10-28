@@ -37,7 +37,7 @@ export default class AddButton extends React.Component {
         );
       },
       'error': () => {
-        openNotificationWithIcon('error', '请求错误', '无法获取部门信息，请检查网络情况');
+        openNotificationWithIcon('error', '请求错误', '无法获取档案编号，请检查网络情况');
       },
     });
   }
@@ -120,6 +120,8 @@ export default class AddButton extends React.Component {
         <Modal
           maskClosable={false}
           title="新增档案"
+          style={{ top: 20 }}
+          width={600}
           visible={this.state.visible}
           onOk={this.handleOk}
           confirmLoading={this.state.confirmLoading}

@@ -139,7 +139,7 @@ public class UserController extends Controller {
               .set("login", getPara("login").trim())
               .set("did", getPara("did").trim())
               .set("state", getPara("state").trim())
-              .set("pass", encodeMD5String(getPara("number").substring(getPara("number").length()-6,getPara("number").length()).trim()))
+              .set("pass", encodeMD5String(getPara("number").substring(getPara("number").length()-8,getPara("number").length()).trim()))
               .set("other", getPara("other").trim());
       if (user.save()) {
         renderText("OK");
@@ -255,7 +255,7 @@ public class UserController extends Controller {
     }else if(!IDNumber.availableIDNumber(getPara("number"))){
       renderText("要重置的用户证件号码有误，请修改证件号码后再试！");
     } else {
-      if (user.set("pass", encodeMD5String(user.get("number").toString().substring(user.get("number").toString().length()-6,user.get("number").toString().length()).trim())).update()){
+      if (user.set("pass", encodeMD5String(user.get("number").toString().substring(user.get("number").toString().length()-8,user.get("number").toString().length()).trim())).update()){
         renderText("OK");
       } else {
         renderText("发生未知错误，请检查数据库！");
