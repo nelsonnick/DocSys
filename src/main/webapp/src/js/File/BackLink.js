@@ -75,7 +75,7 @@ export default class BackLink extends React.Component {
               confirmLoading: false,
             });
             this.props.afterEdit();
-            this.refs.EditForm.resetFields();
+            this.refs.BackForm.resetFields();
             openNotificationWithIcon('success', '修改成功', '修改成功，请进行后续操作');
           } else {
             openNotificationWithIcon('error', '修改失败', data.toString());

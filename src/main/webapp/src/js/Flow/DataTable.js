@@ -80,7 +80,6 @@ export default class DataTable extends React.Component {
               afterEdit={this.afterEdit}
             />
           );
-
           if (record.lflow.toString() === '转入') {
             operate.push(<span className="ant-divider" />);
             operate.push();

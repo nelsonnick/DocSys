@@ -510,7 +510,7 @@ export default class File extends React.Component {
             <DataTable tableData={this.state.DataTable} loading={this.state.Loading} afterState={this.AfterEditAndState} afterDelete={this.AfterAddAndDelete} deptList={this.state.DeptList} deptCount={this.state.DeptCount} />
           </Row>
           <Row>
-            <span style={{ 'font-size': '20px' }}>v&nbsp;&nbsp;</span>
+            <span style={{ 'font-size': '20px' }}>&nbsp;&nbsp;&nbsp;</span>
           </Row>
           <Row>
             <DataPagination PageNumber={this.state.PageNumber} onShowSizeChange={this.onShowSizeChange} onChange={this.onChange} DataCount={this.state.DataCount} />

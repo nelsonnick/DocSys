@@ -53,7 +53,6 @@ export default class EditLink extends React.Component {
           'lremark': values.flowRemark || '',
           'ltype': values.flowType || '',
           'ldirect': values.flowDirect || '',
-          'uid': values.userId,
         },
         'success': (data) => {
           if (data.toString() === 'OK') {
@@ -100,6 +99,8 @@ export default class EditLink extends React.Component {
         <Modal
           maskClosable={false}
           title="修改变更信息"
+          style={{ top: 20 }}
+          width={600}
           visible={this.state.visible}
           onOk={this.handleOk}
           confirmLoading={this.state.confirmLoading}

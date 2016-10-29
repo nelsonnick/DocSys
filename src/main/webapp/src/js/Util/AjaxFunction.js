@@ -36,6 +36,7 @@ export const CurrentDepartment = '/getCurrentDepartment';    // 所属部门    
 export const FileNew = '/file/newNumber';                    // 最新编号     --参数：无
 export const FileAdd = '/file/add';                          // 新增档案     --参数：一大堆。。。。。
 export const FileNumber = '/file/number';                    // 检测编号     --参数：number
+export const FileNumbers = '/file/numbers';                    // 检测编号     --参数：number
 export const FileEdit = '/file/edit';                        // 修改档案     --参数：一大堆。。。。。
 export const FileFlow = '/file/flow';                        // 档案流出     --参数：一大堆。。。。。
 export const FileBack = '/file/back';                        // 档案重存     --参数：一大堆。。。。。
@@ -45,6 +46,7 @@ export const FileDownload = '/file/download';                // 检查导出    
 
 export const PersonName = '/person/name';                    // 检测姓名     --参数：name
 export const PersonNumber = '/person/number';                // 检测证件     --参数：number
+export const PersonNumbers = '/person/numbers';              // 检测证件     --参数：number
 export const PersonPhone1 = '/person/phone1';                // 检测电话     --参数：phone
 export const PersonPhone2 = '/person/phone2';                // 检测电话     --参数：phone
 export const PersonAddress = '/person/address';              // 检测地址     --参数：address

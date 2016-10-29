@@ -28,7 +28,20 @@ public class PersonController extends Controller {
     List<Person> persons = Person.dao.find(
             "select * from person where number=?", getPara("number"));
     if (persons.size() != 0) {
-      renderText("该档案编号已存在，请更换!");
+      renderText("该证件号码已存在，请更换!");
+    } else {
+      renderText(IDNumber.checkIDNumber(getPara("number")));
+    }
+  }
+  /**
+   * 核查证件号码
+   *@param: number
+   */
+  public void numbers() {
+    List<Person> persons = Person.dao.find(
+            "select * from person where number=?", getPara("number"));
+    if (persons.size() > 1 ) {
+      renderText("该证件号码已存在，请更换!");
     } else {
       renderText(IDNumber.checkIDNumber(getPara("number")));
     }

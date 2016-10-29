@@ -3,7 +3,6 @@ import { Form, Input, Select, Row, Col } from 'antd';
 import $ from 'jquery';
 const FormItem = Form.Item;
 import * as AjaxFunction from '../Util/AjaxFunction.js';
-
 class EditFrom extends React.Component {
   constructor(props) {
     super(props);
@@ -21,10 +20,10 @@ class EditFrom extends React.Component {
     this.flowReasonCheck = this.flowReasonCheck.bind(this);
   }
   componentWillMount() {
-    const a = this.props.toString();
+    const a = this.props.fileAge.toString().trim();
     this.setState(
       {
-        FileAge: a.substring(0, 4) & a.substring(5, 7) & a.substring(8, 10),
+        FileAge: a.substring(0, 4) + a.substring(5, 7) + a.substring(8, 10),
       }
     );
   }
@@ -34,7 +33,7 @@ class EditFrom extends React.Component {
     } else {
       $.ajax({
         'type': 'POST',
-        'url': AjaxFunction.PersonNumber,
+        'url': AjaxFunction.PersonNumbers,
         'dataType': 'text',
         'data': { 'number': value },
         'success': (data) => {
@@ -188,7 +187,7 @@ class EditFrom extends React.Component {
     } else {
       $.ajax({
         'type': 'POST',
-        'url': AjaxFunction.FileNumber,
+        'url': AjaxFunction.FileNumbers,
         'dataType': 'text',
         'data': { 'number': value },
         'success': (data) => {

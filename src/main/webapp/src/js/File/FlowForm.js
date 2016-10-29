@@ -11,119 +11,25 @@ class FlowFrom extends React.Component {
     this.state = {
       FileAge: '',
     };
-    this.fileAgeCheck = this.fileAgeCheck.bind(this);
-    this.fileNumberCheck = this.fileNumberCheck.bind(this);
-    this.personNameCheck = this.personNameCheck.bind(this);
-    this.personNumberCheck = this.personNumberCheck.bind(this);
-    this.personPhone1Check = this.personPhone1Check.bind(this);
-    this.personPhone2Check = this.personPhone2Check.bind(this);
-    this.personAddressCheck = this.personAddressCheck.bind(this);
-    this.fileDirectCheck = this.fileDirectCheck.bind(this);
+    this.flowDirectCheck = this.flowDirectCheck.bind(this);
     this.flowReasonCheck = this.flowReasonCheck.bind(this);
   }
   componentWillMount() {
-    const a = this.props.toString();
+    const a = this.props.fileAge.toString();
     this.setState(
       {
-        FileAge: a.substring(0, 4) & a.substring(5, 7) & a.substring(8, 10),
+        FileAge: a.substring(0, 4) + a.substring(5, 7) + a.substring(8, 10),
       }
     );
   }
-  personNumberCheck(rule, value, callback) {
+
+  flowDirectCheck(rule, value, callback) {
     if (!value) {
       callback();
     } else {
       $.ajax({
         'type': 'POST',
-        'url': AjaxFunction.PersonNumber,
-        'dataType': 'text',
-        'data': { 'number': value },
-        'success': (data) => {
-          if (data.toString() === 'OK') {
-            callback();
-          } else {
-            callback(new Error(data.toString()));
-          }
-        },
-        'error': () => {
-          callback(new Error('无法执行后台验证，请重试'));
-        },
-      });
-    }
-  }
-  personPhone1Check(rule, value, callback) {
-    if (!value) {
-      callback();
-    } else {
-      $.ajax({
-        'type': 'POST',
-        'url': AjaxFunction.PersonPhone1,
-        'dataType': 'text',
-        'data': { 'phone': value },
-        'success': (data) => {
-          if (data.toString() === 'OK') {
-            callback();
-          } else {
-            callback(new Error(data.toString()));
-          }
-        },
-        'error': () => {
-          callback(new Error('无法执行后台验证，请重试'));
-        },
-      });
-    }
-  }
-  personPhone2Check(rule, value, callback) {
-    if (!value) {
-      callback();
-    } else {
-      $.ajax({
-        'type': 'POST',
-        'url': AjaxFunction.PersonPhone2,
-        'dataType': 'text',
-        'data': { 'phone': value },
-        'success': (data) => {
-          if (data.toString() === 'OK') {
-            callback();
-          } else {
-            callback(new Error(data.toString()));
-          }
-        },
-        'error': () => {
-          callback(new Error('无法执行后台验证，请重试'));
-        },
-      });
-    }
-  }
-  personAddressCheck(rule, value, callback) {
-    if (!value) {
-      callback();
-    } else {
-      $.ajax({
-        'type': 'POST',
-        'url': AjaxFunction.PersonAddress,
-        'dataType': 'text',
-        'data': { 'address': value },
-        'success': (data) => {
-          if (data.toString() === 'OK') {
-            callback();
-          } else {
-            callback(new Error(data.toString()));
-          }
-        },
-        'error': () => {
-          callback(new Error('无法执行后台验证，请重试'));
-        },
-      });
-    }
-  }
-  fileDirectCheck(rule, value, callback) {
-    if (!value) {
-      callback();
-    } else {
-      $.ajax({
-        'type': 'POST',
-        'url': AjaxFunction.FileDirect,
+        'url': AjaxFunction.FlowDirect,
         'dataType': 'text',
         'data': { 'direct': value },
         'success': (data) => {
@@ -161,72 +67,7 @@ class FlowFrom extends React.Component {
       });
     }
   }
-  personNameCheck(rule, value, callback) {
-    if (!value) {
-      callback();
-    } else {
-      $.ajax({
-        'type': 'POST',
-        'url': AjaxFunction.PersonName,
-        'dataType': 'text',
-        'data': { 'name': value },
-        'success': (data) => {
-          if (data.toString() === 'OK') {
-            callback();
-          } else {
-            callback(new Error(data.toString()));
-          }
-        },
-        'error': () => {
-          callback(new Error('无法执行后台验证，请重试'));
-        },
-      });
-    }
-  }
-  fileNumberCheck(rule, value, callback) {
-    if (!value) {
-      callback();
-    } else {
-      $.ajax({
-        'type': 'POST',
-        'url': AjaxFunction.FileNumber,
-        'dataType': 'text',
-        'data': { 'number': value },
-        'success': (data) => {
-          if (data.toString() === 'OK') {
-            callback();
-          } else {
-            callback(new Error(data.toString()));
-          }
-        },
-        'error': () => {
-          callback(new Error('无法执行后台验证，请重试'));
-        },
-      });
-    }
-  }
-  fileAgeCheck(rule, value, callback) {
-    if (!value) {
-      callback();
-    } else {
-      $.ajax({
-        'type': 'POST',
-        'url': AjaxFunction.PersonAge,
-        'dataType': 'text',
-        'data': { 'fileAge': value },
-        'success': (data) => {
-          if (data.toString() === 'OK') {
-            callback();
-          } else {
-            callback(new Error(data.toString()));
-          }
-        },
-        'error': () => {
-          callback(new Error('无法执行后台验证，请重试'));
-        },
-      });
-    }
-  }
+
   render() {
     const { getFieldDecorator, getFieldError, isFieldValidating } = this.props.form;
     const { fileId, fileNumber, fileRemark, personId, personName, personNumber, personPhone1, personPhone2, personAddress, personRemark, departmentName } = this.props;
@@ -245,12 +86,7 @@ class FlowFrom extends React.Component {
               required
               help={isFieldValidating('fileNumber') ? '校验中...' : (getFieldError('fileNumber') || [])}
             >
-              {getFieldDecorator('fileNumber', { initialValue: fileNumber,
-                rules: [
-                  { required: true, whitespace: true, message: '必填项' },
-                  { validator: this.fileNumberCheck },
-                ],
-              })(
+              {getFieldDecorator('fileNumber', { initialValue: fileNumber })(
                 <Input placeholder="请输入档案编号" disabled />
               )}
             </FormItem>
@@ -261,12 +97,7 @@ class FlowFrom extends React.Component {
               required
               help={isFieldValidating('personName') ? '校验中...' : (getFieldError('personName') || [])}
             >
-              {getFieldDecorator('personName', { initialValue: personName,
-                rules: [
-                  { required: true, whitespace: true, message: '必填项' },
-                  { validator: this.personNameCheck },
-                ],
-              })(
+              {getFieldDecorator('personName', { initialValue: personName })(
                 <Input placeholder="请输入市民真实姓名" disabled />
               )}
             </FormItem>
@@ -277,12 +108,7 @@ class FlowFrom extends React.Component {
               required
               help={isFieldValidating('personNumber') ? '校验中...' : (getFieldError('personNumber') || [])}
             >
-              {getFieldDecorator('personNumber', { initialValue: personNumber,
-                rules: [
-                  { required: true, whitespace: true, message: '必填项' },
-                  { validator: this.personNumberCheck },
-                ],
-              })(
+              {getFieldDecorator('personNumber', { initialValue: personNumber })(
                 <Input placeholder="请输入市民证件号码" maxlength="18" disabled />
               )}
             </FormItem>
@@ -293,12 +119,7 @@ class FlowFrom extends React.Component {
               required
               help={isFieldValidating('fileAge') ? '校验中...' : (getFieldError('fileAge') || [])}
             >
-              {getFieldDecorator('fileAge', { initialValue: this.state.FileAge,
-                rules: [
-                  { required: true, whitespace: true, message: '必填项' },
-                  { validator: this.fileAgeCheck },
-                ],
-              })(
+              {getFieldDecorator('fileAge', { initialValue: this.state.FileAge })(
                 <Input placeholder="请输入市民档案年龄" maxlength="8" disabled />
               )}
             </FormItem>
@@ -309,12 +130,7 @@ class FlowFrom extends React.Component {
               required
               help={isFieldValidating('personPhone1') ? '校验中...' : (getFieldError('personPhone1') || [])}
             >
-              {getFieldDecorator('personPhone1', { initialValue: personPhone1,
-                rules: [
-                  { required: true, whitespace: true, message: '必填项' },
-                  { validator: this.personPhone1Check },
-                ],
-              })(
+              {getFieldDecorator('personPhone1', { initialValue: personPhone1 })(
                 <Input placeholder="请输入用户手机号码" maxlength="11" disabled />
               )}
             </FormItem>
@@ -325,11 +141,7 @@ class FlowFrom extends React.Component {
               required
               help={isFieldValidating('personPhone2') ? '校验中...' : (getFieldError('personPhone2') || [])}
             >
-              {getFieldDecorator('personPhone2', { initialValue: personPhone2,
-                rules: [
-                  { validator: this.personPhone2Check },
-                ],
-              })(
+              {getFieldDecorator('personPhone2', { initialValue: personPhone2 })(
                 <Input placeholder="请输入市民手机号码" maxlength="11" disabled />
               )}
             </FormItem>
@@ -340,12 +152,7 @@ class FlowFrom extends React.Component {
               required
               help={isFieldValidating('personAddress') ? '校验中...' : (getFieldError('personAddress') || [])}
             >
-              {getFieldDecorator('personAddress', { initialValue: personAddress,
-                rules: [
-                  { required: true, whitespace: true, message: '必填项' },
-                  { validator: this.personAddressCheck },
-                ],
-              })(
+              {getFieldDecorator('personAddress', { initialValue: personAddress })(
                 <Input placeholder="请输入市民联系地址" disabled />
               )}
             </FormItem>
@@ -363,12 +170,12 @@ class FlowFrom extends React.Component {
               label="档案去向"
               {...formItemLayout}
               required
-              help={isFieldValidating('fileDirect') ? '校验中...' : (getFieldError('fileDirect') || [])}
+              help={isFieldValidating('flowDirect') ? '校验中...' : (getFieldError('flowDirect') || [])}
             >
-              {getFieldDecorator('fileDirect', { initialValue: '未知',
+              {getFieldDecorator('flowDirect', { initialValue: '未知',
                 rules: [
                   { required: true, whitespace: true, message: '必填项' },
-                  { validator: this.fileDirectCheck },
+                  { validator: this.flowDirectCheck },
                 ],
               })(
                 <Input placeholder="请输入档案的去向" />

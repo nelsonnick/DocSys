@@ -9,8 +9,14 @@ import com.wts.entity.base.BaseFlow;
 @SuppressWarnings("serial")
 public class Flow extends BaseFlow<Flow> {
 	public static final Flow dao = new Flow();
-	public Page<Flow> paginate(int pageNumber, int pageSize, String query) {
-		return paginate(pageNumber, pageSize, "SELECT *",
-				"FROM department WHERE name LIKE '%"+query+"%' AND state<>'删除' ORDER BY id DESC");
+
+	public Page<Flow> paginate2(int pageNumber, int pageSize, String personName, String personNumber, String fileNumber, String fileDept, String flowFlow) {
+		if (fileDept.equals("")) {
+			return paginate(pageNumber, pageSize, "SELECT flow.id AS lid,flow.time AS ltime,flow.remark AS lremark,flow.type AS ltype,flow.direct AS ldirect,flow.reason AS lreason,flow.flow AS lflow,user.id AS uid,user.name AS uname,person.id AS pid,person.name AS pname,person.number AS pnumber,department.name AS dname,file.number AS fnumber",
+					"FROM (((flow INNER JOIN user ON flow.uid=user.id) INNER JOIN file ON flow.fid=file.id) INNER JOIN person ON flow.pid=person.id) INNER JOIN department ON flow.did=department.id WHERE person.name LIKE '%" + personName + "%' AND person.number LIKE '%" + personNumber + "%' AND file.number LIKE '%" + fileNumber + "%' AND flow.flow LIKE '%" + flowFlow + "%' ORDER BY flow.id DESC");
+		} else {
+			return paginate(pageNumber, pageSize, "SELECT flow.id AS lid,flow.time AS ltime,flow.remark AS lremark,flow.type AS ltype,flow.direct AS ldirect,flow.reason AS lreason,flow.flow AS lflow,user.id AS uid,user.name AS uname,person.id AS pid,person.name AS pname,person.number AS pnumber,department.name AS dname,file.number AS fnumber",
+					"FROM (((flow INNER JOIN user ON flow.uid=user.id) INNER JOIN file ON flow.fid=file.id) INNER JOIN person ON flow.pid=person.id) INNER JOIN department ON flow.did=department.id WHERE person.name LIKE '%" + personName + "%' AND person.number LIKE '%" + personNumber + "%' AND file.number LIKE '%" + fileNumber + "%' AND flow.flow LIKE '%" + flowFlow + "%' AND file.did = " + fileDept + " ORDER BY flow.id DESC");
+		}
 	}
 }
