@@ -346,7 +346,7 @@ public class UserController extends Controller {
       cell2 = nextRow.createCell(6);
       cell2.setCellValue(u.get(i).get("state").toString());
       cell2 = nextRow.createCell(7);
-      if (u.get(i).get("remark") == null) {
+      if (u.get(i).get("other") == null) {
         cell2.setCellValue("");
       } else {
         cell2.setCellValue(u.get(i).get("other").toString());

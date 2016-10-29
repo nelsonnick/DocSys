@@ -230,7 +230,7 @@ class BackFrom extends React.Component {
   }
   render() {
     const { getFieldDecorator, getFieldError, isFieldValidating } = this.props.form;
-    const { fileNumber, personId, personName, personNumber, personPhone1, personPhone2, personAddress, fileAge, personRemark, departmentName } = this.props;
+    const { fileNumber, personId, personName, personNumber, personPhone1, personPhone2, personAddress, personRemark, departmentName } = this.props;
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
@@ -239,14 +239,6 @@ class BackFrom extends React.Component {
       <Form horizontal>
         <Row>
           <Col span={12}>
-            <FormItem
-              label=""
-              {...formItemLayout}
-            >
-              {getFieldDecorator('personId', { initialValue: personId })(
-                <Input type="hidden" />
-              )}
-            </FormItem>
             <FormItem
               label="档案编号"
               {...formItemLayout}
@@ -438,6 +430,14 @@ class BackFrom extends React.Component {
             >
               {getFieldDecorator('flowRemark')(
                 <Input type="textarea" rows="3" placeholder="其他需要填写的信息" />
+              )}
+            </FormItem>
+            <FormItem
+              label=""
+              {...formItemLayout}
+            >
+              {getFieldDecorator('personId', { initialValue: personId })(
+                <Input type="hidden" />
               )}
             </FormItem>
           </Col>

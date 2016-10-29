@@ -8,6 +8,14 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wts.entity.model.*;
 import com.wts.util.IDNumber;
 import com.wts.util.Util;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -380,33 +388,169 @@ public class FileController extends Controller {
       setSessionAttr("FileDept", getPara("FileDept"));
     }
 
-    if (personName.equals("") && fileDept.equals("")) {
-      users = User.dao.find("select * from user");
-    }else if (personName.equals("") && !fileDept.equals("")) {
-      users = User.dao.find("select * from user where" + fileDept);
-    }else if (!personName.equals("") && fileDept.equals("")) {
-      users = User.dao.find("select * from user where" + personName);
-    }else{
-      users = User.dao.find("select * from user where" + personName + " and " + fileDept);
+    String sql="SELECT file.id AS fid, file.did AS did, file.number AS fnumber, file.state AS fstate, file.remark AS fremark, person.id AS pid, person.name AS pname, person.number AS pnumber, person.phone1 AS pphone1, person.phone2 AS pphone2, person.address AS paddress, person.sex AS psex, person.birth AS pbirth, person.remark AS premark, person.fileAge AS fileAge, person.state AS pstate, person.info AS pinfo, person.retire AS pretire, department.name AS dname FROM (file INNER JOIN person ON file.pid=person.id) INNER JOIN department ON file.did=department.id ";
+
+    if (!(personName.equals("") && personNumber.equals("") && fileNumber.equals("") && fileState.equals("") && fileDept.equals(""))){
+      sql=sql+" where ";
     }
+
+    if (!personName.equals("")){
+      if (sql.substring(sql.length()-6,sql.length()).equals("where ")){
+        sql=sql+personName;
+      }else{
+        sql=sql+"and "+ personName;
+      }
+    }
+    if (!personNumber.equals("")){
+      if (sql.substring(sql.length()-6,sql.length()).equals("where ")){
+        sql=sql+personNumber;
+      }else{
+        sql=sql+"and "+ personNumber;
+      }
+    }
+    if (!fileNumber.equals("")){
+      if (sql.substring(sql.length()-6,sql.length()).equals("where ")){
+        sql=sql+fileNumber;
+      }else{
+        sql=sql+"and "+ fileNumber;
+      }
+    }
+    if (!fileState.equals("")){
+      if (sql.substring(sql.length()-6,sql.length()).equals("where ")){
+        sql=sql+fileState;
+      }else{
+        sql=sql+"and "+ fileState;
+      }
+    }
+    if (!fileDept.equals("")){
+      if (sql.substring(sql.length()-6,sql.length()).equals("where ")){
+        sql=sql+fileDept;
+      }else{
+        sql=sql+"and "+ fileDept;
+      }
+    }
+    files=File.dao.find(sql);
     if (files.size()>100) {
-      setSessionAttr("UserName", "");
-      setSessionAttr("UserDept", "");
+      setSessionAttr("PersonName", "");
+      setSessionAttr("PersonNumber", "");
+      setSessionAttr("FileNumber", "");
+      setSessionAttr("FileDept", "");
+      setSessionAttr("FileState", "");
       renderText("导出数据数量超过上限！");
     }else{
-      if(getPara("UserName").equals("") || getPara("UserName")==null){
-        setSessionAttr("UserName", "");
-      }else {
-        setSessionAttr("UserName", getPara("UserName"));
-      }
-      if(getPara("UserDept").equals("") || getPara("UserDept")==null){
-        setSessionAttr("UserDept", "");
-      }else {
-        setSessionAttr("UserDept", getPara("UserDept"));
-      }
       renderText("OK");
     }
   }
+
+  /**
+   * 导出
+   */
+  public void export() throws IOException {
+    String[] title={"档案编号","档案状态","姓名","证件号码","联系电话1","联系电话2","联系地址","性别","出生日期","档案年龄","信息整理","退休情况","人员备注","档案备注"};
+    //创建Excel工作簿
+    XSSFWorkbook workbook = new XSSFWorkbook();
+    //创建一个工作表
+    XSSFSheet sheet = workbook.createSheet();
+    //创建第一行
+    XSSFRow row =sheet.createRow(0);
+    XSSFCell cell=null;
+    //插入表头数据
+    for(int i=0;i<title.length;i++){
+      cell=row.createCell(i);
+      cell.setCellValue(title[i]);
+    }
+    List<File> f;
+
+    String sql="SELECT file.id AS fid, file.did AS did, file.number AS fnumber, file.state AS fstate, file.remark AS fremark, person.id AS pid, person.name AS pname, person.number AS pnumber, person.phone1 AS pphone1, person.phone2 AS pphone2, person.address AS paddress, person.sex AS psex, person.birth AS pbirth, person.remark AS premark, person.fileAge AS fileAge, person.state AS pstate, person.info AS pinfo, person.retire AS pretire, department.name AS dname FROM (file INNER JOIN person ON file.pid=person.id) INNER JOIN department ON file.did=department.id ";
+
+    if (!(getSessionAttr("PersonName").equals("") && getSessionAttr("PersonNumber").equals("") && getSessionAttr("FileNumber").equals("") && getSessionAttr("FileState").equals("") && getSessionAttr("FileDept").equals(""))){
+      sql=sql+" where ";
+    }
+
+    if (!getSessionAttr("PersonName").equals("")){
+      if (sql.substring(sql.length()-6,sql.length()).equals("where ")){
+        sql=sql+getSessionAttr("PersonName");
+      }else{
+        sql=sql+"and "+ getSessionAttr("PersonName");
+      }
+    }
+    if (!getSessionAttr("PersonNumber").equals("")){
+      if (sql.substring(sql.length()-6,sql.length()).equals("where ")){
+        sql=sql+getSessionAttr("PersonNumber");
+      }else{
+        sql=sql+"and "+ getSessionAttr("PersonNumber");
+      }
+    }
+    if (!getSessionAttr("FileNumber").equals("")){
+      if (sql.substring(sql.length()-6,sql.length()).equals("where ")){
+        sql=sql+getSessionAttr("FileNumber");
+      }else{
+        sql=sql+"and "+ getSessionAttr("FileNumber");
+      }
+    }
+    if (!getSessionAttr("FileState").equals("")){
+      if (sql.substring(sql.length()-6,sql.length()).equals("where ")){
+        sql=sql+getSessionAttr("FileState");
+      }else{
+        sql=sql+"and "+ getSessionAttr("FileState");
+      }
+    }
+    if (!getSessionAttr("FileDept").equals("")){
+      if (sql.substring(sql.length()-6,sql.length()).equals("where ")){
+        sql=sql+getSessionAttr("FileDept");
+      }else{
+        sql=sql+"and "+ getSessionAttr("FileDept");
+      }
+    }
+    f=File.dao.find(sql);
+
+    for (int i = 0; i < f.size(); i++) {
+      XSSFRow nextRow = sheet.createRow(i+1);
+      XSSFCell cell2 = nextRow.createCell(0);
+      cell2.setCellValue(f.get(i).get("fnumber").toString());
+      cell2 = nextRow.createCell(1);
+      cell2.setCellValue(f.get(i).get("fstate").toString());
+      cell2 = nextRow.createCell(2);
+      cell2.setCellValue(f.get(i).get("fremark").toString());
+      cell2 = nextRow.createCell(3);
+      cell2.setCellValue(f.get(i).get("pname").toString());
+      cell2 = nextRow.createCell(4);
+      cell2.setCellValue(f.get(i).get("pnumber").toString());
+      cell2 = nextRow.createCell(5);
+      cell2.setCellValue(f.get(i).get("pphone1").toString());
+      cell2 = nextRow.createCell(6);
+      cell2.setCellValue(f.get(i).get("pphone2").toString());
+      cell2 = nextRow.createCell(7);
+      cell2.setCellValue(f.get(i).get("paddress").toString());
+      cell2 = nextRow.createCell(8);
+      cell2.setCellValue(f.get(i).get("psex").toString());
+      cell2 = nextRow.createCell(9);
+      cell2.setCellValue(f.get(i).get("pbirth").toString());
+      cell2 = nextRow.createCell(10);
+      cell2.setCellValue(f.get(i).get("fileAge").toString());
+      cell2 = nextRow.createCell(11);
+      cell2.setCellValue(f.get(i).get("pinfo").toString());
+      cell2 = nextRow.createCell(12);
+      cell2.setCellValue(f.get(i).get("pretire").toString());
+      cell2 = nextRow.createCell(13);
+      if (f.get(i).get("premark") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(f.get(i).get("premark").toString());
+      }
+    }
+    HttpServletResponse response = getResponse();
+    response.setContentType("application/octet-stream");
+    response.setHeader("Content-Disposition", "attachment;filename=export.xlsx");
+    OutputStream out = response.getOutputStream();
+    workbook.write(out);
+    out.flush();
+    out.close();
+    workbook.close();
+    renderNull() ;
+  }
+
+
 }
 
 

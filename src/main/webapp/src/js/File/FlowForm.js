@@ -229,7 +229,7 @@ class FlowFrom extends React.Component {
   }
   render() {
     const { getFieldDecorator, getFieldError, isFieldValidating } = this.props.form;
-    const { fileId, fileNumber, fileRemark, personId, personName, personNumber, personPhone1, personPhone2, personAddress, fileAge, personRemark, departmentName } = this.props;
+    const { fileId, fileNumber, fileRemark, personId, personName, personNumber, personPhone1, personPhone2, personAddress, personRemark, departmentName } = this.props;
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
@@ -238,22 +238,6 @@ class FlowFrom extends React.Component {
       <Form horizontal>
         <Row>
           <Col span={12}>
-            <FormItem
-              label=""
-              {...formItemLayout}
-            >
-              {getFieldDecorator('fileId', { initialValue: fileId })(
-                <Input type="hidden" />
-              )}
-            </FormItem>
-            <FormItem
-              label=""
-              {...formItemLayout}
-            >
-              {getFieldDecorator('personId', { initialValue: personId })(
-                <Input type="hidden" />
-              )}
-            </FormItem>
             <FormItem
               label="档案编号"
               {...formItemLayout}
@@ -299,7 +283,7 @@ class FlowFrom extends React.Component {
                   { validator: this.personNumberCheck },
                 ],
               })(
-                <Input placeholder="请输入市民证件号码" maxlength="18" onChange={this.getFileAge} ref="personNumber" disabled />
+                <Input placeholder="请输入市民证件号码" maxlength="18" disabled />
               )}
             </FormItem>
             <FormItem
@@ -375,8 +359,6 @@ class FlowFrom extends React.Component {
                 <Input disabled />
               )}
             </FormItem>
-          </Col>
-          <Col span={12}>
             <FormItem
               label="档案去向"
               {...formItemLayout}
@@ -392,6 +374,8 @@ class FlowFrom extends React.Component {
                 <Input placeholder="请输入档案的去向" />
               )}
             </FormItem>
+          </Col>
+          <Col span={12}>
             <FormItem
               label="转出原因"
               {...formItemLayout}
@@ -446,6 +430,22 @@ class FlowFrom extends React.Component {
             >
               {getFieldDecorator('flowRemark')(
                 <Input type="textarea" rows="3" placeholder="其他需要填写的信息" />
+              )}
+            </FormItem>
+            <FormItem
+              label=""
+              {...formItemLayout}
+            >
+              {getFieldDecorator('fileId', { initialValue: fileId })(
+                <Input type="hidden" />
+              )}
+            </FormItem>
+            <FormItem
+              label=""
+              {...formItemLayout}
+            >
+              {getFieldDecorator('personId', { initialValue: personId })(
+                <Input type="hidden" />
               )}
             </FormItem>
           </Col>
