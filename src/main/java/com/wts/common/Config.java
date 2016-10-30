@@ -23,6 +23,8 @@ public class Config extends JFinalConfig {
         // 加载少量必要配置，随后可用PropKit.get(...)获取值
         PropKit.use("a_little_config.txt");
         me.setDevMode(true);
+        me.setError404View("/dist/404error.html");
+        me.setError500View("/dist/500error.html");
     }
 
     /**
