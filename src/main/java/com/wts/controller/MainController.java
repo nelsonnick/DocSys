@@ -1,8 +1,11 @@
 package com.wts.controller;
 
 import com.jfinal.core.Controller;
+import com.wts.entity.model.Login;
 import com.wts.entity.model.User;
 import com.wts.util.Util;
+
+import java.util.Date;
 
 import static com.wts.util.EncryptUtils.encodeMD5String;
 
@@ -32,25 +35,41 @@ public void l(){
     }
     public void login() {
         boolean result = validateCaptcha("verifyCode");
+        Login g =new Login();
         if (result){
             if (getPara("login").equals("admin") && getPara("password").equals("admin")){
                 User user=new User();
                 user.set("name","管理员");
                 user.set("did","0");
                 setSessionAttr("user",user);
+                g.set("login",getPara("login"))
+                        .set("pass",getPara("password"))
+                        .set("time", new Date())
+                        .set("state", "成功")
+                        .save();
                 redirect("/sys");
             }else{
                 User user=User.dao.findFirst("select * from user where login=? and pass=? and state='激活'", getPara("login"),encodeMD5String(getPara("password")));
                 if (user!=null){
                     setSessionAttr("user",user);
+                    g.set("login",getPara("login"))
+                            .set("pass",getPara("password"))
+                            .set("time", new Date())
+                            .set("state", "成功")
+                            .save();
                     redirect("/com");
                 }else{
-                    setAttr("error","用户名或密码错误，请重新输入!");
+                    g.set("login",getPara("login"))
+                            .set("pass",getPara("password"))
+                            .set("time", new Date())
+                            .set("state", "失败")
+                            .save();
+                    setAttr("error","用户名或密码错误！");
                     render("/dist/login.html");
                 }
             }
         }else{
-            setAttr("error","验证码错误，请重新输入!");
+            setAttr("error","验证码错误！");
             render("/dist/login.html");
         }
     }

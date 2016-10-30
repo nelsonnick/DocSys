@@ -1,9 +1,12 @@
 package com.wts.controller;
 
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wts.entity.model.*;
+import com.wts.interceptor.LoginInterceptor;
 import com.wts.util.IDNumber;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -25,6 +28,7 @@ public class UserController extends Controller {
    *@param: UserName
    *@param: UserDept
    */
+  @Before(LoginInterceptor.class)
   public void query() {
     Page<User> users=User.dao.paginate2(getParaToInt("PageNumber"),getParaToInt("PageSize"),getPara("UserName"),getPara("UserDept"));
     renderJson(users.getList());
@@ -34,6 +38,7 @@ public class UserController extends Controller {
    *@param: UserName
    *@param: UserDept
    */
+  @Before(LoginInterceptor.class)
   public void count() {
     if (getPara("UserDept").equals("")) {
       String count = Db.queryLong("select count(*) from user where name like '%" + getPara("UserName") + "%' and state<>'删除' ").toString();
@@ -48,6 +53,7 @@ public class UserController extends Controller {
    * 核查用户真实姓名
    *@param: name
    */
+  @Before(LoginInterceptor.class)
   public void name() {
     if (!getPara("name").matches("[\u4e00-\u9fa5]+")) {
       renderText("真实姓名必须为汉字!");
@@ -61,6 +67,7 @@ public class UserController extends Controller {
    * 核查用户证件号码
    *@param: number
    */
+  @Before(LoginInterceptor.class)
   public void number() {
     renderText(IDNumber.checkIDNumber(getPara("number")));
   }
@@ -68,6 +75,7 @@ public class UserController extends Controller {
    * 核查用户联系电话
    *@param: phone
    */
+  @Before(LoginInterceptor.class)
   public void phone() {
     if (!getPara("phone").matches("\\d{11}")) {
       renderText("联系电话必须为11位数字!");
@@ -79,6 +87,7 @@ public class UserController extends Controller {
    * 核查用户登录名称
    *@param: login
    */
+  @Before(LoginInterceptor.class)
   public void login() {
     List<User> user = User.dao.find(
             "select * from user where login=?", getPara("login"));
@@ -94,6 +103,7 @@ public class UserController extends Controller {
    * 核查用户所属部门
    *@param: name
    */
+  @Before(LoginInterceptor.class)
   public void dept() {
     if (getPara("dept").equals("")) {
       renderText("所属部门尚未选择!");
@@ -105,6 +115,7 @@ public class UserController extends Controller {
    * 获取户所属部门
    *@param: did
    */
+  @Before(LoginInterceptor.class)
   public void depts() {
     Department department = Department.dao.findById(getPara("did"));
     renderText(department.get("id").toString());
@@ -112,6 +123,7 @@ public class UserController extends Controller {
   /**
    * 新增用户
    */
+  @Before({Tx.class,LoginInterceptor.class})
   public void add() {
     List<User> user1 = User.dao.find(
             "select * from user where number=?", getPara("number"));
@@ -151,6 +163,7 @@ public class UserController extends Controller {
   /**
    * 修改用户
    */
+  @Before({Tx.class,LoginInterceptor.class})
   public void edit(){
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
@@ -197,6 +210,7 @@ public class UserController extends Controller {
   /**
    * 注销用户
    */
+  @Before({Tx.class,LoginInterceptor.class})
   public void abandon(){
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
@@ -214,6 +228,7 @@ public class UserController extends Controller {
   /**
    * 激活用户
    */
+  @Before({Tx.class,LoginInterceptor.class})
   public void active(){
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
@@ -231,6 +246,7 @@ public class UserController extends Controller {
   /**
    * 删除用户
    */
+  @Before({Tx.class,LoginInterceptor.class})
   public void delete(){
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
@@ -248,6 +264,7 @@ public class UserController extends Controller {
   /**
    * 重置密码
    */
+  @Before({Tx.class,LoginInterceptor.class})
   public void reset(){
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
@@ -267,6 +284,7 @@ public class UserController extends Controller {
    *@param: UserName
    *@param: UserDept
    */
+  @Before(LoginInterceptor.class)
   public void download() {
     List<User> users;
     String username,userdept;
@@ -305,6 +323,7 @@ public class UserController extends Controller {
   /**
    * 导出
    */
+  @Before(LoginInterceptor.class)
   public void export() throws IOException {
     String[] title={"序号","姓名","证件号码","联系电话","登录名称","所属部门","状态","备注"};
     //创建Excel工作簿
@@ -367,6 +386,7 @@ public class UserController extends Controller {
    * 修改密码
    *@param: did
    */
+  @Before({Tx.class,LoginInterceptor.class})
   public void pass() {
     User u = (User) getSessionAttr("user");
     if (!u.getStr("pass").equals(encodeMD5String(getPara("passBefore")))) {

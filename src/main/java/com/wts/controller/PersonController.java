@@ -1,7 +1,9 @@
 package com.wts.controller;
 
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.wts.entity.model.*;
+import com.wts.interceptor.LoginInterceptor;
 import com.wts.util.IDNumber;
 
 import java.util.List;
@@ -11,6 +13,7 @@ public class PersonController extends Controller {
    * 核查真实姓名
    *@param: name
    */
+  @Before(LoginInterceptor.class)
   public void name() {
     if (!getPara("name").matches("[\u4e00-\u9fa5]+")) {
       renderText("真实姓名必须为汉字!");
@@ -24,6 +27,7 @@ public class PersonController extends Controller {
    * 核查证件号码
    *@param: number
    */
+  @Before(LoginInterceptor.class)
   public void number() {
     List<Person> persons = Person.dao.find(
             "select * from person where number=?", getPara("number"));
@@ -37,6 +41,7 @@ public class PersonController extends Controller {
    * 核查证件号码
    *@param: number
    */
+  @Before(LoginInterceptor.class)
   public void numbers() {
     List<Person> persons = Person.dao.find(
             "select * from person where number=?", getPara("number"));
@@ -50,6 +55,7 @@ public class PersonController extends Controller {
    * 核查联系电话1
    *@param: phone1
    */
+  @Before(LoginInterceptor.class)
   public void phone1() {
     if (!getPara("phone").matches("\\d{11}")) {
       renderText("联系电话必须为11位数字!");
@@ -61,6 +67,7 @@ public class PersonController extends Controller {
    * 核查联系电话2
    *@param: phone2
    */
+  @Before(LoginInterceptor.class)
   public void phone2() {
     if (!getPara("phone").trim().equals("")){
       if (!getPara("phone").matches("\\d{11}")) {
@@ -76,6 +83,7 @@ public class PersonController extends Controller {
    * 核查联系地址
    *@param: address
    */
+  @Before(LoginInterceptor.class)
   public void address() {
     if (getPara("address").trim().length()<2) {
       renderText("联系地址应该在两个字符以上!");
@@ -87,6 +95,7 @@ public class PersonController extends Controller {
    * 核查年龄
    *@param: age
    */
+  @Before(LoginInterceptor.class)
   public void age() {
     String a = "^(?:(?!0000)[0-9]{4}(?:(?:0[1-9]|1[0-2])(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$";
     if (!getPara("fileAge").matches("\\d{8}")) {

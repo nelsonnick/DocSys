@@ -33,6 +33,14 @@ public abstract class BaseTrans<M extends BaseTrans<M>> extends Model<M> impleme
 		return get("did");
 	}
 
+	public void setFid(java.lang.Integer fid) {
+		set("fid", fid);
+	}
+
+	public java.lang.Integer getFid() {
+		return get("fid");
+	}
+
 	public void setUid(java.lang.Integer uid) {
 		set("uid", uid);
 	}
@@ -143,6 +151,70 @@ public abstract class BaseTrans<M extends BaseTrans<M>> extends Model<M> impleme
 
 	public java.util.Date getFileAgeAfter() {
 		return get("fileAgeAfter");
+	}
+
+	public void setInfoBefore(java.lang.String infoBefore) {
+		set("infoBefore", infoBefore);
+	}
+
+	public java.lang.String getInfoBefore() {
+		return get("infoBefore");
+	}
+
+	public void setInfoAfter(java.lang.String infoAfter) {
+		set("infoAfter", infoAfter);
+	}
+
+	public java.lang.String getInfoAfter() {
+		return get("infoAfter");
+	}
+
+	public void setRetireBefore(java.lang.String retireBefore) {
+		set("retireBefore", retireBefore);
+	}
+
+	public java.lang.String getRetireBefore() {
+		return get("retireBefore");
+	}
+
+	public void setRetireAfter(java.lang.String retireAfter) {
+		set("retireAfter", retireAfter);
+	}
+
+	public java.lang.String getRetireAfter() {
+		return get("retireAfter");
+	}
+
+	public void setPremarkBefore(java.lang.String premarkBefore) {
+		set("premarkBefore", premarkBefore);
+	}
+
+	public java.lang.String getPremarkBefore() {
+		return get("premarkBefore");
+	}
+
+	public void setPremarkAfter(java.lang.String premarkAfter) {
+		set("premarkAfter", premarkAfter);
+	}
+
+	public java.lang.String getPremarkAfter() {
+		return get("premarkAfter");
+	}
+
+	public void setFremarkBefore(java.lang.String fremarkBefore) {
+		set("fremarkBefore", fremarkBefore);
+	}
+
+	public java.lang.String getFremarkBefore() {
+		return get("fremarkBefore");
+	}
+
+	public void setFremarkAfter(java.lang.String fremarkAfter) {
+		set("fremarkAfter", fremarkAfter);
+	}
+
+	public java.lang.String getFremarkAfter() {
+		return get("fremarkAfter");
 	}
 
 }

@@ -57,11 +57,11 @@ public abstract class BasePerson<M extends BasePerson<M>> extends Model<M> imple
 		return get("address");
 	}
 
-	public void setSex(java.lang.Integer sex) {
+	public void setSex(java.lang.String sex) {
 		set("sex", sex);
 	}
 
-	public java.lang.Integer getSex() {
+	public java.lang.String getSex() {
 		return get("sex");
 	}
 
@@ -89,12 +89,12 @@ public abstract class BasePerson<M extends BasePerson<M>> extends Model<M> imple
 		return get("fileAge");
 	}
 
-	public void setRetire(java.lang.String retire) {
-		set("retire", retire);
+	public void setState(java.lang.String state) {
+		set("state", state);
 	}
 
-	public java.lang.String getRetire() {
-		return get("retire");
+	public java.lang.String getState() {
+		return get("state");
 	}
 
 	public void setInfo(java.lang.String info) {
@@ -105,12 +105,12 @@ public abstract class BasePerson<M extends BasePerson<M>> extends Model<M> imple
 		return get("info");
 	}
 
-	public void setState(java.lang.String state) {
-		set("state", state);
+	public void setRetire(java.lang.String retire) {
+		set("retire", retire);
 	}
 
-	public java.lang.String getState() {
-		return get("state");
+	public java.lang.String getRetire() {
+		return get("retire");
 	}
 
 }

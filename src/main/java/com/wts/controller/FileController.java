@@ -6,6 +6,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wts.entity.model.*;
+import com.wts.interceptor.LoginInterceptor;
 import com.wts.util.IDNumber;
 import com.wts.util.Util;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -25,6 +26,7 @@ public class FileController extends Controller {
    * 核查档案编号
    *@param: number
    */
+  @Before(LoginInterceptor.class)
   public void number() {
     List<File> files = File.dao.find(
             "select * from file where number=?", getPara("number"));
@@ -38,6 +40,7 @@ public class FileController extends Controller {
    * 核查档案编号
    *@param: number
    */
+  @Before(LoginInterceptor.class)
   public void numbers() {
     List<File> files = File.dao.find(
             "select * from file where number=?", getPara("number"));
@@ -50,6 +53,7 @@ public class FileController extends Controller {
   /**
    * 最新档案编号
    */
+  @Before(LoginInterceptor.class)
   public void newNumber() {
     SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
     Date date=new Date();
@@ -67,6 +71,7 @@ public class FileController extends Controller {
    *@param: FileNumber
    *@param: FileDept
    */
+  @Before(LoginInterceptor.class)
   public void query() {
     Page<File> files=File.dao.paginate2(getParaToInt("PageNumber"),getParaToInt("PageSize"),getPara("PersonName"),getPara("PersonNumber"),getPara("FileNumber"),getPara("FileDept"),getPara("FileState"));
     renderJson(files.getList());
@@ -78,12 +83,13 @@ public class FileController extends Controller {
    *@param: FileNumber
    *@param: FileDept
    */
+  @Before(LoginInterceptor.class)
   public void count() {
     if (getPara("FileDept").equals("")) {
-      String count = Db.queryLong("select count(*) from file inner join person on person.id = file.pid where person.name like '&" + getPara("PersonName") + "&' and  person.number like '&" + getPara("PersonNumber") + "&' and file.number like '%" + getPara("FileNumber") + "%' and file.state like '%" + getPara("FileState") + "%'").toString();
+      String count = Db.queryLong("select count(*) from file inner join person on person.id = file.pid where person.name like '%" + getPara("PersonName") + "%' and  person.number like '%" + getPara("PersonNumber") + "%' and file.number like '%" + getPara("FileNumber") + "%' and file.state like '%" + getPara("FileState") + "%'").toString();
       renderText(count);
     } else {
-      String count = Db.queryLong("select count(*) from file inner join person on person.id = file.pid where person.name like '&" + getPara("PersonName") + "&' and  person.number like '&" + getPara("PersonNumber") + "&' and file.number like '%" + getPara("FileNumber") + "%' and file.state like '%" + getPara("FileState") + "%' and file.did = " + getPara("FileDept")).toString();
+      String count = Db.queryLong("select count(*) from file inner join person on person.id = file.pid where person.name like '%" + getPara("PersonName") + "%' and  person.number like '%" + getPara("PersonNumber") + "%' and file.number like '%" + getPara("FileNumber") + "%' and file.state like '%" + getPara("FileState") + "%' and file.did = " + getPara("FileDept")).toString();
       renderText(count);
     }
   }
@@ -105,7 +111,7 @@ public class FileController extends Controller {
    *@param: ltype
    *@param: ldirect
    */
-  @Before(Tx.class)
+  @Before({Tx.class,LoginInterceptor.class})
   public void add() {
     String a = "^(?:(?!0000)[0-9]{4}(?:(?:0[1-9]|1[0-2])(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$";
     List<File> files = File.dao.find(
@@ -188,7 +194,7 @@ public class FileController extends Controller {
    *@param: fileAge
 
    */
-  @Before(Tx.class)
+  @Before({Tx.class,LoginInterceptor.class})
   public void edit() {
     String a = "^(?:(?!0000)[0-9]{4}(?:(?:0[1-9]|1[0-2])(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$";
     File file = File.dao.findById(getPara("fid"));
@@ -283,7 +289,7 @@ public class FileController extends Controller {
    *@param: lreason
    *@param: lremark
    */
-  @Before(Tx.class)
+  @Before({Tx.class,LoginInterceptor.class})
   public void flow(){
     File file = File.dao.findById(getPara("fid"));
     Person person = Person.dao.findById(getPara("pid"));
@@ -314,7 +320,7 @@ public class FileController extends Controller {
    *@param: ltype
    *@param: ldirect
    */
-  @Before(Tx.class)
+  @Before({Tx.class,LoginInterceptor.class})
   public void back() {
     List<File> files = File.dao.find(
             "select * from file where number=?", getPara("fnumber"));
@@ -360,6 +366,7 @@ public class FileController extends Controller {
    *@param: FileNumber
    *@param: FileState
    */
+  @Before(LoginInterceptor.class)
   public void download() {
     List<File> files;
     String personName,personNumber,fileNumber,fileState,fileDept;
@@ -456,6 +463,7 @@ public class FileController extends Controller {
   /**
    * 导出
    */
+  @Before(LoginInterceptor.class)
   public void export() throws IOException {
     String[] title={"档案编号","档案状态","姓名","证件号码","联系电话1","联系电话2","联系地址","性别","出生日期","档案年龄","信息整理","退休情况","人员备注","档案备注"};
     //创建Excel工作簿
@@ -561,7 +569,6 @@ public class FileController extends Controller {
     workbook.close();
     renderNull() ;
   }
-
 
 }
 

@@ -25,12 +25,28 @@ public abstract class BaseFlow<M extends BaseFlow<M>> extends Model<M> implement
 		return get("uid");
 	}
 
+	public void setFid(java.lang.Integer fid) {
+		set("fid", fid);
+	}
+
+	public java.lang.Integer getFid() {
+		return get("fid");
+	}
+
 	public void setDid(java.lang.Integer did) {
 		set("did", did);
 	}
 
 	public java.lang.Integer getDid() {
 		return get("did");
+	}
+
+	public void setPid(java.lang.Integer pid) {
+		set("pid", pid);
+	}
+
+	public java.lang.Integer getPid() {
+		return get("pid");
 	}
 
 	public void setTime(java.util.Date time) {
@@ -47,6 +63,14 @@ public abstract class BaseFlow<M extends BaseFlow<M>> extends Model<M> implement
 
 	public java.lang.String getRemark() {
 		return get("remark");
+	}
+
+	public void setType(java.lang.String type) {
+		set("type", type);
+	}
+
+	public java.lang.String getType() {
+		return get("type");
 	}
 
 	public void setDirect(java.lang.String direct) {
@@ -71,14 +95,6 @@ public abstract class BaseFlow<M extends BaseFlow<M>> extends Model<M> implement
 
 	public java.lang.String getFlow() {
 		return get("flow");
-	}
-
-	public void setType(java.lang.String type) {
-		set("type", type);
-	}
-
-	public java.lang.String getType() {
-		return get("type");
 	}
 
 }

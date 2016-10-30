@@ -1,8 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link rel="shortcut icon" type="image/ico" href="/images/favicon.ico"/>
+    <title>Your Company Name</title>
+    <link href="../src/css/styles.css" type="text/css" media="screen" rel="stylesheet"/>
+    <style type="text/css">
+        img, div {
+            behavior: url(iepngfix.htc)
+        }
+    </style>
     <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
     <script type="text/javascript">
         //点击切换验证码
@@ -11,14 +18,47 @@
         }
     </script>
 </head>
-<body>
-<form action="${contextPath}/login" method="post">
-    <input type="text" placeholder="请输入用户名" name="login">
-    <input type="password" placeholder="请输入密码" name="password">
-    <input type="text" placeholder="请输入验证码"  name="verifyCode" id="verifyCode">
-    <img src="${contextPath}/img"  onclick="changeVerifyCode()" id="yzmImg" style="cursor: pointer;">
-    <button type="submit">登陆</button>
-    <label id="red">${(error)!''}</label>
-</form>
-</body>
-</html>
+<body id="login">
+<div id="wrappertop"></div>
+<div id="wrapper">
+    <div id="content">
+        <div id="header">
+            <h1><span style="font-size:30px;color:#2DB7F5">File Manage System</span></h1>
+        </div>
+        <div id="darkbanner" class="banner320">
+            <h2>Welcome</h2>
+        </div>
+        <div id="darkbannerwrap">
+        </div>
+        <form name="form1" method="post" action="${contextPath}/login">
+            <fieldset class="form">
+                <p>
+                    <label for="user_name">LoginName：</label>
+                    <input name="login" id="user_name" type="text" value="" placeholder="请输入登录名称"/>
+                </p>
+                <p>
+                    <label for="user_password">Password：</label>
+                    <input name="password" id="user_password" type="password" placeholder="请输入登录密码"/>
+                </p>
+                <p>
+                    <label for="user_name">CheckCode：</label>
+                    <input type="text" placeholder="请输入下方验证码" name="verifyCode" id="verifyCode">
+                </p>
+                <p>
+                    <label for="user_name"></label>
+                    <img src="${contextPath}/img" onclick="changeVerifyCode()" id="yzmImg" style="cursor: pointer;height: 30px">
+                    <span style="color: red">${(error)!''}</span>
+                </p>
+                <button type="submit" class="positive" name="Submit">
+                    Go Next
+                </button>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<div id="wrapperbottom_branding">
+    <div id="wrapperbottom_branding_text"><a href="#" style='text-decoration:none'>Made
+        By Nick Wong</a>.
+    </div>
+</div>

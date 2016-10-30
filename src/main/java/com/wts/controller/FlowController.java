@@ -6,6 +6,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wts.entity.model.*;
+import com.wts.interceptor.LoginInterceptor;
 import com.wts.util.IDNumber;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -24,6 +25,7 @@ public class FlowController extends Controller {
    * 检测来源
    *@param: direct
    */
+  @Before(LoginInterceptor.class)
   public void direct() {
     if (getPara("direct").trim().length()<2) {
       renderText("档案来源必须在两个字符以上!");
@@ -35,6 +37,7 @@ public class FlowController extends Controller {
    * 检测原因
    *@param: reason
    */
+  @Before(LoginInterceptor.class)
   public void reason() {
     if (getPara("reason").trim().length()<2) {
       renderText("流转原因必须在两个字符以上!");
@@ -53,6 +56,7 @@ public class FlowController extends Controller {
    *@param: FileDept
    *@param: FlowFlow
    */
+  @Before(LoginInterceptor.class)
   public void query() {
     Page<Flow> flows= Flow.dao.paginate2(getParaToInt("PageNumber"),getParaToInt("PageSize"),getPara("PersonName"),getPara("PersonNumber"),getPara("FileNumber"),getPara("FileDept"),getPara("FlowFlow"));
     renderJson(flows.getList());
@@ -65,13 +69,15 @@ public class FlowController extends Controller {
    *@param: FileDept
    *@param: FlowFlow
    */
+  @Before(LoginInterceptor.class)
   public void count() {
     if (getPara("FileDept").equals("")) {
-      String count = Db.queryLong("SELECT COUNT(*) FROM (((flow INNER JOIN user ON flow.uid=user.id) INNER JOIN file ON flow.fid=file.id) INNER JOIN person ON flow.pid=person.id) INNER JOIN department ON flow.did=department.id WHERE person.name LIKE '%" + getPara("PersonName") + "%' AND person.number LIKE '%" + getPara("PersonNumber") + "%' AND file.number LIKE '%" + getPara("FileNumber") + "%' AND flow.flow LIKE '%" + getPara("FileFlow") + "%'").toString();
+      String count = Db.queryLong("SELECT COUNT(*) FROM (((flow INNER JOIN user ON flow.uid=user.id) INNER JOIN file ON flow.fid=file.id) INNER JOIN person ON flow.pid=person.id) INNER JOIN department ON flow.did=department.id WHERE person.name LIKE '%" + getPara("PersonName") + "%' AND person.number LIKE '%" + getPara("PersonNumber") + "%' AND file.number LIKE '%" + getPara("FileNumber") + "%' AND flow.flow LIKE '%" + getPara("FlowFlow") + "%'").toString();
+      System.out.println(count);
       renderText(count);
     } else {
-
-      String count = Db.queryLong("SELECT COUNT(*) FROM (((flow INNER JOIN user ON flow.uid=user.id) INNER JOIN file ON flow.fid=file.id) INNER JOIN person ON flow.pid=person.id) INNER JOIN department ON flow.did=department.id WHERE person.name LIKE '%" + getPara("PersonName") + "%' AND person.number LIKE '%" + getPara("PersonNumber") + "%' AND file.number LIKE '%" + getPara("FileNumber") + "%' AND flow.flow LIKE '%" + getPara("FileFlow") + "%' AND file.did = " + getPara("FileDept")).toString();
+      String count = Db.queryLong("SELECT COUNT(*) FROM (((flow INNER JOIN user ON flow.uid=user.id) INNER JOIN file ON flow.fid=file.id) INNER JOIN person ON flow.pid=person.id) INNER JOIN department ON flow.did=department.id WHERE person.name LIKE '%" + getPara("PersonName") + "%' AND person.number LIKE '%" + getPara("PersonNumber") + "%' AND file.number LIKE '%" + getPara("FileNumber") + "%' AND flow.flow LIKE '%" + getPara("FlowFlow") + "%' AND file.did = " + getPara("FileDept")).toString();
+      System.out.println(count);
       renderText(count);
     }
   }
@@ -84,7 +90,7 @@ public class FlowController extends Controller {
    *@param: ldirect
 
    */
-  @Before(Tx.class)
+  @Before({Tx.class,LoginInterceptor.class})
   public void edit() {
     Flow flow = Flow.dao.findById(getPara("lid"));
     if (flow == null){
@@ -134,6 +140,7 @@ public class FlowController extends Controller {
    *@param: FileNumber
    *@param: FlowFlow
    */
+  @Before(LoginInterceptor.class)
   public void download() {
     List<Flow> flows;
     String personName,personNumber,fileNumber,flowFlow,fileDept;
@@ -230,6 +237,7 @@ public class FlowController extends Controller {
   /**
    * 导出
    */
+  @Before(LoginInterceptor.class)
   public void export() throws IOException {
     String[] title={"档案编号","姓名","证件号码","档案位置","流动类型","转递方式","转移备注","档案流向","流转原因","办理时间","经办人员"};
     //创建Excel工作簿

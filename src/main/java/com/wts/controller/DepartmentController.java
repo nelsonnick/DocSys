@@ -1,10 +1,13 @@
 package com.wts.controller;
 
 // import com.google.gson.Gson;
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wts.entity.model.Department;
+import com.wts.interceptor.LoginInterceptor;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -22,6 +25,7 @@ public class DepartmentController extends Controller {
    *@param: PageSize
    *@param: QueryString
    */
+  @Before(LoginInterceptor.class)
   public void query() {
     Page<Department> departments=Department.dao.paginate2(getParaToInt("PageNumber"),getParaToInt("PageSize"),getPara("DeptName"));
     System.out.println(departments);
@@ -31,6 +35,7 @@ public class DepartmentController extends Controller {
    * 查询部门数量
    *@param: DeptName
    */
+  @Before(LoginInterceptor.class)
   public void count() {
     String count = Db.queryLong("select count(*) from department where name like '%"+ getPara("DeptName") +"%' and state<>'删除' ").toString();
     renderText(count);
@@ -38,6 +43,7 @@ public class DepartmentController extends Controller {
   /**
    * 查询部门列表
    */
+  @Before(LoginInterceptor.class)
   public void list() {
     List<Department> departments = Department.dao.find(
             "SELECT * FROM department ORDER BY id DESC");
@@ -56,6 +62,7 @@ public class DepartmentController extends Controller {
    * 核查部门名称
    *@param: name
    */
+  @Before(LoginInterceptor.class)
   public void name() {
     List<Department> departments = Department.dao.find(
             "select * from department where name=?", getPara("name"));
@@ -73,6 +80,7 @@ public class DepartmentController extends Controller {
    * 核查部门名称
    *@param: names
    */
+  @Before(LoginInterceptor.class)
   public void names() {
     if (!getPara("name").matches("[\u4e00-\u9fa5]+")) {
       renderText("部门名称必须为汉字!");
@@ -86,6 +94,7 @@ public class DepartmentController extends Controller {
    * 核查部门编号
    *@param: number
    */
+  @Before(LoginInterceptor.class)
   public void number() {
     List<Department> departments = Department.dao.find(
             "select * from department where number=?", getPara("number"));
@@ -103,6 +112,7 @@ public class DepartmentController extends Controller {
    * 核查部门编号
    *@param: numbers
    */
+  @Before(LoginInterceptor.class)
   public void numbers() {
     if (getPara("number").matches("[\u4e00-\u9fa5]+")) {
       renderText("部门编号必须为数字或字母的组合");
@@ -115,6 +125,7 @@ public class DepartmentController extends Controller {
   /**
    * 核查部门电话
    */
+  @Before(LoginInterceptor.class)
   public void phone() {
     if (!getPara("phone").matches("\\d{8}")) {
       renderText("部门电话必须为8位数字!");
@@ -125,6 +136,7 @@ public class DepartmentController extends Controller {
   /**
    * 核查部门地址
    */
+  @Before(LoginInterceptor.class)
   public void address() {
     if (getPara("address").length() < 3) {
       renderText("部门地址必须超过3个字符!");
@@ -135,6 +147,7 @@ public class DepartmentController extends Controller {
   /**
    * 新增部门
    */
+  @Before({Tx.class,LoginInterceptor.class})
   public void add() {
     List<Department> departments = Department.dao.find(
             "select * from department where name=?", getPara("name"));
@@ -174,6 +187,7 @@ public class DepartmentController extends Controller {
   /**
    * 注销部门
    */
+  @Before({Tx.class,LoginInterceptor.class})
   public void abandon(){
     Department department = Department.dao.findById(getPara("id"));
     if (department == null) {
@@ -191,6 +205,7 @@ public class DepartmentController extends Controller {
   /**
    * 激活部门
    */
+  @Before({Tx.class,LoginInterceptor.class})
   public void active(){
     Department department = Department.dao.findById(getPara("id"));
     if (department == null) {
@@ -208,6 +223,7 @@ public class DepartmentController extends Controller {
   /**
    * 删除部门
    */
+  @Before({Tx.class,LoginInterceptor.class})
   public void delete(){
     Department department = Department.dao.findById(getPara("id"));
     if (department == null) {
@@ -225,6 +241,7 @@ public class DepartmentController extends Controller {
   /**
    * 修改部门
    */
+  @Before({Tx.class,LoginInterceptor.class})
   public void edit(){
     Department department = Department.dao.findById(getPara("id"));
 
@@ -276,6 +293,7 @@ public class DepartmentController extends Controller {
    * 检查导出
    *@param: QueryString
    */
+  @Before(LoginInterceptor.class)
   public void download() {
     List<Department> departments;
     if (getPara("QueryString").equals("") || getPara("QueryString")==null){
@@ -299,6 +317,7 @@ public class DepartmentController extends Controller {
   /**
    * 导出
    */
+  @Before(LoginInterceptor.class)
   public void export() throws IOException {
     String[] title={"序号","部门名称","部门编号","联系电话","联系地址","状态","备注"};
     //创建Excel工作簿
