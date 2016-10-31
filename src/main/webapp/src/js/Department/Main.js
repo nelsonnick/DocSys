@@ -135,7 +135,7 @@ export default class Department extends React.Component {
       'data': {
         'PageNumber': PageNumbers,
         'PageSize': PageSizes,
-        'QueryString': this.state.QueryString,
+        'DeptName': this.state.DeptName,
       },
       'success': (data) => {
         this.setState(

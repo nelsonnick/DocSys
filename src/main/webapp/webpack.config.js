@@ -6,9 +6,9 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var path = require('path');
 module.exports = {
   entry: {
-    //com: './src/js/Com/All.js',
-    //sys: './src/js/Sys/All.js'
-    test: './src/js/Charts/test.js'
+    com: './src/js/Com/All.js',
+    sys: './src/js/Sys/All.js'
+    //test: './src/js/Charts/test.js'
   },
   output: {
     path:__dirname + '/dist/',
@@ -39,11 +39,11 @@ module.exports = {
       url:'http://localhost:9000'
     }),
     //压缩打包的文件、代码混淆
-    // new webpack.optimize.UglifyJsPlugin({
-    //  compress: {
-    //    warnings: false
-    //  }
-    // }),
+    new webpack.optimize.UglifyJsPlugin({
+     compress: {
+       warnings: false
+     }
+    }),
     //第三方库自动注入
     new webpack.ProvidePlugin({
       'React':'react',

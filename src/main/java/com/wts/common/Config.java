@@ -24,7 +24,7 @@ public class Config extends JFinalConfig {
         PropKit.use("a_little_config.txt");
         me.setDevMode(true);
         me.setError404View("/dist/404.html");
-        me.setError500View("/dist/500error.html");
+        me.setError500View("/dist/500.html");
     }
 
     /**

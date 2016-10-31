@@ -3,6 +3,7 @@ package com.wts.controller;
 import com.jfinal.core.Controller;
 import com.wts.entity.model.Login;
 import com.wts.entity.model.User;
+import com.wts.util.IpKit;
 import com.wts.util.Util;
 
 import java.util.Date;
@@ -46,6 +47,7 @@ public void l(){
                         .set("pass",getPara("password"))
                         .set("time", new Date())
                         .set("state", "成功")
+                        .set("ip", IpKit.getRealIp(getRequest()))
                         .save();
                 redirect("/sys");
             }else{
@@ -56,6 +58,7 @@ public void l(){
                             .set("pass",getPara("password"))
                             .set("time", new Date())
                             .set("state", "成功")
+                            .set("ip", IpKit.getRealIp(getRequest()))
                             .save();
                     redirect("/com");
                 }else{
@@ -63,6 +66,7 @@ public void l(){
                             .set("pass",getPara("password"))
                             .set("time", new Date())
                             .set("state", "失败")
+                            .set("ip", IpKit.getRealIp(getRequest()))
                             .save();
                     setAttr("error","用户名或密码错误！");
                     render("/dist/login.html");
