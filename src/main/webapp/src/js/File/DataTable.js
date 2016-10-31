@@ -28,7 +28,7 @@ export default class DataTable extends React.Component {
       title: '人员姓名',
       dataIndex: 'pname',
       key: 'pname',
-      width: 100,
+      width: 70,
     }, {
       title: '证件号码',
       dataIndex: 'pnumber',

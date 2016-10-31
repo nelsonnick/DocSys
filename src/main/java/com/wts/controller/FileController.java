@@ -169,7 +169,7 @@ public class FileController extends Controller {
               .set("reason", getPara("lreason").trim())
               .set("did", ((User) getSessionAttr("user")).get("did").toString())
               .set("uid", ((User) getSessionAttr("user")).get("id").toString())
-              .set("pid",getPara("pid"))
+              .set("pid",p.get("id").toString())
               .set("time", new Date())
               .set("fid",f.get("id").toString())
               .set("flow","转入")

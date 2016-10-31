@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <link rel="shortcut icon" type="image/ico" href="/images/favicon.ico"/>
-    <title>Your Company Name</title>
+    <title>File Manage System</title>
     <link href="../src/css/styles.css" type="text/css" media="screen" rel="stylesheet"/>
     <style type="text/css">
         img, div {
@@ -26,7 +26,7 @@
             <h1><span style="font-size:30px;color:#2DB7F5">File Manage System</span></h1>
         </div>
         <div id="darkbanner" class="banner320">
-            <h2>Welcome</h2>
+            <h2>Login</h2>
         </div>
         <div id="darkbannerwrap">
         </div>
@@ -45,13 +45,16 @@
                     <input type="text" placeholder="请输入下方验证码" name="verifyCode" id="verifyCode">
                 </p>
                 <p>
-                    <label for="user_name"></label>
-                    <img src="${contextPath}/img" onclick="changeVerifyCode()" id="yzmImg" style="cursor: pointer;height: 30px">
-                    <span style="color: red">${(error)!''}</span>
+                    <label for="user_password">OnClickChange：</label>
+                    <img src="${contextPath}/img" onclick="changeVerifyCode()" id="yzmImg" style="cursor: pointer;">
                 </p>
                 <button type="submit" class="positive" name="Submit">
                     Go Next
                 </button>
+                <ul id="forgottenpassword">
+                    <li class="boldtext">|</li>
+                    <li>${(error)!''}</li>
+                </ul>
             </fieldset>
         </form>
     </div>
