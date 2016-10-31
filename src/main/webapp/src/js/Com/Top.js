@@ -54,10 +54,10 @@ export default class Top extends React.Component {
       <div>
         <Row type="flex" justify="space-between" align="bottom">
           <Col span={12}><LogoName name="档案管理系统" /></Col>
-          <Col span={3}><Alert message={this.state.CurrentUser} type="success" showIcon /></Col>
-          <Col span={3}><Alert message={this.state.CurrentDepartment} type="info" showIcon /></Col>
-          <Col span={3}><a id="b"><Alert message="退出" type="warning" showIcon /></a></Col>
-          <Col span={3}>&nbsp;</Col>
+          <Col span={4}><Alert message={this.state.CurrentUser} type="success" showIcon /></Col>
+          <Col span={4}><Alert message={this.state.CurrentDepartment} type="info" showIcon /></Col>
+          <Col span={2}><a id="b"><Alert message="退出" type="warning" showIcon /></a></Col>
+          <Col span={2}>&nbsp;</Col>
         </Row>
       </div>
     );
