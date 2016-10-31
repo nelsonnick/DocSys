@@ -7,6 +7,8 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wts.entity.model.Department;
+import com.wts.entity.model.Export;
+import com.wts.entity.model.User;
 import com.wts.interceptor.LoginInterceptor;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -16,6 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.List;
 
 public class DepartmentController extends Controller {
@@ -317,7 +320,7 @@ public class DepartmentController extends Controller {
   /**
    * 导出
    */
-  @Before(LoginInterceptor.class)
+  @Before({Tx.class,LoginInterceptor.class})
   public void export() throws IOException {
     String[] title={"序号","部门名称","部门编号","联系电话","联系地址","状态","备注"};
     //创建Excel工作簿
@@ -332,7 +335,13 @@ public class DepartmentController extends Controller {
       cell=row.createCell(i);
       cell.setCellValue(title[i]);
     }
+    Export e =new Export();
+    e.set("time", new Date())
+            .set("type","部门导出")
+            .set("sql","select * from department where name like '%"+getSessionAttr("DepartmentQueryString")+"%'")
+            .save();
     List<Department> d= Department.dao.find("select * from department where name like '%"+getSessionAttr("DepartmentQueryString")+"%'");
+
     for (int i = 0; i < d.size(); i++) {
       XSSFRow nextRow = sheet.createRow(i+1);
       XSSFCell cell2 = nextRow.createCell(0);
@@ -358,7 +367,7 @@ public class DepartmentController extends Controller {
 
     HttpServletResponse response = getResponse();
     response.setContentType("application/octet-stream");
-    response.setHeader("Content-Disposition", "attachment;filename=export.xlsx");
+    response.setHeader("Content-Disposition", "attachment;filename=DepartmentExport.xlsx");
     OutputStream out = response.getOutputStream();
     workbook.write(out);
     out.flush();

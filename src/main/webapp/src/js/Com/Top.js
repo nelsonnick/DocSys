@@ -1,7 +1,5 @@
-import UserName from '../Component/UserName.js';
 import LogoName from '../Component/LogoName.js';
-import DepartmentName from '../Component/DepartmentName.js';
-import { Row, Col, notification } from 'antd';
+import { Row, Col, notification, Alert } from 'antd';
 import React from 'react';
 import * as AjaxFunction from '../Util/AjaxFunction.js';
 import $ from 'jquery';
@@ -56,9 +54,10 @@ export default class Top extends React.Component {
       <div>
         <Row type="flex" justify="space-between" align="bottom">
           <Col span={12}><LogoName name="档案管理系统" /></Col>
-          <Col span={4}><UserName name={this.state.CurrentUser} /></Col>
-          <Col span={4}><DepartmentName name={this.state.CurrentDepartment} /></Col>
-          <Col span={4}><a id="b">退出</a></Col>
+          <Col span={3}><Alert message={this.state.CurrentUser} type="success" showIcon /></Col>
+          <Col span={3}><Alert message={this.state.CurrentDepartment} type="info" showIcon /></Col>
+          <Col span={3}><a id="b"><Alert message="退出" type="warning" showIcon /></a></Col>
+          <Col span={3}>&nbsp;</Col>
         </Row>
       </div>
     );

@@ -463,7 +463,7 @@ public class FileController extends Controller {
   /**
    * 导出
    */
-  @Before(LoginInterceptor.class)
+  @Before({Tx.class,LoginInterceptor.class})
   public void export() throws IOException {
     String[] title={"档案编号","档案状态","姓名","证件号码","联系电话1","联系电话2","联系地址","性别","出生日期","档案年龄","信息整理","退休情况","人员备注","档案备注"};
     //创建Excel工作簿
@@ -521,9 +521,13 @@ public class FileController extends Controller {
         sql=sql+"and "+ getSessionAttr("FileDept");
       }
     }
-    System.out.println(sql);
+    Export e =new Export();
+    e.set("uid",((User) getSessionAttr("user")).get("id").toString())
+            .set("time", new Date())
+            .set("type","档案导出")
+            .set("sql",sql)
+            .save();
     f=File.dao.find(sql);
-
     for (int i = 0; i < f.size(); i++) {
       XSSFRow nextRow = sheet.createRow(i+1);
       XSSFCell cell2 = nextRow.createCell(0);
@@ -561,7 +565,7 @@ public class FileController extends Controller {
     }
     HttpServletResponse response = getResponse();
     response.setContentType("application/octet-stream");
-    response.setHeader("Content-Disposition", "attachment;filename=export.xlsx");
+    response.setHeader("Content-Disposition", "attachment;filename=FileExport.xlsx");
     OutputStream out = response.getOutputStream();
     workbook.write(out);
     out.flush();

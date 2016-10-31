@@ -38,12 +38,12 @@ class DataSearch extends React.Component {
     return (
       <Row type="flex" justify="end">
         <Form inline onSubmit={this.handleSubmit}>
-          <FormItem label="真实姓名：" >
+          <FormItem label="姓名：" >
             {getFieldDecorator('userName')(
               <Input placeholder="请输入用户真实姓名" />
             )}
           </FormItem>
-          <FormItem label="所属部门：" >
+          <FormItem label="部门：" >
             {getFieldDecorator('userDept')(
               <Select
                 onSelect={this.onChangeDept}

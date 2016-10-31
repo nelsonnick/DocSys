@@ -49,4 +49,12 @@ public abstract class BaseLogin<M extends BaseLogin<M>> extends Model<M> impleme
 		return get("state");
 	}
 
+	public void setIp(java.lang.String ip) {
+		set("ip", ip);
+	}
+
+	public java.lang.String getIp() {
+		return get("ip");
+	}
+
 }

@@ -85,7 +85,7 @@ export default class DataTable extends React.Component {
             operate.push();
           } else if (record.lflow.toString() === '转出') {
             operate.push(<span className="ant-divider" />);
-            operate.push();
+            operate.push(<a className="btn btn-xs btn-success" href={`/flow/print?lid=${record.lid}`} >打印</a>);
           } else {
             operate.push(<span className="ant-divider" />);
           }

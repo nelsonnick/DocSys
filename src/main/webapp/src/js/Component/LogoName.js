@@ -10,5 +10,7 @@ function LogoName({ name }) {
 LogoName.propTypes = {
   name: React.PropTypes.required,
 };
-
+LogoName.defaultProps = {
+  name: '未设置',
+};
 export default LogoName;

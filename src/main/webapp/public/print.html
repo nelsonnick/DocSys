@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#print").click(function() {
+                $(".my_show").jqprint();
+            });
+        });
+    </script>
+    <style media="print">
+        .Noprint {
+            display: none;
+        }
+        .PageNext {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+<center class="Noprint">
+    <p>
+        <object id="WebBrowser" classid="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2" height="0" width="0"></object>
+        <button type="button"  class="btn btn-success"  onclick="window.print()">直接打印</button>
+        <button type="button"  class="btn btn-default"  onclick="history.go(-1)">返回上级</button>
+        <br />
+    </p>
+</center>
+<div class="my_show">
+    <div  style="position:absolute; top: 0em; left:1.5em;"><span>流动人员人事档案转递通知单存根</span></div>
+<div>
+    第${(fnumber)!''}号
+</div>
+<div>
+    已将&nbsp;&nbsp;${(pname)!''}&nbsp;&nbsp;同志的档案共___________卷，材料共___________份，转
+</div>
+<div>
+    往&nbsp;&nbsp;${(ldirect)!''}&nbsp;&nbsp;。
+</div>
+<div>
+    经办人（签名）${(uname)!''}    发件单位（盖章）${(dname)!''}
+</div>
+<div>
+${(yyyy)!''}年${(mm)!''}月${(dd)!''}日
+</div>
+<div>
+    -------------------------------------------------------------------------------------
+</div>
+<div>
+    流动人员人事档案转递通知单
+</div>
+<div>
+    第${(fnumber)!''}号
+</div>
+<div>
+    ${(ldirect)!''}：
+</div>
+<div>
+    兹将&nbsp;&nbsp;${(pname)!''}&nbsp;&nbsp;同志的档案材料转去，请按档案内所列目录清点查收，
+</div>
+<div>
+    并将回执退回。
+</div>
+<div>
+    经办人（签名）${(uname)!''}    发件单位（盖章）${(dname)!''}
+</div>
+<div>
+    ${(yyyy)!''}年${(mm)!''}月${(dd)!''}日
+</div>
+<div>
+    -------------------------------------------------------------------------------------
+</div>
+<div>
+    ${(dname)!''}：
+</div>
+<div>
+    你处于${(yyyy)!''}年${(mm)!''}月${(dd)!''}日转来第${(fnumber)!''}号存档人员转递通知单中所开列
+</div>
+<div>
+    的&nbsp;&nbsp;${(pname)!''}&nbsp;&nbsp;同志的档案共_____卷，材料共_____份，已全部收到，现将
+</div>
+<div>
+    回执退回，请查收。
+</div>
+<div>
+    收件人（签名）                   收件单位（盖章）
+</div>
+<div>
+    年    月    日
+</div>
+<div>
+    回执邮寄地址：${(daddress)!''}&nbsp;&nbsp;${(dname)!''}&nbsp;&nbsp;邮编：250000&nbsp;&nbsp;电话：${(dphone)!''}
+</div>
+<div>
+    回
+</div>
+<div>
+    执
+</div>
+<div>
+    ----------------------------------------------------------------
+</div>
+    </div>
+</body>
+</html>

@@ -31,6 +31,17 @@ Table: department
  other   | VARCHAR(255) | YES  |     |         |         
 ---------+--------------+------+-----+---------+---------
 
+Table: export
+-------+--------------+------+-----+---------+---------
+ Field | Type         | Null | Key | Default | Remarks 
+-------+--------------+------+-----+---------+---------
+ id    | INT(10)      | NO   | PRI |         |         
+ uid   | INT(10)      | YES  |     |         |         
+ time  | DATETIME(19) | YES  |     |         |         
+ type  | VARCHAR(255) | YES  |     |         |         
+ sql   | VARCHAR(999) | YES  |     |         |         
+-------+--------------+------+-----+---------+---------
+
 Table: file
 --------+--------------+------+-----+---------+---------
  Field  | Type         | Null | Key | Default | Remarks 
@@ -69,6 +80,7 @@ Table: login
  pass  | VARCHAR(255) | YES  |     |         |         
  time  | DATETIME(19) | YES  |     |         |         
  state | VARCHAR(255) | YES  |     |         |         
+ ip    | VARCHAR(255) | YES  |     |         |         
 -------+--------------+------+-----+---------+---------
 
 Table: person

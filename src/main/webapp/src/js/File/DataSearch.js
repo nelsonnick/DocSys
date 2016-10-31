@@ -42,22 +42,22 @@ class DataSearch extends React.Component {
     return (
       <Row type="flex" justify="end">
         <Form inline onSubmit={this.handleSubmit}>
-          <FormItem label="档案编号：" >
+          <FormItem label="编号：" >
             {getFieldDecorator('fileNumber')(
               <Input placeholder="请输入档案编号" />
             )}
           </FormItem>
-          <FormItem label="真实姓名：" >
+          <FormItem label="姓名：" >
             {getFieldDecorator('personName')(
               <Input placeholder="请输入市民真实姓名" />
             )}
           </FormItem>
-          <FormItem label="证件号码：" >
+          <FormItem label="证件：" >
             {getFieldDecorator('personNumber')(
               <Input placeholder="请输入市民证件号码" />
             )}
           </FormItem>
-          <FormItem label="所属部门：" >
+          <FormItem label="部门：" >
             {getFieldDecorator('fileDept')(
               <Select
                 onSelect={this.onChangeDept}
@@ -70,7 +70,7 @@ class DataSearch extends React.Component {
               </Select>
             )}
           </FormItem>
-          <FormItem label="档案状态：" >
+          <FormItem label="状态：" >
             {getFieldDecorator('fileState')(
               <Select
                 onSelect={this.onChangeState}

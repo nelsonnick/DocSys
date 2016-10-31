@@ -5,7 +5,13 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.wts.entity.*;
 import com.wts.entity.model.*;
+import com.wts.entity.model.Department;
+import com.wts.entity.model.File;
+import com.wts.entity.model.Flow;
+import com.wts.entity.model.Person;
+import com.wts.entity.model.User;
 import com.wts.interceptor.LoginInterceptor;
 import com.wts.util.IDNumber;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -73,11 +79,9 @@ public class FlowController extends Controller {
   public void count() {
     if (getPara("FileDept").equals("")) {
       String count = Db.queryLong("SELECT COUNT(*) FROM (((flow INNER JOIN user ON flow.uid=user.id) INNER JOIN file ON flow.fid=file.id) INNER JOIN person ON flow.pid=person.id) INNER JOIN department ON flow.did=department.id WHERE person.name LIKE '%" + getPara("PersonName") + "%' AND person.number LIKE '%" + getPara("PersonNumber") + "%' AND file.number LIKE '%" + getPara("FileNumber") + "%' AND flow.flow LIKE '%" + getPara("FlowFlow") + "%'").toString();
-      System.out.println(count);
       renderText(count);
     } else {
       String count = Db.queryLong("SELECT COUNT(*) FROM (((flow INNER JOIN user ON flow.uid=user.id) INNER JOIN file ON flow.fid=file.id) INNER JOIN person ON flow.pid=person.id) INNER JOIN department ON flow.did=department.id WHERE person.name LIKE '%" + getPara("PersonName") + "%' AND person.number LIKE '%" + getPara("PersonNumber") + "%' AND file.number LIKE '%" + getPara("FileNumber") + "%' AND flow.flow LIKE '%" + getPara("FlowFlow") + "%' AND file.did = " + getPara("FileDept")).toString();
-      System.out.println(count);
       renderText(count);
     }
   }
@@ -237,7 +241,7 @@ public class FlowController extends Controller {
   /**
    * 导出
    */
-  @Before(LoginInterceptor.class)
+  @Before({Tx.class,LoginInterceptor.class})
   public void export() throws IOException {
     String[] title={"档案编号","姓名","证件号码","档案位置","流动类型","转递方式","转移备注","档案流向","流转原因","办理时间","经办人员"};
     //创建Excel工作簿
@@ -294,6 +298,12 @@ public class FlowController extends Controller {
         sql=sql+"and "+ getSessionAttr("FileDept1");
       }
     }
+    Export e =new Export();
+    e.set("uid",((User) getSessionAttr("user")).get("id").toString())
+            .set("time", new Date())
+            .set("type","业务导出")
+            .set("sql",sql)
+            .save();
     l=Flow.dao.find(sql);
 
     for (int i = 0; i < l.size(); i++) {
@@ -323,7 +333,7 @@ public class FlowController extends Controller {
     }
     HttpServletResponse response = getResponse();
     response.setContentType("application/octet-stream");
-    response.setHeader("Content-Disposition", "attachment;filename=export.xlsx");
+    response.setHeader("Content-Disposition", "attachment;filename=FlowExport.xlsx");
     OutputStream out = response.getOutputStream();
     workbook.write(out);
     out.flush();
@@ -331,7 +341,32 @@ public class FlowController extends Controller {
     workbook.close();
     renderNull() ;
   }
-
+  /**
+   * 打印
+   *@param: lid
+   */
+  @Before({Tx.class,LoginInterceptor.class})
+  public void print() {
+    Flow l = Flow.dao.findById(getPara("lid"));
+    User u =User.dao.findById(l.getInt("uid"));
+    File f = File.dao.findById(l.getInt("fid"));
+    Department d = Department.dao.findById(l.getInt("did"));
+    Person p =Person.dao.findById(l.getInt("pid"));
+    setAttr("fnumber",f.get("number").toString());
+    setAttr("uname",u.get("name").toString());
+    setAttr("pname",p.get("name").toString());
+    setAttr("dname",d.get("name").toString());
+    setAttr("dphone",d.get("phone").toString());
+    setAttr("ldirect",l.get("direct").toString());
+    setAttr("daddress",d.get("address").toString());
+    SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
+    SimpleDateFormat MM = new SimpleDateFormat("MM");
+    SimpleDateFormat dd = new SimpleDateFormat("dd");
+    setAttr("yyyy",yyyy.format(l.get("time")));
+    setAttr("mm",MM.format(l.get("time")));
+    setAttr("dd",dd.format(l.get("time")));
+    render("/dist/print.html");
+  }
 
 }
 

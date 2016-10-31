@@ -16,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.List;
 
 import static com.wts.util.EncryptUtils.encodeMD5String;
@@ -323,7 +324,7 @@ public class UserController extends Controller {
   /**
    * 导出
    */
-  @Before(LoginInterceptor.class)
+  @Before({Tx.class,LoginInterceptor.class})
   public void export() throws IOException {
     String[] title={"序号","姓名","证件号码","联系电话","登录名称","所属部门","状态","备注"};
     //创建Excel工作簿
@@ -339,15 +340,23 @@ public class UserController extends Controller {
       cell.setCellValue(title[i]);
     }
     List<User> u;
+    String sql;
     if (getSessionAttr("UserName").equals("") && getSessionAttr("UserDept").equals("")) {
-      u = User.dao.find("select user.*,department.name as dname from user inner join department on user.did=department.id");
+      sql="select user.*,department.name as dname from user inner join department on user.did=department.id";
     }else if (!getSessionAttr("UserName").equals("") && getSessionAttr("UserDept").equals("")) {
-      u = User.dao.find("select user.*,department.name as dname from user inner join department on user.did=department.id where user.name like '%"+getSessionAttr("UserName")+"%'");
+      sql="select user.*,department.name as dname from user inner join department on user.did=department.id where user.name like '%"+getSessionAttr("UserName")+"%'";
     }else if(getSessionAttr("UserName").equals("") && !getSessionAttr("UserDept").equals("")){
-      u = User.dao.find("select user.*,department.name as dname from user inner join department on user.did=department.id where user.did = "+getSessionAttr("UserDept"));
+      sql="select user.*,department.name as dname from user inner join department on user.did=department.id where user.did = "+getSessionAttr("UserDept");
     }else {
-      u = User.dao.find("select user.*,department.name as dname from user inner join department on user.did=department.id where user.name like '%"+getSessionAttr("UserName")+"%' and user.did = "+getSessionAttr("UserDept"));
+      sql="select user.*,department.name as dname from user inner join department on user.did=department.id where user.name like '%"+getSessionAttr("UserName")+"%' and user.did = "+getSessionAttr("UserDept");
+
     }
+    Export e =new Export();
+    e.set("time", new Date())
+            .set("type","用户导出")
+            .set("sql",sql)
+            .save();
+    u = User.dao.find(sql);
     for (int i = 0; i < u.size(); i++) {
       XSSFRow nextRow = sheet.createRow(i+1);
       XSSFCell cell2 = nextRow.createCell(0);
@@ -374,7 +383,7 @@ public class UserController extends Controller {
 
     HttpServletResponse response = getResponse();
     response.setContentType("application/octet-stream");
-    response.setHeader("Content-Disposition", "attachment;filename=export.xlsx");
+    response.setHeader("Content-Disposition", "attachment;filename=UserExport.xlsx");
     OutputStream out = response.getOutputStream();
     workbook.write(out);
     out.flush();

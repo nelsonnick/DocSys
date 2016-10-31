@@ -58,3 +58,4 @@ export const FlowReason = '/flow/reason';                    // 检测原因    
 export const FlowCount = '/flow/count';                      // 数据总数     --参数：PageNumber,PageSize,FileNumber,FileDept,PersonName,PersonNumber,FlowFlow
 export const FlowQuery = '/flow/query';                      // 数据查询     --参数：PageNumber,PageSize,FileNumber,FileDept,PersonName,PersonNumber,FlowFlow
 export const FlowDownload = '/flow/download';                // 检查导出     --参数：
+export const FlowPrint = '/flow/print';                      // 打印     --参数：
