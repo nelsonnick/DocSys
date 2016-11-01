@@ -108,6 +108,11 @@ export default class DataTable extends React.Component {
       key: 'phone',
       width: 150,
     }, {
+      title: '邮政编码',
+      dataIndex: 'code',
+      key: 'code',
+      width: 150,
+    }, {
       title: '办公地点',
       dataIndex: 'address',
       key: 'address',
@@ -132,6 +137,7 @@ export default class DataTable extends React.Component {
             departmentState={record.state}
             departmentOther={record.other}
             departmentNumber={record.number}
+            departmentCode={record.code}
             afterEdit={this.afterEdit}
           />
         );

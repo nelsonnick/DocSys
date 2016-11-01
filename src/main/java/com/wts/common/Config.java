@@ -37,6 +37,7 @@ public class Config extends JFinalConfig {
         me.add("/person", PersonController.class);
         me.add("/file", FileController.class);
         me.add("/flow", FlowController.class);
+        me.add("/count", CountController.class);
     }
 
     /**

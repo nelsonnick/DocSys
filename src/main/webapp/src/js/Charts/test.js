@@ -1,9 +1,9 @@
 import echarts from 'echarts';
 
 // 基于准备好的dom，初始化echarts实例
-const myChart = echarts.init(document.getElementById('op'));
-// 绘制图表
 
+// 绘制图表
+const myChart = echarts.init(document.getElementById('op'));
 option = {
   title : {
     text: '业务办理量分析',
@@ -21,15 +21,15 @@ option = {
   },
   series : [
     {
-      name: '访问来源',
+      name: '业务分析',
       type: 'pie',
       radius : '55%',
       center: ['50%', '60%'],
       data:[
-        {value:335, name:'档案存放'},
-        {value:310, name:'档案提取'},
-        {value:234, name:'修改人员信息'},
-        {value:135, name:'修改档案信息'}
+        {value:this.props.FlowIn, name:'档案存放'},
+        {value:this.props.FlowOut, name:'档案提取'},
+        {value:this.props.FlowChange, name:'修改人员信息'},
+        {value:this.props.PersonChange, name:'修改档案信息'}
       ],
       itemStyle: {
         emphasis: {

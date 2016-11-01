@@ -37,7 +37,7 @@ export default class EditLink extends React.Component {
           'url': AjaxFunction.DepartmentCount,
           'dataType': 'text',
           'data': {
-            'QueryString': '',
+            'DeptName': '',
           },
           'success': (DeptCount) => {
             $.ajax({

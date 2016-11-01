@@ -11,6 +11,7 @@ export const DepartmentAddress = '/department/address';      // 检测地址    
 export const DepartmentPhone = '/department/phone';          // 检测电话     --参数：phone
 export const DepartmentNumber = '/department/number';        // 检测编号     --参数：number
 export const DepartmentNumbers = '/department/numbers';      // 检测编号     --参数：number
+export const DepartmentCode = '/department/code';            // 检测邮编     --参数：code
 export const DepartmentList = '/department/list';            // 获取部门     --参数：无
 export const DepartmentDownload = '/department/download';    // 检查导出     --参数：QueryString
 
@@ -20,6 +21,7 @@ export const UserName = '/user/name';                        // 检测名称    
 export const UserNumber = '/user/number';                    // 检测证件     --参数：number
 export const UserPhone = '/user/phone';                      // 检测电话     --参数：number
 export const UserLogin = '/user/login';                      // 检测名称     --参数：login
+export const UserLogins = '/user/logins';                    // 检测名称     --参数：logins
 export const UserDept = '/user/dept';                        // 检测部门     --参数：dept
 export const UserAdd = '/user/add';                          // 添加角色     --参数：name,other
 export const UserDelete = '/user/delete';                    // 删除角色     --参数：id
@@ -59,3 +61,9 @@ export const FlowCount = '/flow/count';                      // 数据总数    
 export const FlowQuery = '/flow/query';                      // 数据查询     --参数：PageNumber,PageSize,FileNumber,FileDept,PersonName,PersonNumber,FlowFlow
 export const FlowDownload = '/flow/download';                // 检查导出     --参数：
 export const FlowPrint = '/flow/print';                      // 打印     --参数：
+
+export const FlowIn = '/count/flowIn';                       //      --参数：userDept
+export const FlowOut = '/count/flowOut';                       //      --参数：userDept
+export const FlowChange = '/count/flowChange';                       //      --参数：userDept
+export const PersonChange = '/count/personChange';                       //      --参数：userDept
+

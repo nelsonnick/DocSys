@@ -101,6 +101,18 @@ public class UserController extends Controller {
     }
   }
   /**
+   * 核查用户登录名称
+   *@param: logins
+   */
+  @Before(LoginInterceptor.class)
+  public void logins() {
+    if (!getPara("login").matches("[a-zA-Z0-9]{4,12}")) {
+      renderText("登录名称必须为4到12位的数字或字母组合!");
+    } else {
+      renderText("OK");
+    }
+  }
+  /**
    * 核查用户所属部门
    *@param: name
    */
@@ -351,11 +363,11 @@ public class UserController extends Controller {
       sql="select user.*,department.name as dname from user inner join department on user.did=department.id where user.name like '%"+getSessionAttr("UserName")+"%' and user.did = "+getSessionAttr("UserDept");
 
     }
-    Export e =new Export();
-    e.set("time", new Date())
-            .set("type","用户导出")
-            .set("sql",sql)
-            .save();
+//    Export e =new Export();
+//    e.set("time", new Date())
+//            .set("type","用户导出")
+//            .set("sql",sql)
+//            .save();
     u = User.dao.find(sql);
     for (int i = 0; i < u.size(); i++) {
       XSSFRow nextRow = sheet.createRow(i+1);

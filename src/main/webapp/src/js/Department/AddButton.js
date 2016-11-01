@@ -54,6 +54,7 @@ export default class AddButton extends React.Component {
           'number': values.departmentNumber,
           'state': values.departmentState,
           'other': values.departmentOther || '',
+          'code': values.departmentCode,
         },
         'success': (data) => {
           if (data.toString() === 'OK') {

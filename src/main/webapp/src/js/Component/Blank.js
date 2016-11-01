@@ -13,7 +13,7 @@ export default class Blank extends React.Component {
             <Card title="实名使用" >系统后台对每名用户的任意一笔业务操作均进行了详细记录。为明晰责权，请保管好自己的用户名及密码，不得转借他人。</Card>
           </Col>
           <Col span="8">
-            <Card title="着重说明" >本系统开发时间紧张，开发过程中难免出现失误。如遇系统异常，请及时反馈。</Card>
+            <Card title="着重说明" >本系统开发时间紧张，开发过程中难免出现失误。如遇系统异常，或有其它业务需求，请及时反馈，以便于提升工作效率。</Card>
           </Col>
         </Row>
         <Row>
@@ -27,7 +27,10 @@ export default class Blank extends React.Component {
             <Card title="编号规则" >3位部门编号+8位日期编号+3位顺序号，每个部门每日收取的最大档案数量为999。</Card>
           </Col>
           <Col span="8">
-            <Card title="其他事项" >温暖人社，不忘初心！</Card>
+            <Card title="技术支持" >
+              前端：webpack+ReactJS+Ant Design+Bootstrap+echart<br />
+              后端：JAVA,Jfinal<br />
+            </Card>
           </Col>
         </Row>
       </div>

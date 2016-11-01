@@ -25,14 +25,6 @@ public abstract class BaseChange<M extends BaseChange<M>> extends Model<M> imple
 		return get("uid");
 	}
 
-	public void setFid(java.lang.Integer fid) {
-		set("fid", fid);
-	}
-
-	public java.lang.Integer getFid() {
-		return get("fid");
-	}
-
 	public void setDid(java.lang.Integer did) {
 		set("did", did);
 	}
@@ -47,6 +39,14 @@ public abstract class BaseChange<M extends BaseChange<M>> extends Model<M> imple
 
 	public java.lang.Integer getLid() {
 		return get("lid");
+	}
+
+	public void setFid(java.lang.Integer fid) {
+		set("fid", fid);
+	}
+
+	public java.lang.Integer getFid() {
+		return get("fid");
 	}
 
 	public void setTime(java.util.Date time) {
@@ -71,6 +71,22 @@ public abstract class BaseChange<M extends BaseChange<M>> extends Model<M> imple
 
 	public java.lang.String getReasonAfter() {
 		return get("reasonAfter");
+	}
+
+	public void setTypeBefore(java.lang.String typeBefore) {
+		set("typeBefore", typeBefore);
+	}
+
+	public java.lang.String getTypeBefore() {
+		return get("typeBefore");
+	}
+
+	public void setTypeAfter(java.lang.String typeAfter) {
+		set("typeAfter", typeAfter);
+	}
+
+	public java.lang.String getTypeAfter() {
+		return get("typeAfter");
 	}
 
 	public void setDirectBefore(java.lang.String directBefore) {
@@ -103,22 +119,6 @@ public abstract class BaseChange<M extends BaseChange<M>> extends Model<M> imple
 
 	public java.lang.String getRemarkAfter() {
 		return get("remarkAfter");
-	}
-
-	public void setTypeBefore(java.lang.String typeBefore) {
-		set("typeBefore", typeBefore);
-	}
-
-	public java.lang.String getTypeBefore() {
-		return get("typeBefore");
-	}
-
-	public void setTypeAfter(java.lang.String typeAfter) {
-		set("typeAfter", typeAfter);
-	}
-
-	public java.lang.String getTypeAfter() {
-		return get("typeAfter");
 	}
 
 }

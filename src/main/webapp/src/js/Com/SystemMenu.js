@@ -56,3 +56,4 @@ export default class SystemMenu extends React.Component {
 SystemMenu.propTypes = {
   menuLabel: React.PropTypes.func,
 };
+// <Menu.Item key="Charts"><span><Icon type="area-chart" />统计分析</span></Menu.Item>

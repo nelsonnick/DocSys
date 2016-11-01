@@ -362,6 +362,7 @@ public class FlowController extends Controller {
     setAttr("pname",p.get("name").toString());
     setAttr("dname",d.get("name").toString());
     setAttr("dphone",d.get("phone").toString());
+    setAttr("dcode",d.get("code").toString());
     setAttr("ldirect",l.get("direct").toString());
     setAttr("daddress",d.get("address").toString());
     SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");

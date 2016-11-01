@@ -86,7 +86,7 @@ class EditFrom extends React.Component {
     } else {
       $.ajax({
         'type': 'POST',
-        'url': AjaxFunction.UserLogin,
+        'url': AjaxFunction.UserLogins,
         'dataType': 'text',
         'data': { 'login': value },
         'success': (data) => {
@@ -105,11 +105,11 @@ class EditFrom extends React.Component {
 
   render() {
     const { getFieldDecorator, getFieldError, isFieldValidating } = this.props.form;
-    const { userId, userName, userNumber, userPhone, userLogin, userState, userOther, userDept, deptCount, deptList } = this.props;
+    const { userId, userName, userNumber, userPhone, userLogin, userState, userOther, userDept } = this.props;
 
     const children = [];
-    for (let i = 0; i < deptCount; i++) {
-      children.push(<Option value={deptList[i][0]}>{deptList[i][1]}</Option>);
+    for (let i = 0; i < this.props.deptCount; i++) {
+      children.push(<Option value={this.props.deptList[i][0]}>{this.props.deptList[i][1]}</Option>);
     }
 
     const formItemLayout = {

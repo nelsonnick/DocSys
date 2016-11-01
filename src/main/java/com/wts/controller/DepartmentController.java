@@ -148,6 +148,17 @@ public class DepartmentController extends Controller {
     }
   }
   /**
+   * 核查部门邮编
+   */
+  @Before(LoginInterceptor.class)
+  public void code() {
+    if (!getPara("code").matches("\\d{6}")) {
+      renderText("邮政编码必须为6位数字!");
+    } else {
+      renderText("OK");
+    }
+  }
+  /**
    * 新增部门
    */
   @Before({Tx.class,LoginInterceptor.class})
@@ -164,6 +175,8 @@ public class DepartmentController extends Controller {
       renderText("该部门名称数据库中已存在，请使用其他名称!");
     } else if (!getPara("phone").matches("\\d{8}")) {
       renderText("部门电话必须为8位数字!");
+    } else if (!getPara("code").matches("\\d{6}")) {
+      renderText("邮政编码必须为6位数字!");
     } else if (getPara("address").length() < 3) {
       renderText("部门地址必须超过3个字符!");
     } else if (getPara("number").matches("[\u4e00-\u9fa5]+")) {
@@ -177,6 +190,7 @@ public class DepartmentController extends Controller {
       department.set("name", getPara("name").trim())
               .set("phone", getPara("phone").trim())
               .set("address", getPara("address").trim())
+              .set("code", getPara("code").trim())
               .set("state", getPara("state").trim())
               .set("number", getPara("number").trim())
               .set("other", getPara("other").trim());
@@ -254,6 +268,7 @@ public class DepartmentController extends Controller {
       if (department.get("name").equals(getPara("name"))
               && department.get("phone").equals(getPara("phone"))
               && department.get("address").equals(getPara("address"))
+              && department.get("code").equals(getPara("code"))
               && department.get("other").equals(getPara("other"))
               && department.get("number").toString().equals(getPara("number"))
               ) {
@@ -268,6 +283,8 @@ public class DepartmentController extends Controller {
         renderText("部门名称必须超过3个汉字!");
       } else if (!getPara("phone").matches("\\d{8}")) {
         renderText("部门电话必须为8位数字!");
+      } else if (!getPara("code").matches("\\d{6}")) {
+        renderText("邮政编码必须为6位数字!");
       } else if (getPara("address").length() < 3) {
         renderText("部门地址必须超过3个字符!");
       } else if (getPara("number").matches("[\u4e00-\u9fa5]+")) {
@@ -282,6 +299,7 @@ public class DepartmentController extends Controller {
                 .set("name",getPara("name"))
                 .set("phone",getPara("phone"))
                 .set("address",getPara("address"))
+                .set("code",getPara("code"))
                 .set("other",getPara("other"))
                 .set("number",getPara("number"))
                 .update()) {
@@ -294,25 +312,24 @@ public class DepartmentController extends Controller {
   }
   /**
    * 检查导出
-   *@param: QueryString
+   *@param: DeptName
    */
   @Before(LoginInterceptor.class)
   public void download() {
     List<Department> departments;
-    if (getPara("QueryString").equals("") || getPara("QueryString")==null){
+    if (getPara("DeptName").equals("") || getPara("DeptName")==null){
       departments= Department.dao.find("select * from department");
     }else{
-      departments= Department.dao.find("select * from department where name like '%"+getPara("QueryString")+"%'");
+      departments= Department.dao.find("select * from department where name like '%"+getPara("DeptName")+"%'");
     }
-
     if (departments.size()>100) {
-      setSessionAttr("DepartmentQueryString", "");
+      setSessionAttr("Dept", "");
       renderText("导出数据数量超过上限！");
     }else{
-      if(getPara("QueryString")==null){
-        setSessionAttr("DepartmentQueryString", "");
+      if(getPara("DeptName")==null){
+        setSessionAttr("Dept", "");
       }else {
-        setSessionAttr("DepartmentQueryString", getPara("QueryString"));
+        setSessionAttr("Dept", getPara("DeptName"));
       }
       renderText("OK");
     }
@@ -322,7 +339,7 @@ public class DepartmentController extends Controller {
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void export() throws IOException {
-    String[] title={"序号","部门名称","部门编号","联系电话","联系地址","状态","备注"};
+    String[] title={"序号","部门名称","部门编号","联系电话","联系地址","邮政编码","状态","备注"};
     //创建Excel工作簿
     XSSFWorkbook workbook = new XSSFWorkbook();
     //创建一个工作表
@@ -335,13 +352,13 @@ public class DepartmentController extends Controller {
       cell=row.createCell(i);
       cell.setCellValue(title[i]);
     }
-    Export e =new Export();
-    e.set("time", new Date())
-            .set("type","部门导出")
-            .set("sql","select * from department where name like '%"+getSessionAttr("DepartmentQueryString")+"%'")
-            .save();
-    List<Department> d= Department.dao.find("select * from department where name like '%"+getSessionAttr("DepartmentQueryString")+"%'");
-
+//    Export e =new Export();
+//    e.set("time", new Date())
+//            .set("uid",null)
+//            .set("type","部门导出")
+//            .set("sql","select * from department where name like '%"+getSessionAttr("Dept")+"%'")
+//            .save();
+    List<Department> d= Department.dao.find("select * from department where name like '%"+getSessionAttr("Dept")+"%'");
     for (int i = 0; i < d.size(); i++) {
       XSSFRow nextRow = sheet.createRow(i+1);
       XSSFCell cell2 = nextRow.createCell(0);
@@ -355,10 +372,12 @@ public class DepartmentController extends Controller {
       cell2 = nextRow.createCell(4);
       cell2.setCellValue(d.get(i).get("address").toString());
       cell2 = nextRow.createCell(5);
+      cell2.setCellValue(d.get(i).get("code").toString());
+      cell2 = nextRow.createCell(6);
       cell2.setCellValue(d.get(i).get("state").toString());
 
-      cell2 = nextRow.createCell(6);
-      if (d.get(i).get("remark") == null) {
+      cell2 = nextRow.createCell(7);
+      if (d.get(i).get("other") == null) {
         cell2.setCellValue("");
       } else {
         cell2.setCellValue(d.get(i).get("other").toString());

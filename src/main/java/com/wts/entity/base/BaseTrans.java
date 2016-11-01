@@ -161,28 +161,12 @@ public abstract class BaseTrans<M extends BaseTrans<M>> extends Model<M> impleme
 		return get("infoBefore");
 	}
 
-	public void setInfoeAfter(java.lang.String infoeAfter) {
-		set("infoeAfter", infoeAfter);
+	public void setInfoAfter(java.lang.String infoAfter) {
+		set("infoAfter", infoAfter);
 	}
 
-	public java.lang.String getInfoeAfter() {
-		return get("infoeAfter");
-	}
-
-	public void setPremarkBefore(java.lang.String premarkBefore) {
-		set("premarkBefore", premarkBefore);
-	}
-
-	public java.lang.String getPremarkBefore() {
-		return get("premarkBefore");
-	}
-
-	public void setPremarkAfter(java.lang.String premarkAfter) {
-		set("premarkAfter", premarkAfter);
-	}
-
-	public java.lang.String getPremarkAfter() {
-		return get("premarkAfter");
+	public java.lang.String getInfoAfter() {
+		return get("infoAfter");
 	}
 
 	public void setRetireBefore(java.lang.String retireBefore) {
@@ -199,6 +183,22 @@ public abstract class BaseTrans<M extends BaseTrans<M>> extends Model<M> impleme
 
 	public java.lang.String getRetireAfter() {
 		return get("retireAfter");
+	}
+
+	public void setPremarkBefore(java.lang.String premarkBefore) {
+		set("premarkBefore", premarkBefore);
+	}
+
+	public java.lang.String getPremarkBefore() {
+		return get("premarkBefore");
+	}
+
+	public void setPremarkAfter(java.lang.String premarkAfter) {
+		set("premarkAfter", premarkAfter);
+	}
+
+	public java.lang.String getPremarkAfter() {
+		return get("premarkAfter");
 	}
 
 	public void setFremarkBefore(java.lang.String fremarkBefore) {

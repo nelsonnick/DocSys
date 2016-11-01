@@ -54,6 +54,7 @@ export default class EditLink extends React.Component {
           'address': values.departmentAddress,
           'other': values.departmentOther || '',
           'number': values.departmentNumber,
+          'code': values.departmentCode,
         },
         'success': (data) => {
           if (data.toString() === 'OK') {
@@ -93,7 +94,7 @@ export default class EditLink extends React.Component {
   }
 
   render() {
-    const { departmentId, departmentName, departmentPhone, departmentAddress, departmentState, departmentOther, departmentNumber } = this.props;
+    const { departmentId, departmentName, departmentPhone, departmentAddress, departmentState, departmentOther, departmentNumber, departmentCode } = this.props;
     return (
       <span>
         <a onClick={this.showModal} className="btn btn-primary btn-xs" >修改</a>
@@ -119,6 +120,7 @@ export default class EditLink extends React.Component {
             departmentState={departmentState}
             departmentOther={departmentOther}
             departmentNumber={departmentNumber}
+            departmentCode={departmentCode}
           />
         </Modal>
       </span>
@@ -133,5 +135,6 @@ EditLink.propTypes = {
   departmentState: React.PropTypes.string,
   departmentOther: React.PropTypes.string,
   departmentNumber: React.PropTypes.string,
+  departmentCode: React.PropTypes.string,
   afterEdit: React.PropTypes.func,
 };

@@ -11,14 +11,6 @@ import java.util.Date;
 import static com.wts.util.EncryptUtils.encodeMD5String;
 
 public class MainController extends Controller {
-public void l(){
-  User user=new User();
-  user.set("name","管理员");
-  user.set("did","0");
-  setSessionAttr("user",user);
-  System.out.println(getSessionAttr("user").toString());
-  renderText(getSessionAttr("user").toString());
-}
     /**
      * 主界面
      * */

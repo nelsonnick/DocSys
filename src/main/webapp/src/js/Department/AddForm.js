@@ -12,6 +12,7 @@ class AddFrom extends React.Component {
     this.departmentPhoneCheck = this.departmentPhoneCheck.bind(this);
     this.departmentAddressCheck = this.departmentAddressCheck.bind(this);
     this.departmentNumberCheck = this.departmentNumberCheck.bind(this);
+    this.departmentCodeCheck = this.departmentCodeCheck.bind(this);
   }
 
   departmentNameCheck(rule, value, callback) {
@@ -102,7 +103,28 @@ class AddFrom extends React.Component {
       });
     }
   }
-
+  departmentCodeCheck(rule, value, callback) {
+    if (!value) {
+      callback();
+    } else {
+      $.ajax({
+        'type': 'POST',
+        'url': AjaxFunction.DepartmentCode,
+        'dataType': 'text',
+        'data': { 'code': value },
+        'success': (data) => {
+          if (data.toString() === 'OK') {
+            callback();
+          } else {
+            callback(new Error(data.toString()));
+          }
+        },
+        'error': () => {
+          callback(new Error('无法执行后台验证，请重试'));
+        },
+      });
+    }
+  }
   render() {
     const { getFieldDecorator, getFieldError, isFieldValidating } = this.props.form;
     const formItemLayout = {
@@ -174,6 +196,22 @@ class AddFrom extends React.Component {
             ],
           })(
             <Input placeholder="请输入详细地址" />
+          )}
+        </FormItem>
+        <FormItem
+          label="邮政编码"
+          {...formItemLayout}
+          hasFeedback
+          required
+          help={isFieldValidating('departmentCode') ? '校验中...' : (getFieldError('departmentCode') || [])}
+        >
+          {getFieldDecorator('departmentCode', {
+            rules: [
+              { required: true, whitespace: true, message: '必填项' },
+              { validator: this.departmentCodeCheck },
+            ],
+          })(
+            <Input placeholder="请输入6位邮政编码" />
           )}
         </FormItem>
         <FormItem

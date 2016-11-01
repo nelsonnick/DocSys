@@ -49,6 +49,14 @@ public abstract class BaseDepartment<M extends BaseDepartment<M>> extends Model<
 		return get("address");
 	}
 
+	public void setCode(java.lang.String code) {
+		set("code", code);
+	}
+
+	public java.lang.String getCode() {
+		return get("code");
+	}
+
 	public void setState(java.lang.String state) {
 		set("state", state);
 	}
