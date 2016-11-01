@@ -18,11 +18,11 @@ public class _MappingKit {
 	public static void mapping(ActiveRecordPlugin arp) {
 		arp.addMapping("change", "id", Change.class);
 		arp.addMapping("department", "id", Department.class);
-		arp.addMapping("export", "id", Export.class);
 		arp.addMapping("file", "id", File.class);
 		arp.addMapping("flow", "id", Flow.class);
 		arp.addMapping("login", "id", Login.class);
 		arp.addMapping("person", "id", Person.class);
+		arp.addMapping("print", "id", Print.class);
 		arp.addMapping("trans", "id", Trans.class);
 		arp.addMapping("user", "id", User.class);
 	}

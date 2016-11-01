@@ -347,6 +347,11 @@ public class FlowController extends Controller {
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void print() {
+    Print r =new Print();
+    r.set("lid",getPara("lid"))
+            .set("uid",((User) getSessionAttr("user")).get("id").toString())
+            .set("time", new Date())
+            .save();
     Flow l = Flow.dao.findById(getPara("lid"));
     User u =User.dao.findById(l.getInt("uid"));
     File f = File.dao.findById(l.getInt("fid"));

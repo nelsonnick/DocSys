@@ -17,6 +17,14 @@ public abstract class BaseLogin<M extends BaseLogin<M>> extends Model<M> impleme
 		return get("id");
 	}
 
+	public void setTime(java.util.Date time) {
+		set("time", time);
+	}
+
+	public java.util.Date getTime() {
+		return get("time");
+	}
+
 	public void setLogin(java.lang.String login) {
 		set("login", login);
 	}
@@ -31,14 +39,6 @@ public abstract class BaseLogin<M extends BaseLogin<M>> extends Model<M> impleme
 
 	public java.lang.String getPass() {
 		return get("pass");
-	}
-
-	public void setTime(java.util.Date time) {
-		set("time", time);
-	}
-
-	public java.util.Date getTime() {
-		return get("time");
 	}
 
 	public void setState(java.lang.String state) {

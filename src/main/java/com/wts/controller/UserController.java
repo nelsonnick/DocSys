@@ -270,7 +270,7 @@ public class UserController extends Controller {
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
       renderText("要重置的用户不存在，请刷新页面后再试！");
-    }else if(!IDNumber.availableIDNumber(getPara("number"))){
+    }else if(!IDNumber.availableIDNumber(user.get("number").toString())){
       renderText("要重置的用户证件号码有误，请修改证件号码后再试！");
     } else {
       if (user.set("pass", encodeMD5String(user.get("number").toString().substring(user.get("number").toString().length()-8,user.get("number").toString().length()).trim())).update()){
