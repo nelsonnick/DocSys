@@ -31,6 +31,8 @@ export default class User extends React.Component {
       Male: '',          // 女性数量
     };
     this.onChange = this.onChange.bind(this);
+    this.drawChartsA = this.drawChartsA.bind(this);
+    this.drawChartsB = this.drawChartsB.bind(this);
   }
 
   componentWillMount() {
@@ -87,11 +89,6 @@ export default class User extends React.Component {
     });
   }
   onChange(userDept) {
-    this.setState(
-      {
-        CurrentDepartment: userDept,
-      }
-    );
     $.ajax({
       'type': 'POST',
       'url': AjaxFunction.FlowIn,
@@ -100,53 +97,193 @@ export default class User extends React.Component {
         'did': userDept,
       },
       'success': (FlowIn) => {
-        this.setState({ FlowIn });
+        $.ajax({
+          'type': 'POST',
+          'url': AjaxFunction.FlowOut,
+          'dataType': 'text',
+          'data': {
+            'did': userDept,
+          },
+          'success': (FlowOut) => {
+            $.ajax({
+              'type': 'POST',
+              'url': AjaxFunction.FlowChange,
+              'dataType': 'text',
+              'data': {
+                'did': userDept,
+              },
+              'success': (FlowChange) => {
+                $.ajax({
+                  'type': 'POST',
+                  'url': AjaxFunction.PersonChange,
+                  'dataType': 'text',
+                  'data': {
+                    'did': userDept,
+                  },
+                  'success': (PersonChange) => {
+                    $.ajax({
+                      'type': 'POST',
+                      'url': AjaxFunction.MaleIn,
+                      'dataType': 'text',
+                      'data': {
+                        'did': userDept,
+                      },
+                      'success': (MaleIn) => {
+                        $.ajax({
+                          'type': 'POST',
+                          'url': AjaxFunction.MaleOut,
+                          'dataType': 'text',
+                          'data': {
+                            'did': userDept,
+                          },
+                          'success': (MaleOut) => {
+                            $.ajax({
+                              'type': 'POST',
+                              'url': AjaxFunction.FemaleIn,
+                              'dataType': 'text',
+                              'data': {
+                                'did': userDept,
+                              },
+                              'success': (FemaleIn) => {
+                                $.ajax({
+                                  'type': 'POST',
+                                  'url': AjaxFunction.FemaleOut,
+                                  'dataType': 'text',
+                                  'data': {
+                                    'did': userDept,
+                                  },
+                                  'success': (FemaleOut) => {
+                                    this.drawChartsA(FlowIn, FlowOut, FlowChange, PersonChange);
+                                    this.drawChartsB(MaleIn, MaleOut, FemaleIn, FemaleOut);
+                                  },
+                                  'error': () => {
+                                    openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                                  },
+                                });
+                              },
+                              'error': () => {
+                                openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                              },
+                            });
+                          },
+                          'error': () => {
+                            openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                          },
+                        });
+                      },
+                      'error': () => {
+                        openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                      },
+                    });
+                  },
+                  'error': () => {
+                    openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                  },
+                });
+              },
+              'error': () => {
+                openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+              },
+            });
+          },
+          'error': () => {
+            openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+          },
+        });
       },
       'error': () => {
         openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
       },
     });
-    $.ajax({
-      'type': 'POST',
-      'url': AjaxFunction.FlowOut,
-      'dataType': 'text',
-      'data': {
-        'did': userDept,
-      },
-      'success': (FlowOut) => {
-        this.setState({ FlowOut });
-      },
-      'error': () => {
-        openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
-      },
+  }
+  drawChartsA(FlowIn = '0', FlowOut = '0', FlowChange = '', PersonChange = '0') {
+    const myChart = echarts.init(document.getElementById('ChartsA'));
+    myChart.setOption({
+      title: {
+        text: '业务办理量分析',
+        subtext: '',
+        x: 'center',
+      }, tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)',
+      }, legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: ['档案存放', '档案提取', '修改人员信息', '修改档案信息'],
+      }, series: [
+        {
+          name: '业务分析',
+          type: 'pie',
+          radius: '55%',
+          center: ['50%', '60%'],
+          data: [
+            { value: FlowIn, name: '档案存放' },
+            { value: FlowOut, name: '档案提取' },
+            { value: FlowChange, name: '修改人员信息' },
+            { value: PersonChange, name: '修改档案信息' },
+          ],
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
+        },
+      ],
     });
-    $.ajax({
-      'type': 'POST',
-      'url': AjaxFunction.FlowChange,
-      'dataType': 'text',
-      'data': {
-        'did': userDept,
+  }
+  drawChartsB(MaleIn = '0', MaleOut = '0', FemaleIn = '', FemaleOut = '0') {
+    const myChart = echarts.init(document.getElementById('ChartsB'));
+    myChart.setOption({
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+          type: 'shadow',       // 默认为直线，可选为：'line' | 'shadow'
+        },
       },
-      'success': (FlowChange) => {
-        this.setState({ FlowChange });
+      legend: {
+        data: ['男', '女'],
       },
-      'error': () => {
-        openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+      grid: {
+        left: '1%',
+        right: '1%',
+        bottom: '1%',
+        containLabel: true,
       },
-    });
-    $.ajax({
-      'type': 'POST',
-      'url': AjaxFunction.PersonChange,
-      'dataType': 'text',
-      'data': {
-        'did': userDept,
+      xAxis: {
+        type: 'value',
       },
-      'success': (PersonChange) => {
-        this.setState({ PersonChange });
+      yAxis: {
+        type: 'category',
+        data: ['在存', '已提'],
       },
-      'error': () => {
-        openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
-      },
+      series: [
+        {
+          name: '男',
+          type: 'bar',
+          stack: '总量',
+          label: {
+            normal: {
+              show: true,
+              position: 'insideRight',
+            },
+          },
+          data: [MaleIn, MaleOut],
+        },
+        {
+          name: '女',
+          type: 'bar',
+          stack: '总量',
+          label: {
+            normal: {
+              show: true,
+              position: 'insideRight',
+            },
+          },
+          data: [FemaleIn, FemaleOut],
+        },
+      ],
     });
   }
   render() {
@@ -154,16 +291,23 @@ export default class User extends React.Component {
       <QueueAnim>
         <div key="a">
           <Row type="flex" justify="start">
-            <Col span={6}><DataSearch onChange={this.onChange} deptList={this.state.DeptList} userDept={this.state.CurrentDepartment} deptCount={this.state.DeptCount} /></Col>
+            <Col span={24}>请选择部门：<DataSearch onChange={this.onChange} deptList={this.state.DeptList} userDept={this.state.CurrentDepartment} deptCount={this.state.DeptCount} /></Col>
           </Row>
           <Row>
             <span style={{ 'font-size': '5px' }}>&nbsp;&nbsp;&nbsp;</span>
           </Row>
           <Row>
+            <Col span={2} >
+              &nbsp;&nbsp;&nbsp;
+            </Col>
             <Col span={8} >
-              <div id="op" >
-
-              </div>
+              <div id="ChartsA" style={{ 'width': '400px', 'height': '400px' }}></div>
+            </Col>
+            <Col span={2} >
+              &nbsp;&nbsp;&nbsp;
+            </Col>
+            <Col span={8} >
+              <div id="ChartsB" style={{ 'width': '400px', 'height': '400px' }}></div>
             </Col>
           </Row>
         </div>
@@ -171,39 +315,3 @@ export default class User extends React.Component {
     );
   }
 }
-const myChart = echarts.init(document.getElementById('op'));
-
-myChart.setOption({
-  title: {
-    text: '业务办理量分析',
-    subtext: '',
-    x: 'center',
-  }, tooltip: {
-    trigger: 'item',
-    formatter: '{a} <br/>{b} : {c} ({d}%)',
-  }, legend: {
-    orient: 'vertical',
-    left: 'left',
-    data: ['档案存放', '档案提取', '修改人员信息', '修改档案信息'],
-  }, series: [
-    {
-      name: '业务分析',
-      type: 'pie',
-      radius: '55%',
-      center: ['50%', '60%'],
-      data: [
-        { value: this.state.FlowIn, name: '档案存放' },
-        { value: this.state.FlowOut, name: '档案提取' },
-        { value: this.state.FlowChange, name: '修改人员信息' },
-        { value: this.state.PersonChange, name: '修改档案信息' },
-      ],
-      itemStyle: {
-        emphasis: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 0, 0, 0.5)',
-        },
-      },
-    },
-  ],
-});

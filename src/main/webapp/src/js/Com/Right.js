@@ -3,7 +3,7 @@ import Blank from '../Component/Blank.js';
 import File from '../File/Main.js';
 import Flow from '../Flow/Main.js';
 import Pass from '../Pass/Main.js';
-// import Charts from '../Charts/Main.js';
+import Charts from '../Charts/Main.js';
 export default class Right extends React.Component {
   render() {
     let tableCase;
@@ -17,9 +17,9 @@ export default class Right extends React.Component {
       case 'Pass':
         tableCase = <Pass />;
         break;
-      // case 'Charts':
-      //   tableCase = <Charts />;
-      //   break;
+      case 'Charts':
+        tableCase = <Charts />;
+        break;
       default:
         tableCase = <Blank />;
     }

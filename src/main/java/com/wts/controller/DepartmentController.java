@@ -370,9 +370,17 @@ public class DepartmentController extends Controller {
       cell2 = nextRow.createCell(3);
       cell2.setCellValue(d.get(i).get("phone").toString());
       cell2 = nextRow.createCell(4);
-      cell2.setCellValue(d.get(i).get("address").toString());
+      if (d.get(i).get("address") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(d.get(i).get("address").toString());
+      }
       cell2 = nextRow.createCell(5);
-      cell2.setCellValue(d.get(i).get("code").toString());
+      if (d.get(i).get("code") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(d.get(i).get("code").toString());
+      }
       cell2 = nextRow.createCell(6);
       cell2.setCellValue(d.get(i).get("state").toString());
 

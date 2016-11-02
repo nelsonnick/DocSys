@@ -321,7 +321,11 @@ public class FlowController extends Controller {
       cell2 = nextRow.createCell(5);
       cell2.setCellValue(l.get(i).get("ltype").toString());
       cell2 = nextRow.createCell(6);
-      cell2.setCellValue(l.get(i).get("lremark").toString());
+      if (l.get(i).get("lremark") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(l.get(i).get("lremark").toString());
+      }
       cell2 = nextRow.createCell(7);
       cell2.setCellValue(l.get(i).get("ldirect").toString());
       cell2 = nextRow.createCell(8);

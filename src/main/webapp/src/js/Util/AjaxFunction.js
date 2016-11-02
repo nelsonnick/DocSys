@@ -66,4 +66,7 @@ export const FlowIn = '/count/flowIn';                       //      --参数：
 export const FlowOut = '/count/flowOut';                       //      --参数：userDept
 export const FlowChange = '/count/flowChange';                       //      --参数：userDept
 export const PersonChange = '/count/personChange';                       //      --参数：userDept
-
+export const MaleIn = '/count/maleIn';                       //      --参数：userDept
+export const MaleOut = '/count/maleOut';                       //      --参数：userDept
+export const FemaleIn = '/count/femaleIn';                       //      --参数：userDept
+export const FemaleOut = '/count/femaleOut';                       //      --参数：userDept

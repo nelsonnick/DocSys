@@ -1,44 +1,52 @@
-import echarts from 'echarts';
+app.title = '堆叠条形图';
 
-// 基于准备好的dom，初始化echarts实例
-
-// 绘制图表
-const myChart = echarts.init(document.getElementById('op'));
 option = {
-  title : {
-    text: '业务办理量分析',
-    subtext: '',
-    x:'center'
-  },
   tooltip : {
-    trigger: 'item',
-    formatter: "{a} <br/>{b} : {c} ({d}%)"
+    trigger: 'axis',
+    axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+      type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+    }
   },
   legend: {
-    orient: 'vertical',
-    left: 'left',
-    data: ['档案存放','档案提取','修改人员信息','修改档案信息']
+    data: ['男', '女']
   },
-  series : [
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis:  {
+    type: 'value'
+  },
+  yAxis: {
+    type: 'category',
+    data: ['在存', '已提']
+  },
+  series: [
     {
-      name: '业务分析',
-      type: 'pie',
-      radius : '55%',
-      center: ['50%', '60%'],
-      data:[
-        {value:this.props.FlowIn, name:'档案存放'},
-        {value:this.props.FlowOut, name:'档案提取'},
-        {value:this.props.FlowChange, name:'修改人员信息'},
-        {value:this.props.PersonChange, name:'修改档案信息'}
-      ],
-      itemStyle: {
-        emphasis: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 0, 0, 0.5)'
+      name: '男',
+      type: 'bar',
+      stack: '总量',
+      label: {
+        normal: {
+          show: true,
+          position: 'insideRight'
         }
-      }
+      },
+      data: [MaleIn, MaleOut]
+    },
+    {
+      name: '女',
+      type: 'bar',
+      stack: '总量',
+      label: {
+        normal: {
+          show: true,
+          position: 'insideRight'
+        }
+      },
+      data: [FemaleIn, FemaleOut]
     }
   ]
 };
-myChart.setOption(option);

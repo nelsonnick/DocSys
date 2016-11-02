@@ -42,10 +42,46 @@ public class CountController extends Controller {
     }
     public void personChange() {
         if (getPara("did").equals("")) {
-            String count = Db.queryLong("select count(*) from change ").toString();
+            String count = Db.queryLong("select count(*) from `change` ").toString();
             renderText(count);
         } else {
-            String count = Db.queryLong("select count(*) from change where change.did = " + getPara("did")).toString();
+            String count = Db.queryLong("select count(*) from `change` where did = " + getPara("did")).toString();
+            renderText(count);
+        }
+    }
+    public void maleIn() {
+        if (getPara("did").equals("")) {
+            String count = Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='在档' and person.sex='男' ").toString();
+            renderText(count);
+        } else {
+            String count = Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='在档' and person.sex='男' and file.did = " + getPara("did")).toString();
+            renderText(count);
+        }
+    }
+    public void maleOut() {
+        if (getPara("did").equals("")) {
+            String count = Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='已提' and person.sex='男' ").toString();
+            renderText(count);
+        } else {
+            String count = Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='已提' and person.sex='男' and file.did = " + getPara("did")).toString();
+            renderText(count);
+        }
+    }
+    public void femaleIn() {
+        if (getPara("did").equals("")) {
+            String count = Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='在档' and person.sex='女' ").toString();
+            renderText(count);
+        } else {
+            String count = Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='在档' and person.sex='女' and file.did = " + getPara("did")).toString();
+            renderText(count);
+        }
+    }
+    public void femaleOut() {
+        if (getPara("did").equals("")) {
+            String count = Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='已提' and person.sex='女' ").toString();
+            renderText(count);
+        } else {
+            String count = Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='已提' and person.sex='女' and file.did = " + getPara("did")).toString();
             renderText(count);
         }
     }

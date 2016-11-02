@@ -535,17 +535,33 @@ public class FileController extends Controller {
       cell2 = nextRow.createCell(1);
       cell2.setCellValue(f.get(i).get("fstate").toString());
       cell2 = nextRow.createCell(2);
-      cell2.setCellValue(f.get(i).get("fremark").toString());
+      if (f.get(i).get("fremark") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(f.get(i).get("fremark").toString());
+      }
       cell2 = nextRow.createCell(3);
       cell2.setCellValue(f.get(i).get("pname").toString());
       cell2 = nextRow.createCell(4);
       cell2.setCellValue(f.get(i).get("pnumber").toString());
       cell2 = nextRow.createCell(5);
-      cell2.setCellValue(f.get(i).get("pphone1").toString());
+      if (f.get(i).get("pphone1") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(f.get(i).get("pphone1").toString());
+      }
       cell2 = nextRow.createCell(6);
-      cell2.setCellValue(f.get(i).get("pphone2").toString());
+      if (f.get(i).get("pphone2") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(f.get(i).get("pphone2").toString());
+      }
       cell2 = nextRow.createCell(7);
-      cell2.setCellValue(f.get(i).get("paddress").toString());
+      if (f.get(i).get("paddress") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(f.get(i).get("paddress").toString());
+      }
       cell2 = nextRow.createCell(8);
       cell2.setCellValue(f.get(i).get("psex").toString());
       cell2 = nextRow.createCell(9);
