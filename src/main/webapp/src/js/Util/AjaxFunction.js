@@ -1,4 +1,5 @@
-const h = '/ds';
+const h = '';
+// const h = '/ds';
 export const DepartmentCount = `${h}/department/count`;          // 数据总数     --参数：无
 export const DepartmentQuery = `${h}/department/query`;          // 数据查询     --参数：queryName
 export const DepartmentAdd = `${h}/department/add`;              // 添加部门     --参数：name,address,phone,other,active
@@ -14,7 +15,7 @@ export const DepartmentNumber = `${h}/department/number`;        // 检测编号
 export const DepartmentNumbers = `${h}/department/numbers`;      // 检测编号     --参数：number
 export const DepartmentCode = `${h}/department/code`;            // 检测邮编     --参数：code
 export const DepartmentList = `${h}/department/list`;            // 获取部门     --参数：无
-export const DepartmentDownload = `${h}/department/download`;    // 检查导出     --参数：QueryString
+export const DepartmentDownload = `${h}/department/download`;    // 检查导出     --参数：DeptName
 
 export const UserCount = `${h}/user/count`;                      // 数据总数     --参数：无
 export const UserQuery = `${h}/user/query`;                      // 数据查询     --参数：queryName
@@ -61,13 +62,12 @@ export const FlowReason = `${h}/flow/reason`;                    // 检测原因
 export const FlowCount = `${h}/flow/count`;                      // 数据总数     --参数：PageNumber,PageSize,FileNumber,FileDept,PersonName,PersonNumber,FlowFlow
 export const FlowQuery = `${h}/flow/query`;                      // 数据查询     --参数：PageNumber,PageSize,FileNumber,FileDept,PersonName,PersonNumber,FlowFlow
 export const FlowDownload = `${h}/flow/download`;                // 检查导出     --参数：
-export const FlowPrint = `${h}/flow/print`;                      // 打印     --参数：
 
-export const FlowIn = `${h}/count/flowIn`;                       //      --参数：userDept
-export const FlowOut = `${h}/count/flowOut`;                     //      --参数：userDept
-export const FlowChange = `${h}/count/flowChange`;               //      --参数：userDept
-export const PersonChange = `${h}/count/personChange`;           //      --参数：userDept
-export const MaleIn = `${h}/count/maleIn`;                       //      --参数：userDept
-export const MaleOut = `${h}/count/maleOut`;                     //      --参数：userDept
-export const FemaleIn = `${h}/count/femaleIn`;                   //      --参数：userDept
-export const FemaleOut = `${h}/count/femaleOut`;                 //      --参数：userDept
+export const FlowIn = `${h}/count/flowIn`;                       // 存档数量     --参数：userDept
+export const FlowOut = `${h}/count/flowOut`;                     // 提档数量     --参数：userDept
+export const FlowChange = `${h}/count/flowChange`;               // 流动变更     --参数：userDept
+export const PersonChange = `${h}/count/personChange`;           // 人员变更     --参数：userDept
+export const MaleIn = `${h}/count/maleIn`;                       // 存档男性     --参数：userDept
+export const MaleOut = `${h}/count/maleOut`;                     // 提档男性     --参数：userDept
+export const FemaleIn = `${h}/count/femaleIn`;                   // 存档女性     --参数：userDept
+export const FemaleOut = `${h}/count/femaleOut`;                 // 提档女性     --参数：userDept

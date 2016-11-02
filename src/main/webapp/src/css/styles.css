@@ -46,10 +46,11 @@ blockquote, q {
 }
 
 
-/* HTML, BODY, GENERAL SETUP */
+/* HTML, BODY, GENERAL SETUP
+background: #63bad8 url(../../src/img/bga.jpg) 50% 0px repeat-x;*/
 
 html {
-    background: #63bad8 url(../images/bg.jpg) 50% 0px repeat-x;
+
     text-align: center;
 }
 body {
@@ -424,7 +425,7 @@ body#myaccountpage li#myaccount a
     display: block;
 }
 #darkbannerwrap{
-    background: url(../images/aiwrap.png);
+    background: url(../../src/img/aiwrap.png);
     width: 18px;
     height: 10px;
     margin: 0 0 20px -18px;

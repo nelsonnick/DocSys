@@ -36,6 +36,8 @@ export default class Top extends React.Component {
                 CurrentDepartment,
               }
             );
+            window.CurrentUser = CurrentUser.toString().trim();
+            window.CurrentDepartment = CurrentDepartment.toString().trim();
           },
           'error': () => {
             openNotificationWithIcon('error', '请求错误', '无法读取当前用户所属部门，请检查网络情况');

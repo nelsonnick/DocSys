@@ -8,7 +8,6 @@ module.exports = {
   entry: {
     com: './src/js/Com/All.js',
     sys: './src/js/Sys/All.js'
-    //test: './src/js/Charts/test.js'
   },
   output: {
     path:__dirname + '/dist/',

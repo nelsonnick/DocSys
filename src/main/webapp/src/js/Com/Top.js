@@ -19,6 +19,7 @@ export default class Top extends React.Component {
     };
   }
   componentWillMount() {
+    console.log('%c我一直在等待你的加入--->QQ：595734521', 'color:red');
     $.ajax({
       'type': 'POST',
       'url': AjaxFunction.CurrentUser,
@@ -36,7 +37,7 @@ export default class Top extends React.Component {
                 CurrentDepartment,
               }
             );
-            window.CurrentUser = CurrentUser.toString();
+            window.CurrentUser = CurrentUser.toString().trim();
             window.CurrentDepartment = CurrentDepartment.toString().trim();
           },
           'error': () => {

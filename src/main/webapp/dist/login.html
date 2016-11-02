@@ -2,17 +2,22 @@
 <html lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <title>File Manage System</title>
-    <link href="${contextPath}/src/css/styles.css" type="text/css" media="screen" rel="stylesheet"/>
-    <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+    <title>档案管理系统</title>
+    <link rel="icon" href="../src/img/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="../src/img/favicon.ico" type="image/x-icon" />
+    <link rel="bookmark" href="../src/img/favicon.ico" type="image/x-icon" />
+    <link href="../src/css/styles.css" type="text/css" media="screen" rel="stylesheet"/>
+    <script src="../src/js/Util/jquery-1.9.1.min.js"></script>
     <script type="text/javascript">
         //点击切换验证码
         function changeVerifyCode() {
-            $("#yzmImg").attr("src", "${contextPath}/img?" + Math.floor(Math.random() * 100));
+            $("#yzmImg").attr("src", "/img?" + Math.floor(Math.random() * 100));
         }
     </script>
 </head>
-<body id="login">
+<body id="login" style="background-image: url(../src/img/bg.png)">
+<script src="../src/js/Util/canvas-nest.js" count="200" zindex="-2" opacity="0.5" color="47,135,193" type="text/javascript">
+</script>
 <div id="wrappertop"></div>
 <div id="wrapper">
     <div id="content">
@@ -24,7 +29,7 @@
         </div>
         <div id="darkbannerwrap">
         </div>
-        <form name="form1" method="post" action="${contextPath}/login">
+        <form name="form1" method="post" action="/login">
             <fieldset class="form">
                 <p>
                     <label for="user_name">LoginName：</label>
@@ -40,7 +45,7 @@
                 </p>
                 <p>
                     <label for="user_password">OnClick：</label>
-                    <img src="${contextPath}/img" onclick="changeVerifyCode()" id="yzmImg" style="cursor: pointer;">
+                    <img src="/img" onclick="changeVerifyCode()" id="yzmImg" style="cursor: pointer;">
                 </p>
                 <button type="submit" class="positive" name="Submit">
                     Go Next
@@ -56,6 +61,6 @@
 
 <div id="wrapperbottom_branding">
     <div id="wrapperbottom_branding_text"><a href="#" style='text-decoration:none'>Made
-        By Nick Wong</a>.
+        By WANGTIANSHUO</a>.
     </div>
 </div>

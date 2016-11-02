@@ -29,7 +29,7 @@ export default class Blank extends React.Component {
           <Col span="8">
             <Card title="技术支持" >
               前端：webpack+ReactJS+Ant Design+Bootstrap+echart<br />
-              后端：JAVA,Jfinal<br />
+              后端：Java,Jfinal<br />
             </Card>
           </Col>
         </Row>

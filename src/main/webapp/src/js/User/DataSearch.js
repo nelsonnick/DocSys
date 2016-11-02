@@ -14,7 +14,6 @@ class DataSearch extends React.Component {
   }
   onChangeDept(userDept) {
     this.setState({ userDept });
-    console.log(`%c已选择第 ${userDept}个部门`, 'color:red');
   }
   handleSubmit(e) {
     e.preventDefault();

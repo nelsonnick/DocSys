@@ -4,7 +4,7 @@ const a = {
   color: '#2DB7F5',
 };
 function LogoName({ name }) {
-  return <div style={a} >{name}</div>;
+  return <div style={a} >&nbsp;&nbsp;{name}</div>;
 }
 
 LogoName.propTypes = {
