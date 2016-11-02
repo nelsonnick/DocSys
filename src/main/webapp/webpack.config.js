@@ -17,7 +17,7 @@ module.exports = {
   plugins: [
     // 提供公共代码
     // 默认会把所有入口节点的公共代码提取出来,生成一个common.js
-    //new webpack.optimize.CommonsChunkPlugin('common.js'),
+    new webpack.optimize.CommonsChunkPlugin('common.js'),
     //检测相似的文件或冗余，并消除
     new webpack.optimize.DedupePlugin(),
     //安装引用频度排序

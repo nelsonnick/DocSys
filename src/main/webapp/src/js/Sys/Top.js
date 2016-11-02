@@ -52,8 +52,8 @@ export default class Top extends React.Component {
       <div>
         <Row type="flex" justify="space-between" align="bottom">
           <Col span={12}><LogoName name="档案管理系统后台" /></Col>
-          <Col span={4}><Alert message={this.state.CurrentUser} type="success" showIcon /></Col>
-          <Col span={4}><Alert message={this.state.CurrentDepartment} type="info" showIcon /></Col>
+          <Col span={4}><Alert message={`当前用户： ${this.state.CurrentUser}`} type="success" showIcon /></Col>
+          <Col span={4}><Alert message={`当前部门： ${this.state.CurrentDepartment}`} type="info" showIcon /></Col>
           <Col span={2}><a id="b"><Alert message="退出" type="warning" showIcon /></a></Col>
           <Col span={2}>&nbsp;</Col>
         </Row>

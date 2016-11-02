@@ -1,8 +1,10 @@
 package com.wts.controller;
 
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.wts.entity.model.Login;
 import com.wts.entity.model.User;
+import com.wts.interceptor.LoginInterceptor;
 import com.wts.util.IpKit;
 import com.wts.util.Util;
 
@@ -17,9 +19,11 @@ public class MainController extends Controller {
     public void index() {
         render("/dist/login.html");
     }
+    @Before(LoginInterceptor.class)
     public void sys() {
         render("/dist/sys.html");
     }
+    @Before(LoginInterceptor.class)
     public void com() {
         render("/dist/com.html");
     }
@@ -69,6 +73,7 @@ public class MainController extends Controller {
             render("/dist/login.html");
         }
     }
+    @Before(LoginInterceptor.class)
     public void getCurrentUser(){
         if (getSessionAttr("user").equals("") || getSessionAttr("user")==null){
             renderText("无法识别");
@@ -76,6 +81,7 @@ public class MainController extends Controller {
             renderText(((User) getSessionAttr("user")).getStr("name"));
         }
     }
+    @Before(LoginInterceptor.class)
     public void getCurrentDepartment(){
 
         if (getSessionAttr("user").equals("") || getSessionAttr("user")==null){
@@ -84,6 +90,7 @@ public class MainController extends Controller {
             renderText(Util.getDepartmentName(((User) getSessionAttr("user")).get("did").toString().trim()));
         }
     }
+    @Before(LoginInterceptor.class)
     public void logout() {
         removeSessionAttr("user");
         redirect("/index");

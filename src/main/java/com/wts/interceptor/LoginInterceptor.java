@@ -11,7 +11,7 @@ public class LoginInterceptor implements Interceptor {
 		
 		HttpSession session = inv.getController().getSession();
 		if(session.getAttribute("user") == null){
-			inv.getController().redirect("/index");
+			inv.getController().redirect("/");
 		}
 		else{
 			inv.invoke();

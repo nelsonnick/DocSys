@@ -31,7 +31,7 @@ export default class DataTable extends React.Component {
       title: '证件号码',
       dataIndex: 'pnumber',
       key: 'pnumber',
-      width: 100,
+      width: 120,
     }, {
       title: '档案位置',
       dataIndex: 'dname',
@@ -41,7 +41,7 @@ export default class DataTable extends React.Component {
       title: '流动类型',
       dataIndex: 'lflow',
       key: 'lflow',
-      width: 100,
+      width: 80,
     }, {
       title: '转递方式',
       dataIndex: 'ltype',
@@ -51,12 +51,12 @@ export default class DataTable extends React.Component {
       title: '办理时间',
       dataIndex: 'ltime',
       key: 'ltime',
-      width: 100,
+      width: 120,
     }, {
       title: '经办人员',
       dataIndex: 'uname',
       key: 'uname',
-      width: 100,
+      width: 80,
     }, {
       title: '操作',
       key: 'operation',

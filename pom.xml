@@ -90,6 +90,6 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>DocumentSystem</finalName>
+    <finalName>ds</finalName>
   </build>
 </project>
