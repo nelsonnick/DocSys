@@ -85,8 +85,8 @@ public class FileController extends Controller {
     Look o =new Look();
     o.set("uid",((User) getSessionAttr("user")).get("id").toString())
             .set("time", new Date())
-            .set("pageNumber",getParaToInt("PageNumber"))
-            .set("pageSize",getParaToInt("PageSize"))
+            .set("pageNumber",getPara("PageNumber"))
+            .set("pageSize",getPara("PageSize"))
             .set("type","档案搜索")
             .set("sql",sql)
             .save();
