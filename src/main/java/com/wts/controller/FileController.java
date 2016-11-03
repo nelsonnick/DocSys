@@ -305,25 +305,31 @@ public class FileController extends Controller {
    *@param: lreason
    *@param: lremark
    */
-  @Before({Tx.class,LoginInterceptor.class})
-  public void flow(){
+  @Before({Tx.class, LoginInterceptor.class})
+  public void flow() {
     File file = File.dao.findById(getPara("fid"));
     Person person = Person.dao.findById(getPara("pid"));
-    Flow l = new Flow();
-    l.set("pid",getPara("pid").trim())
-            .set("uid", ((User) getSessionAttr("user")).get("id").toString())
-            .set("fid",getPara("fid").trim())
-            .set("did", ((User) getSessionAttr("user")).get("did").toString())
-            .set("type",getPara("ltype").trim())
-            .set("direct",getPara("ldirect").trim())
-            .set("reason",getPara("lreason").trim())
-            .set("remark",getPara("lremark").trim())
-            .set("time", new Date())
-            .set("flow", "转出")
-            .save();
-    file.set("state","已提").update();
-    person.set("state","已提").update();
-    renderText("OK");
+    if (file.get("state").toString().equals("已提")) {
+      renderText("该档案已办理提档手续！");
+    } else if (person.get("state").toString().equals("已提")) {
+      renderText("该人员已处于提档状态！");
+    } else {
+      Flow l = new Flow();
+      l.set("pid", getPara("pid").trim())
+              .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+              .set("fid", getPara("fid").trim())
+              .set("did", ((User) getSessionAttr("user")).get("did").toString())
+              .set("type", getPara("ltype").trim())
+              .set("direct", getPara("ldirect").trim())
+              .set("reason", getPara("lreason").trim())
+              .set("remark", getPara("lremark").trim())
+              .set("time", new Date())
+              .set("flow", "转出")
+              .save();
+      file.set("state", "已提").update();
+      person.set("state", "已提").update();
+      renderText("OK");
+    }
   }
 
   /**
@@ -481,7 +487,7 @@ public class FileController extends Controller {
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void export() throws IOException {
-    String[] title={"档案编号","档案状态","姓名","证件号码","联系电话1","联系电话2","联系地址","性别","出生日期","档案年龄","信息整理","退休情况","人员备注","档案备注"};
+    String[] title={"档案编号","档案状态","姓名","证件号码","联系电话1","联系电话2","联系地址","性别","出生日期","档案年龄","信息整理","退休情况","人员备注","档案备注","存档单位"};
     //创建Excel工作簿
     XSSFWorkbook workbook = new XSSFWorkbook();
     //创建一个工作表
@@ -583,7 +589,11 @@ public class FileController extends Controller {
       cell2 = nextRow.createCell(9);
       cell2.setCellValue(f.get(i).get("pbirth").toString());
       cell2 = nextRow.createCell(10);
-      cell2.setCellValue(f.get(i).get("fileAge").toString());
+      if (f.get(i).get("fileAge") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(f.get(i).get("fileAge").toString());
+      }
       cell2 = nextRow.createCell(11);
       cell2.setCellValue(f.get(i).get("pinfo").toString());
       cell2 = nextRow.createCell(12);
@@ -593,6 +603,12 @@ public class FileController extends Controller {
         cell2.setCellValue("");
       } else {
         cell2.setCellValue(f.get(i).get("premark").toString());
+      }
+      cell2 = nextRow.createCell(14);
+      if (f.get(i).get("dname") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(f.get(i).get("dname").toString());
       }
     }
     HttpServletResponse response = getResponse();
