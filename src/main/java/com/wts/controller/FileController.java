@@ -71,9 +71,25 @@ public class FileController extends Controller {
    *@param: FileNumber
    *@param: FileDept
    */
-  @Before(LoginInterceptor.class)
+  @Before({Tx.class,LoginInterceptor.class})
   public void query() {
+    String sql;
+    if (getPara("FileDept").equals("")) {
+      sql="SELECT file.id AS fid, file.did AS did, file.number AS fnumber, file.state AS fstate, file.remark AS fremark, person.id AS pid, person.name AS pname, person.number AS pnumber, person.phone1 AS pphone1, person.phone2 AS pphone2, person.address AS paddress, person.sex AS psex, person.birth AS pbirth, person.remark AS premark, person.fileAge AS fileAge, person.state AS pstate, person.info AS pinfo, person.retire AS pretire, department.name AS dname FROM (file INNER JOIN person ON file.pid=person.id) INNER JOIN department ON file.did=department.id WHERE person.name LIKE '%" + getPara("PersonName") + "%' AND person.number LIKE '%" + getPara("PersonNumber") + "%' AND file.number LIKE '%" + getPara("FileNumber") + "%' AND file.state LIKE '%" + getPara("FileState") + "%' ORDER BY file.id DESC";
+    } else {
+      sql="SELECT file.id AS fid, file.did AS did, file.number AS fnumber, file.state AS fstate, file.remark AS fremark, person.id AS pid, person.name AS pname, person.number AS pnumber, person.phone1 AS pphone1, person.phone2 AS pphone2, person.address AS paddress, person.sex AS psex, person.birth AS pbirth, person.remark AS premark, person.fileAge AS fileAge, person.state AS pstate, person.info AS pinfo, person.retire AS pretire, department.name AS dname FROM (file INNER JOIN person ON file.pid=person.id) INNER JOIN department ON file.did=department.id WHERE person.name LIKE '%" + getPara("PersonName") + "%' AND person.number LIKE '%" + getPara("PersonNumber") + "%' AND file.number LIKE '%" + getPara("FileNumber") + "%' AND file.state LIKE '%" + getPara("FileState") + "%' AND file.did = " + getPara("FileDept") + "  ORDER BY file.id DESC";
+    }
+
     Page<File> files=File.dao.paginate2(getParaToInt("PageNumber"),getParaToInt("PageSize"),getPara("PersonName"),getPara("PersonNumber"),getPara("FileNumber"),getPara("FileDept"),getPara("FileState"));
+
+    Look o =new Look();
+    o.set("uid",((User) getSessionAttr("user")).get("id").toString())
+            .set("time", new Date())
+            .set("pageNumber",getParaToInt("PageNumber"))
+            .set("pageSize",getParaToInt("PageSize"))
+            .set("type","档案搜索")
+            .set("sql",sql)
+            .save();
     renderJson(files.getList());
   }
   /**

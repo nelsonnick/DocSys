@@ -62,9 +62,23 @@ public class FlowController extends Controller {
    *@param: FileDept
    *@param: FlowFlow
    */
-  @Before(LoginInterceptor.class)
+  @Before({Tx.class,LoginInterceptor.class})
   public void query() {
+    String sql;
+    if (getPara("FileDept").equals("")) {
+      sql="SELECT flow.id AS lid,flow.time AS ltime,flow.remark AS lremark,flow.type AS ltype,flow.direct AS ldirect,flow.reason AS lreason,flow.flow AS lflow,user.id AS uid,user.name AS uname,person.id AS pid,person.name AS pname,person.number AS pnumber,department.name AS dname,file.number AS fnumber FROM (((flow INNER JOIN user ON flow.uid=user.id) INNER JOIN file ON flow.fid=file.id) INNER JOIN person ON flow.pid=person.id) INNER JOIN department ON flow.did=department.id WHERE person.name LIKE '%" + getPara("PersonName") + "%' AND person.number LIKE '%" + getPara("PersonNumber") + "%' AND file.number LIKE '%" + getPara("FileNumber") + "%' AND flow.flow LIKE '%" + getPara("FlowFlow") + "%' ORDER BY flow.id DESC";
+    } else {
+      sql="SELECT flow.id AS lid,flow.time AS ltime,flow.remark AS lremark,flow.type AS ltype,flow.direct AS ldirect,flow.reason AS lreason,flow.flow AS lflow,user.id AS uid,user.name AS uname,person.id AS pid,person.name AS pname,person.number AS pnumber,department.name AS dname,file.number AS fnumber FROM (((flow INNER JOIN user ON flow.uid=user.id) INNER JOIN file ON flow.fid=file.id) INNER JOIN person ON flow.pid=person.id) INNER JOIN department ON flow.did=department.id WHERE person.name LIKE '%" + getPara("PersonName") + "%' AND person.number LIKE '%" + getPara("PersonNumber") + "%' AND file.number LIKE '%" + getPara("FileNumber") + "%' AND flow.flow LIKE '%" + getPara("FlowFlow") + "%' AND file.did = " + getPara("FileDept") + " ORDER BY flow.id DESC";
+    }
     Page<Flow> flows= Flow.dao.paginate2(getParaToInt("PageNumber"),getParaToInt("PageSize"),getPara("PersonName"),getPara("PersonNumber"),getPara("FileNumber"),getPara("FileDept"),getPara("FlowFlow"));
+    Look o =new Look();
+    o.set("uid",((User) getSessionAttr("user")).get("id").toString())
+            .set("time", new Date())
+            .set("pageNumber",getParaToInt("PageNumber"))
+            .set("pageSize",getParaToInt("PageSize"))
+            .set("type","业务搜索")
+            .set("sql",sql)
+            .save();
     renderJson(flows.getList());
   }
   /**
@@ -361,18 +375,14 @@ public class FlowController extends Controller {
     File f = File.dao.findById(l.getInt("fid"));
     Department d = Department.dao.findById(l.getInt("did"));
     Person p =Person.dao.findById(l.getInt("pid"));
-    System.out.println("111111111");
     setAttr("fnumber",f.get("number").toString());
     setAttr("uname",u.get("name").toString());
     setAttr("pname",p.get("name").toString());
     setAttr("dname",d.get("name").toString());
     setAttr("dphone",d.get("phone").toString());
-    System.out.println("222222222");
     setAttr("dcode",d.get("code").toString());
-    System.out.println("333333");
     setAttr("ldirect",l.get("direct").toString());
     setAttr("daddress",d.get("address").toString());
-
     SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
     SimpleDateFormat MM = new SimpleDateFormat("MM");
     SimpleDateFormat dd = new SimpleDateFormat("dd");
@@ -387,7 +397,6 @@ public class FlowController extends Controller {
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void printIn() {
-    System.out.println("00000000");
     Print r =new Print();
     r.set("lid",getPara("lid"))
             .set("uid",((User) getSessionAttr("user")).get("id").toString())
@@ -398,7 +407,6 @@ public class FlowController extends Controller {
     File f = File.dao.findById(l.getInt("fid"));
     Department d = Department.dao.findById(l.getInt("did"));
     Person p =Person.dao.findById(l.getInt("pid"));
-    System.out.println("11111111");
     setAttr("fnumber",f.get("number").toString());
     setAttr("uname",u.get("name").toString());
     setAttr("pname",p.get("name").toString());

@@ -84,6 +84,19 @@ Table: login
  ip    | VARCHAR(255) | YES  |     |         |         
 -------+--------------+------+-----+---------+---------
 
+Table: look
+------------+--------------+------+-----+---------+---------
+ Field      | Type         | Null | Key | Default | Remarks 
+------------+--------------+------+-----+---------+---------
+ id         | INT(10)      | NO   | PRI |         |         
+ uid        | INT(10)      | YES  |     |         |         
+ time       | DATETIME(19) | YES  |     |         |         
+ type       | VARCHAR(255) | YES  |     |         |         
+ sql        | VARCHAR(255) | YES  |     |         |         
+ pageNumber | INT(10)      | YES  |     |         |         
+ pageSize   | INT(10)      | YES  |     |         |         
+------------+--------------+------+-----+---------+---------
+
 Table: person
 ---------+--------------+------+-----+---------+---------
  Field   | Type         | Null | Key | Default | Remarks 

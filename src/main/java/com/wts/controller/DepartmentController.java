@@ -31,7 +31,6 @@ public class DepartmentController extends Controller {
   @Before(LoginInterceptor.class)
   public void query() {
     Page<Department> departments=Department.dao.paginate2(getParaToInt("PageNumber"),getParaToInt("PageSize"),getPara("DeptName"));
-    System.out.println(departments);
     renderJson(departments.getList());
   }
   /**

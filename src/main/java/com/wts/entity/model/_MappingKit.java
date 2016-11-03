@@ -22,6 +22,7 @@ public class _MappingKit {
 		arp.addMapping("file", "id", File.class);
 		arp.addMapping("flow", "id", Flow.class);
 		arp.addMapping("login", "id", Login.class);
+		arp.addMapping("look", "id", Look.class);
 		arp.addMapping("person", "id", Person.class);
 		arp.addMapping("print", "id", Print.class);
 		arp.addMapping("trans", "id", Trans.class);
