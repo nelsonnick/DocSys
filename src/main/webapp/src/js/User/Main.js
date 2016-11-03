@@ -271,7 +271,7 @@ export default class User extends React.Component {
       },
       'success': (data) => {
         if (data.toString() === 'OK') {
-          $('#a').attr('href', '/user/export');
+          $('#a').attr('href', AjaxFunction.UserExport);
           document.getElementById('a').click();
         } else {
           openNotificationWithIcon('error', '导出失败', `无法进行导出操作： ${data.toString()}`);

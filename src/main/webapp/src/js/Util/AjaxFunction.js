@@ -15,6 +15,7 @@ export const DepartmentNumber = `${h}/department/number`;        // 检测编号
 export const DepartmentNumbers = `${h}/department/numbers`;      // 检测编号     --参数：number
 export const DepartmentCode = `${h}/department/code`;            // 检测邮编     --参数：code
 export const DepartmentList = `${h}/department/list`;            // 获取部门     --参数：无
+export const DepartmentExport = `${h}/department/export`;        // 导出部门    --参数：
 export const DepartmentDownload = `${h}/department/download`;    // 检查导出     --参数：DeptName
 
 export const UserCount = `${h}/user/count`;                      // 数据总数     --参数：无
@@ -36,6 +37,7 @@ export const DeptNow = `${h}/user/depts`;                        // 当前部门
 export const UserDownload = `${h}/user/download`;                // 检查导出     --参数：userName,userDid
 export const CurrentUser = `${h}/getCurrentUser`;                // 当前人员     --参数：无
 export const CurrentDepartment = `${h}/getCurrentDepartment`;    // 所属部门     --参数：无
+export const UserExport = `${h}/user/export`;                    // 导出用户    --参数：id
 
 export const FileNew = `${h}/file/newNumber`;                    // 最新编号     --参数：无
 export const FileAdd = `${h}/file/add`;                          // 新增档案     --参数：一大堆。。。。。
@@ -47,6 +49,7 @@ export const FileBack = `${h}/file/back`;                        // 档案重存
 export const FileCount = `${h}/file/count`;                      // 数据总数     --参数：PageNumber,PageSize,FileNumber,FileDept,PersonName,PersonNumber,FileState
 export const FileQuery = `${h}/file/query`;                      // 数据查询     --参数：PageNumber,PageSize,FileNumber,FileDept,PersonName,PersonNumber,FileState
 export const FileDownload = `${h}/file/download`;                // 检查导出     --参数：
+export const FileExport = `${h}/file/export`;                    // 导出档案    --参数：
 
 export const PersonName = `${h}/person/name`;                    // 检测姓名     --参数：name
 export const PersonNumber = `${h}/person/number`;                // 检测证件     --参数：number
@@ -62,6 +65,7 @@ export const FlowReason = `${h}/flow/reason`;                    // 检测原因
 export const FlowCount = `${h}/flow/count`;                      // 数据总数     --参数：PageNumber,PageSize,FileNumber,FileDept,PersonName,PersonNumber,FlowFlow
 export const FlowQuery = `${h}/flow/query`;                      // 数据查询     --参数：PageNumber,PageSize,FileNumber,FileDept,PersonName,PersonNumber,FlowFlow
 export const FlowDownload = `${h}/flow/download`;                // 检查导出     --参数：
+export const FlowExport = `${h}/Flow/export`;                    // 导出流动    --参数：
 export const PrintOut = `${h}/flow/printOut`;                    // 转出打印     --参数：
 export const PrintIn = `${h}/flow/PrintIn`;                      // 转入打印     --参数：
 

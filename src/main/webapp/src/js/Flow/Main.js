@@ -300,7 +300,7 @@ export default class File extends React.Component {
       },
       'success': (data) => {
         if (data.toString() === 'OK') {
-          $('#a').attr('href', '/flow/export');
+          $('#a').attr('href', AjaxFunction.FlowExport);
           document.getElementById('a').click();
         } else {
           openNotificationWithIcon('error', '导出失败', `无法进行导出操作： ${data.toString()}`);
