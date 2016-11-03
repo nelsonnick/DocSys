@@ -77,5 +77,4 @@ export const MaleIn = `${h}/count/maleIn`;                       // 存档男性
 export const MaleOut = `${h}/count/maleOut`;                     // 提档男性     --参数：userDept
 export const FemaleIn = `${h}/count/femaleIn`;                   // 存档女性     --参数：userDept
 export const FemaleOut = `${h}/count/femaleOut`;                 // 提档女性     --参数：userDept
-
 export const Logout = `${h}/logout`;                             // 退出系统    --参数：
