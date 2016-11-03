@@ -387,6 +387,7 @@ public class FlowController extends Controller {
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void printIn() {
+    System.out.println("00000000");
     Print r =new Print();
     r.set("lid",getPara("lid"))
             .set("uid",((User) getSessionAttr("user")).get("id").toString())
@@ -397,6 +398,7 @@ public class FlowController extends Controller {
     File f = File.dao.findById(l.getInt("fid"));
     Department d = Department.dao.findById(l.getInt("did"));
     Person p =Person.dao.findById(l.getInt("pid"));
+    System.out.println("11111111");
     setAttr("fnumber",f.get("number").toString());
     setAttr("uname",u.get("name").toString());
     setAttr("pname",p.get("name").toString());
