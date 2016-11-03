@@ -14,6 +14,7 @@ import com.wts.entity.model.Person;
 import com.wts.entity.model.User;
 import com.wts.interceptor.LoginInterceptor;
 import com.wts.util.IDNumber;
+import com.wts.util.Util;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -114,10 +115,10 @@ public class FlowController extends Controller {
     if (flow == null){
       renderText("要修改的记录不存在，请刷新页面后再试！");
     }else{
-      if (flow.get("remark").equals(getPara("lremark").trim())
-              && flow.get("reason").equals(getPara("lreason").trim())
-              && flow.get("type").equals(getPara("ltype").trim())
-              && flow.get("direct").equals(getPara("ldirect").trim())
+      if (Util.CheckNull(flow.getStr("remark")).equals(getPara("lremark").trim())
+              && Util.CheckNull(flow.getStr("reason")).equals(getPara("lreason").trim())
+              && Util.CheckNull(flow.getStr("type")).equals(getPara("ltype").trim())
+              && Util.CheckNull(flow.getStr("direct")).equals(getPara("ldirect").trim())
               ){
         renderText("未找到修改内容，请核实后再修改！");
       } else if (getPara("ldirect").trim().length()<2) {
@@ -128,17 +129,17 @@ public class FlowController extends Controller {
         Change c = new Change();
         c.set("lid",getPara("lid").trim())
                 .set("uid", ((User) getSessionAttr("user")).get("id").toString())
-                .set("fid",flow.get("fid").toString().trim())
+                .set("fid",Util.CheckNull(flow.getStr("fid")).trim())
                 .set("did", ((User) getSessionAttr("user")).get("did").toString())
                 .set("time", new Date())
                 .set("reasonAfter",getPara("lreason").trim())
                 .set("remarkAfter",getPara("lremark").trim())
                 .set("typeAfter",getPara("ltype").trim())
                 .set("directAfter",getPara("ldirect").trim())
-                .set("reasonBefore",flow.get("reason").toString().trim())
-                .set("remarkBefore",flow.get("remark").toString().trim())
-                .set("typeBefore",flow.get("type").toString().trim())
-                .set("directBefore",flow.get("direct").toString().trim())
+                .set("reasonBefore",Util.CheckNull(flow.getStr("reason")).trim())
+                .set("remarkBefore",Util.CheckNull(flow.getStr("remark")).trim())
+                .set("typeBefore",Util.CheckNull(flow.getStr("type")).trim())
+                .set("directBefore",Util.CheckNull(flow.getStr("direct")).trim())
                 .save();
         flow.set("reason",getPara("lreason").trim())
                 .set("remark",getPara("lremark").trim())
@@ -240,13 +241,13 @@ public class FlowController extends Controller {
       }
     }
     flows=Flow.dao.find(sql);
-    if (flows.size()>100) {
+    if (flows.size()>100000) {
       setSessionAttr("PersonName1", "");
       setSessionAttr("PersonNumber1", "");
       setSessionAttr("FileNumber1", "");
       setSessionAttr("FileDept1", "");
       setSessionAttr("FlowFlow", "");
-      renderText("导出数据数量超过上限！");
+      renderText("导出数据数量超过10万，请从后台操作！");
     }else{
       renderText("OK");
     }
@@ -323,17 +324,41 @@ public class FlowController extends Controller {
     for (int i = 0; i < l.size(); i++) {
       XSSFRow nextRow = sheet.createRow(i+1);
       XSSFCell cell2 = nextRow.createCell(0);
-      cell2.setCellValue(l.get(i).get("fnumber").toString());
+      if (l.get(i).get("fnumber") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(l.get(i).get("fnumber").toString());
+      }
       cell2 = nextRow.createCell(1);
-      cell2.setCellValue(l.get(i).get("pname").toString());
+      if (l.get(i).get("pname") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(l.get(i).get("pname").toString());
+      }
       cell2 = nextRow.createCell(2);
-      cell2.setCellValue(l.get(i).get("pnumber").toString());
+      if (l.get(i).get("pnumber") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(l.get(i).get("pnumber").toString());
+      }
       cell2 = nextRow.createCell(3);
-      cell2.setCellValue(l.get(i).get("dname").toString());
+      if (l.get(i).get("dname") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(l.get(i).get("dname").toString());
+      }
       cell2 = nextRow.createCell(4);
-      cell2.setCellValue(l.get(i).get("lflow").toString());
+      if (l.get(i).get("lflow") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(l.get(i).get("lflow").toString());
+      }
       cell2 = nextRow.createCell(5);
-      cell2.setCellValue(l.get(i).get("ltype").toString());
+      if (l.get(i).get("ltype") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(l.get(i).get("ltype").toString());
+      }
       cell2 = nextRow.createCell(6);
       if (l.get(i).get("lremark") == null) {
         cell2.setCellValue("");
@@ -341,13 +366,29 @@ public class FlowController extends Controller {
         cell2.setCellValue(l.get(i).get("lremark").toString());
       }
       cell2 = nextRow.createCell(7);
-      cell2.setCellValue(l.get(i).get("ldirect").toString());
+      if (l.get(i).get("ldirect") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(l.get(i).get("ldirect").toString());
+      }
       cell2 = nextRow.createCell(8);
-      cell2.setCellValue(l.get(i).get("lreason").toString());
+      if (l.get(i).get("lreason") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(l.get(i).get("lreason").toString());
+      }
       cell2 = nextRow.createCell(9);
-      cell2.setCellValue(l.get(i).get("ltime").toString());
+      if (l.get(i).get("ltime") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(l.get(i).get("ltime").toString());
+      }
       cell2 = nextRow.createCell(10);
-      cell2.setCellValue(l.get(i).get("uname").toString());
+      if (l.get(i).get("uname") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(l.get(i).get("uname").toString());
+      }
     }
     HttpServletResponse response = getResponse();
     response.setContentType("application/octet-stream");
@@ -375,14 +416,14 @@ public class FlowController extends Controller {
     File f = File.dao.findById(l.getInt("fid"));
     Department d = Department.dao.findById(l.getInt("did"));
     Person p =Person.dao.findById(l.getInt("pid"));
-    setAttr("fnumber",f.get("number").toString());
-    setAttr("uname",u.get("name").toString());
-    setAttr("pname",p.get("name").toString());
-    setAttr("dname",d.get("name").toString());
-    setAttr("dphone",d.get("phone").toString());
-    setAttr("dcode",d.get("code").toString());
-    setAttr("ldirect",l.get("direct").toString());
-    setAttr("daddress",d.get("address").toString());
+    setAttr("fnumber",Util.CheckNull(f.getStr("number")));
+    setAttr("uname",Util.CheckNull(u.getStr("name")));
+    setAttr("pname",Util.CheckNull(p.getStr("name")));
+    setAttr("dname",Util.CheckNull(d.getStr("name")));
+    setAttr("dphone",Util.CheckNull(d.getStr("phone")));
+    setAttr("dcode",Util.CheckNull(d.getStr("code")));
+    setAttr("ldirect",Util.CheckNull(l.getStr("direct")));
+    setAttr("daddress",Util.CheckNull(d.getStr("address")));
     SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
     SimpleDateFormat MM = new SimpleDateFormat("MM");
     SimpleDateFormat dd = new SimpleDateFormat("dd");
@@ -407,21 +448,21 @@ public class FlowController extends Controller {
     File f = File.dao.findById(l.getInt("fid"));
     Department d = Department.dao.findById(l.getInt("did"));
     Person p =Person.dao.findById(l.getInt("pid"));
-    setAttr("fnumber",f.get("number").toString());
-    setAttr("uname",u.get("name").toString());
-    setAttr("pname",p.get("name").toString());
-    setAttr("dname",d.get("name").toString());
-    setAttr("pnumber",p.get("number").toString());
-    setAttr("pphone1",p.get("phone1").toString());
-    setAttr("pphone2",p.get("phone2").toString());
-    setAttr("paddress",p.get("address").toString());
-    setAttr("pretire",p.get("retire").toString());
-    setAttr("pinfo",p.get("info").toString());
-    setAttr("pbirth",p.get("birth").toString());
-    setAttr("psex",p.get("sex").toString());
-    setAttr("fileAge",p.get("fileAge").toString());
-    setAttr("premark",p.get("remark").toString());
-    setAttr("fremark",f.get("remark").toString());
+    setAttr("fnumber",Util.CheckNull(f.getStr("number")));
+    setAttr("uname",Util.CheckNull(u.getStr("name")));
+    setAttr("pname",Util.CheckNull(p.getStr("name")));
+    setAttr("dname",Util.CheckNull(d.getStr("name")));
+    setAttr("pnumber",Util.CheckNull(p.getStr("number")));
+    setAttr("pphone1",Util.CheckNull(p.getStr("phone1")));
+    setAttr("pphone2",Util.CheckNull(p.getStr("phone2")));
+    setAttr("paddress",Util.CheckNull(p.getStr("address")));
+    setAttr("pretire",Util.CheckNull(p.getStr("retire")));
+    setAttr("pinfo",Util.CheckNull(p.getStr("info")));
+    setAttr("pbirth",Util.CheckNull(p.getStr("birth")));
+    setAttr("psex",Util.CheckNull(p.getStr("sex")));
+    setAttr("fileAge",Util.CheckNull(p.getStr("fileAge")));
+    setAttr("premark",Util.CheckNull(p.getStr("remark")));
+    setAttr("fremark",Util.CheckNull(f.getStr("remark")));
     SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
     SimpleDateFormat MM = new SimpleDateFormat("MM");
     SimpleDateFormat dd = new SimpleDateFormat("dd");

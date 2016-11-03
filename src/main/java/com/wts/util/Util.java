@@ -26,10 +26,15 @@ public class Util {
             return "000";
         }
     }
-
+    public static String CheckNull(String str) {
+        if (str==null){
+            return "";
+        }else{
+            return str.trim();
+        }
+    }
     public static void main(String[] args) {
-        Department department = Department.dao.findById("1");
-        System.out.println(department.toJson());
-        System.out.println(getDepartmentName("2"));
+
+        System.out.println("111"+CheckNull(null));
     }
 }

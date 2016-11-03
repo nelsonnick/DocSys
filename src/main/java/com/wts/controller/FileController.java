@@ -21,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static com.sun.scenario.Settings.set;
+
 public class FileController extends Controller {
   /**
    * 核查档案编号
@@ -215,82 +217,82 @@ public class FileController extends Controller {
     String a = "^(?:(?!0000)[0-9]{4}(?:(?:0[1-9]|1[0-2])(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$";
     File file = File.dao.findById(getPara("fid"));
     Person person = Person.dao.findById(getPara("pid"));
-    SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-    String fileAge=sdf.format(person.get("fileAge"));
-    if (file == null){
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    String fileAge = sdf.format(person.get("fileAge"));
+    if (file == null) {
       renderText("要修改的档案不存在，请刷新页面后再试！");
-    }else if (person == null){
+    } else if (person == null) {
       renderText("要修改的人员不存在，请刷新页面后再试！");
-    }else{
-      if (file.get("remark").equals(getPara("fremark").trim())
-              && person.get("name").equals(getPara("pname").trim())
-              && person.get("number").equals(getPara("pnumber").trim())
-              && person.get("phone1").equals(getPara("pphone1").trim())
-              && person.get("phone2").equals(getPara("pphone2").trim())
-              && person.get("address").equals(getPara("paddress").trim())
-              && person.get("info").equals(getPara("pinfo").trim())
-              && person.get("remark").equals(getPara("premark").trim())
-              && person.get("retire").equals(getPara("pretire").trim())
+    } else {
+      if (Util.CheckNull(file.getStr("remark")).equals(getPara("fremark").trim())
+              && Util.CheckNull(person.getStr("name")).equals(getPara("pname").trim())
+              && Util.CheckNull(person.getStr("number")).equals(getPara("pnumber").trim())
+              && Util.CheckNull(person.getStr("phone1")).equals(getPara("pphone1").trim())
+              && Util.CheckNull(person.getStr("phone2")).equals(getPara("pphone2").trim())
+              && Util.CheckNull(person.getStr("address")).equals(getPara("paddress").trim())
+              && Util.CheckNull(person.getStr("info")).equals(getPara("pinfo").trim())
+              && Util.CheckNull(person.getStr("remark")).equals(getPara("premark").trim())
+              && Util.CheckNull(person.getStr("retire")).equals(getPara("pretire").trim())
               && fileAge.equals(getPara("fileAge").trim())
-              ){
+              ) {
         renderText("未找到修改内容，请核实后再修改！");
-      } else if (!person.get("number").toString().equals(getPara("pnumber"))
+      } else if (!Util.CheckNull(person.getStr("number")).equals(getPara("pnumber"))
               && Person.dao.find("select * from person where number=?", getPara("pnumber")).size() > 0
-              ){
+              ) {
         renderText("该证件号码数据库中已存在，请核实！");
       } else if (!getPara("pname").matches("[\u4e00-\u9fa5]+")) {
         renderText("市民姓名必须为汉字!");
-      } else if (getPara("pname").length()<2) {
+      } else if (getPara("pname").length() < 2) {
         renderText("市民姓名必须为两个以上汉字，请核实!");
       } else if (!getPara("pphone1").matches("\\d{11}")) {
         renderText("联系电话1必须为11位数字!");
-      } else if (!IDNumber.availableIDNumber(getPara("pnumber"))){
+      } else if (!IDNumber.availableIDNumber(getPara("pnumber"))) {
         renderText("证件号码错误，请核实！");
-      } else if ((!getPara("pphone2").trim().equals("")) && (!getPara("pphone2").matches("\\d{11}"))){
+      } else if ((!getPara("pphone2").trim().equals("")) && (!getPara("pphone2").matches("\\d{11}"))) {
         renderText("联系电话2必须为11位数字或不填写!");
-      } else if (getPara("paddress").length()<2) {
+      } else if (getPara("paddress").length() < 2) {
         renderText("联系地址应该在两个字符以上！");
       } else if (!getPara("fileAge").matches(a)) {
         renderText("档案年龄日期有误!");
       } else {
         Trans t = new Trans();
-        t.set("pid",getPara("pid").trim())
+        t.set("pid", getPara("pid").trim())
                 .set("uid", ((User) getSessionAttr("user")).get("id").toString())
-                .set("fid",getPara("fid").trim())
+                .set("fid", getPara("fid").trim())
                 .set("did", ((User) getSessionAttr("user")).get("did").toString())
                 .set("time", new Date())
-                .set("nameAfter",getPara("pname").trim())
-                .set("numberAfter",getPara("pnumber").trim())
-                .set("phone1After",getPara("pphone1").trim())
-                .set("phone2After",getPara("pphone2").trim())
-                .set("addressAfter",getPara("paddress").trim())
-                .set("infoAfter",getPara("pinfo").trim())
-                .set("retireAfter",getPara("pretire").trim())
-                .set("premarkAfter",getPara("premark").trim())
-                .set("fremarkAfter",getPara("fremark").trim())
+                .set("nameAfter", getPara("pname").trim())
+                .set("numberAfter", getPara("pnumber").trim())
+                .set("phone1After", getPara("pphone1").trim())
+                .set("phone2After", getPara("pphone2").trim())
+                .set("addressAfter", getPara("paddress").trim())
+                .set("infoAfter", getPara("pinfo").trim())
+                .set("retireAfter", getPara("pretire").trim())
+                .set("premarkAfter", getPara("premark").trim())
+                .set("fremarkAfter", getPara("fremark").trim())
                 .set("fileAgeAfter", IDNumber.getFileDate(getPara("fileAge").trim()))
-                .set("nameBefore",person.get("name").toString().trim())
-                .set("numberBefore",person.get("number").toString().trim())
-                .set("phone1Before",person.get("phone1").toString().trim())
-                .set("phone2Before",person.get("phone2").toString().trim())
-                .set("addressBefore",person.get("address").toString().trim())
-                .set("infoBefore",person.get("info").toString().trim())
-                .set("retireBefore",person.get("retire").toString().trim())
-                .set("premarkBefore",person.get("remark").toString().trim())
-                .set("fremarkBefore",file.get("remark").toString().trim())
-                .set("fileAgeBefore",person.get("fileAge"))
+                .set("nameBefore", Util.CheckNull(person.getStr("name")))
+                .set("numberBefore", Util.CheckNull(person.getStr("number")))
+                .set("phone1Before", Util.CheckNull(person.getStr("phone1")))
+                .set("phone2Before", Util.CheckNull(person.getStr("phone2")))
+                .set("addressBefore", Util.CheckNull(person.getStr("address")))
+                .set("infoBefore", Util.CheckNull(person.getStr("info")))
+                .set("retireBefore", Util.CheckNull(person.getStr("retire")))
+                .set("premarkBefore", Util.CheckNull(person.getStr("remark")))
+                .set("fremarkBefore", Util.CheckNull(file.getStr("remark")))
+                .set("fileAgeBefore", person.get("fileAge"))
                 .save();
-        person.set("name",getPara("pname").trim())
-                .set("number",getPara("pnumber").trim())
-                .set("phone1",getPara("pphone1").trim())
-                .set("phone2",getPara("pphone2").trim())
-                .set("address",getPara("paddress").trim())
-                .set("info",getPara("pinfo").trim())
-                .set("retire",getPara("pretire").trim())
-                .set("remark",getPara("premark").trim())
+        person.set("name", getPara("pname").trim())
+                .set("number", getPara("pnumber").trim())
+                .set("phone1", getPara("pphone1").trim())
+                .set("phone2", getPara("pphone2").trim())
+                .set("address", getPara("paddress").trim())
+                .set("info", getPara("pinfo").trim())
+                .set("retire", getPara("pretire").trim())
+                .set("remark", getPara("premark").trim())
                 .set("fileAge", IDNumber.getFileDate(getPara("fileAge").trim()))
                 .update();
-        file.set("remark",getPara("fremark").trim()).update();
+        file.set("remark", getPara("fremark").trim()).update();
         renderText("OK");
       }
     }
@@ -309,9 +311,9 @@ public class FileController extends Controller {
   public void flow() {
     File file = File.dao.findById(getPara("fid"));
     Person person = Person.dao.findById(getPara("pid"));
-    if (file.get("state").toString().equals("已提")) {
+    if (Util.CheckNull(file.getStr("state")).equals("已提")) {
       renderText("该档案已办理提档手续！");
-    } else if (person.get("state").toString().equals("已提")) {
+    } else if (Util.CheckNull(person.getStr("state")).equals("已提")) {
       renderText("该人员已处于提档状态！");
     } else {
       Flow l = new Flow();
@@ -353,7 +355,7 @@ public class FileController extends Controller {
       renderText("存档原因必须填写!");
     } else if (getPara("ldirect").trim().length()==0) {
       renderText("档案来源必须填写!");
-    } else if (!person.get("state").toString().equals("已提")) {
+    } else if (!Util.CheckNull(person.getStr("state")).equals("已提")) {
       renderText("该人员有在存档案，请核实!");
     } else {
       person.set("state", "在档").update();
@@ -470,13 +472,13 @@ public class FileController extends Controller {
       }
     }
     files=File.dao.find(sql);
-    if (files.size()>100) {
+    if (files.size()>100000) {
       setSessionAttr("PersonName", "");
       setSessionAttr("PersonNumber", "");
       setSessionAttr("FileNumber", "");
       setSessionAttr("FileDept", "");
       setSessionAttr("FileState", "");
-      renderText("导出数据数量超过上限！");
+      renderText("导出数据数量超过10万，请从后台操作！");
     }else{
       renderText("OK");
     }
@@ -553,9 +555,17 @@ public class FileController extends Controller {
     for (int i = 0; i < f.size(); i++) {
       XSSFRow nextRow = sheet.createRow(i+1);
       XSSFCell cell2 = nextRow.createCell(0);
-      cell2.setCellValue(f.get(i).get("fnumber").toString());
+      if (f.get(i).get("fnumber") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(f.get(i).get("fnumber").toString());
+      }
       cell2 = nextRow.createCell(1);
-      cell2.setCellValue(f.get(i).get("fstate").toString());
+      if (f.get(i).get("fstate") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(f.get(i).get("fstate").toString());
+      }
       cell2 = nextRow.createCell(2);
       if (f.get(i).get("fremark") == null) {
         cell2.setCellValue("");
@@ -563,9 +573,17 @@ public class FileController extends Controller {
         cell2.setCellValue(f.get(i).get("fremark").toString());
       }
       cell2 = nextRow.createCell(3);
-      cell2.setCellValue(f.get(i).get("pname").toString());
+      if (f.get(i).get("pname") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(f.get(i).get("pname").toString());
+      }
       cell2 = nextRow.createCell(4);
-      cell2.setCellValue(f.get(i).get("pnumber").toString());
+      if (f.get(i).get("pnumber") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(f.get(i).get("pnumber").toString());
+      }
       cell2 = nextRow.createCell(5);
       if (f.get(i).get("pphone1") == null) {
         cell2.setCellValue("");
@@ -585,9 +603,17 @@ public class FileController extends Controller {
         cell2.setCellValue(f.get(i).get("paddress").toString());
       }
       cell2 = nextRow.createCell(8);
-      cell2.setCellValue(f.get(i).get("psex").toString());
+      if (f.get(i).get("psex") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(f.get(i).get("psex").toString());
+      }
       cell2 = nextRow.createCell(9);
-      cell2.setCellValue(f.get(i).get("pbirth").toString());
+      if (f.get(i).get("pbirth") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(f.get(i).get("pbirth").toString());
+      }
       cell2 = nextRow.createCell(10);
       if (f.get(i).get("fileAge") == null) {
         cell2.setCellValue("");
@@ -595,9 +621,17 @@ public class FileController extends Controller {
         cell2.setCellValue(f.get(i).get("fileAge").toString());
       }
       cell2 = nextRow.createCell(11);
-      cell2.setCellValue(f.get(i).get("pinfo").toString());
+      if (f.get(i).get("pinfo") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(f.get(i).get("pinfo").toString());
+      }
       cell2 = nextRow.createCell(12);
-      cell2.setCellValue(f.get(i).get("pretire").toString());
+      if (f.get(i).get("pretire") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(f.get(i).get("pretire").toString());
+      }
       cell2 = nextRow.createCell(13);
       if (f.get(i).get("premark") == null) {
         cell2.setCellValue("");

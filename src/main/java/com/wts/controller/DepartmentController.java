@@ -7,9 +7,8 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wts.entity.model.Department;
-import com.wts.entity.model.Export;
-import com.wts.entity.model.User;
 import com.wts.interceptor.LoginInterceptor;
+import com.wts.util.Util;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -18,7 +17,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Date;
 import java.util.List;
 
 public class DepartmentController extends Controller {
@@ -208,7 +206,7 @@ public class DepartmentController extends Controller {
     Department department = Department.dao.findById(getPara("id"));
     if (department == null) {
       renderText("要注销的部门不存在，请刷新页面后再试！");
-    }else if (department.get("state").equals("注销")){
+    }else if (Util.CheckNull(department.getStr("state")).equals("注销")){
       renderText("该部门已注销！");
     }else{
       if (Department.dao.findById(getPara("id")).set("state", "注销").update()){
@@ -226,7 +224,7 @@ public class DepartmentController extends Controller {
     Department department = Department.dao.findById(getPara("id"));
     if (department == null) {
       renderText("要激活的部门不存在，请刷新页面后再试！");
-    }else if (department.get("state").equals("激活")){
+    }else if (Util.CheckNull(department.getStr("state")).equals("激活")){
       renderText("该部门已激活！");
     }else{
       if (department.set("state", "激活").update()){
@@ -244,7 +242,7 @@ public class DepartmentController extends Controller {
     Department department = Department.dao.findById(getPara("id"));
     if (department == null) {
       renderText("要删除的部门不存在，请刷新页面后再试！");
-    }else if (department.get("state").equals("删除")){
+    }else if (Util.CheckNull(department.getStr("state")).equals("删除")){
       renderText("该部门已删除！");
     }else{
       if (department.set("state", "删除").update()){
@@ -264,15 +262,15 @@ public class DepartmentController extends Controller {
     if (department == null) {
       renderText("要修改的部门不存在，请刷新页面后再试！");
     } else {
-      if (department.get("name").equals(getPara("name"))
-              && department.get("phone").equals(getPara("phone"))
-              && department.get("address").equals(getPara("address"))
-              && department.get("code").equals(getPara("code"))
-              && department.get("other").equals(getPara("other"))
-              && department.get("number").toString().equals(getPara("number"))
+      if (Util.CheckNull(department.getStr("name")).equals(getPara("name"))
+              && Util.CheckNull(department.getStr("phone")).equals(getPara("phone"))
+              && Util.CheckNull(department.getStr("address")).equals(getPara("address"))
+              && Util.CheckNull(department.getStr("code")).equals(getPara("code"))
+              && Util.CheckNull(department.getStr("other")).equals(getPara("other"))
+              && Util.CheckNull(department.getStr("number")).equals(getPara("number"))
               ) {
         renderText("未找到修改内容，请核实后再修改！");
-      } else if (!department.get("name").equals(getPara("name"))
+      } else if (!Util.CheckNull(department.getStr("name")).equals(getPara("name"))
               && Department.dao.find("select * from department where name=?", getPara("name")).size() > 0
               ){
         renderText("该部门名称已存在，请重新修改！");
@@ -290,7 +288,7 @@ public class DepartmentController extends Controller {
         renderText("部门编号必须为数字或字母的组合!");
       } else if (getPara("number").length() != 3) {
         renderText("部门编号必须为3个字符!");
-      } else if (!department.get("number").equals(getPara("number"))
+      } else if (!Util.CheckNull(department.getStr("number")).equals(getPara("number"))
               && Department.dao.find("select * from department where number=?", getPara("number")).size() > 0) {
         renderText("该部门编号数据库中已存在，请使用其他编号!");
       } else {
@@ -321,9 +319,9 @@ public class DepartmentController extends Controller {
     }else{
       departments= Department.dao.find("select * from department where name like '%"+getPara("DeptName")+"%'");
     }
-    if (departments.size()>100) {
+    if (departments.size()>100000) {
       setSessionAttr("Dept", "");
-      renderText("导出数据数量超过上限！");
+      renderText("导出数据数量超过10万，请从后台操作！");
     }else{
       if(getPara("DeptName")==null){
         setSessionAttr("Dept", "");
@@ -361,13 +359,29 @@ public class DepartmentController extends Controller {
     for (int i = 0; i < d.size(); i++) {
       XSSFRow nextRow = sheet.createRow(i+1);
       XSSFCell cell2 = nextRow.createCell(0);
-      cell2.setCellValue(d.get(i).get("id").toString());
+      if (d.get(i).get("id") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(d.get(i).get("id").toString());
+      }
       cell2 = nextRow.createCell(1);
-      cell2.setCellValue(d.get(i).get("name").toString());
+      if (d.get(i).get("name") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(d.get(i).get("name").toString());
+      }
       cell2 = nextRow.createCell(2);
-      cell2.setCellValue(d.get(i).get("number").toString());
+      if (d.get(i).get("number") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(d.get(i).get("number").toString());
+      }
       cell2 = nextRow.createCell(3);
-      cell2.setCellValue(d.get(i).get("phone").toString());
+      if (d.get(i).get("phone") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(d.get(i).get("phone").toString());
+      }
       cell2 = nextRow.createCell(4);
       if (d.get(i).get("address") == null) {
         cell2.setCellValue("");

@@ -8,6 +8,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wts.entity.model.*;
 import com.wts.interceptor.LoginInterceptor;
 import com.wts.util.IDNumber;
+import com.wts.util.Util;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -182,15 +183,15 @@ public class UserController extends Controller {
     if (user == null) {
       renderText("要修改的用户不存在，请刷新页面后再试！");
     } else {
-      if (user.get("name").equals(getPara("name").trim())
-              && user.get("other").equals(getPara("other").trim())
-              && user.get("number").equals(getPara("number").trim())
-              && user.get("phone").equals(getPara("phone").trim())
-              && user.get("login").equals(getPara("login").trim())
-              && user.get("did").toString().equals(getPara("did").trim())
+      if (Util.CheckNull(user.getStr("name")).equals(getPara("name").trim())
+              && Util.CheckNull(user.getStr("other")).equals(getPara("other").trim())
+              && Util.CheckNull(user.getStr("number")).equals(getPara("number").trim())
+              && Util.CheckNull(user.getStr("phone")).equals(getPara("phone").trim())
+              && Util.CheckNull(user.getStr("login")).equals(getPara("login").trim())
+              && Util.CheckNull(user.getStr("did")).equals(getPara("did").trim())
               ) {
         renderText("未找到修改内容，请核实后再修改！");
-      } else if (!user.get("number").equals(getPara("number"))
+      } else if (!Util.CheckNull(user.getStr("number")).equals(getPara("number"))
               && User.dao.find("select * from user where number=?", getPara("number")).size() > 0
               ){
         renderText("该证件号码已绑定为其他工作人员，请重新修改！");
@@ -228,7 +229,7 @@ public class UserController extends Controller {
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
       renderText("要注销的用户不存在，请刷新页面后再试！");
-    }else if (user.get("state").equals("注销")){
+    }else if (Util.CheckNull(user.getStr("state")).equals("注销")){
       renderText("该用户已注销！");
     }else{
       if (User.dao.findById(getPara("id")).set("state", "注销").update()){
@@ -246,7 +247,7 @@ public class UserController extends Controller {
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
       renderText("要激活的用户不存在，请刷新页面后再试！");
-    }else if (user.get("state").equals("激活")){
+    }else if (Util.CheckNull(user.getStr("state")).equals("激活")){
       renderText("该用户已激活！");
     }else{
       if (user.set("state", "激活").update()){
@@ -264,7 +265,7 @@ public class UserController extends Controller {
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
       renderText("要删除的用户不存在，请刷新页面后再试！");
-    }else if (user.get("state").equals("删除")){
+    }else if (Util.CheckNull(user.getStr("state")).equals("删除")){
       renderText("该用户已删除！");
     }else{
       if (user.set("state", "删除").update()){
@@ -282,7 +283,7 @@ public class UserController extends Controller {
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
       renderText("要重置的用户不存在，请刷新页面后再试！");
-    }else if(!IDNumber.availableIDNumber(user.get("number").toString())){
+    }else if(!IDNumber.availableIDNumber(Util.CheckNull(user.getStr("number")))){
       renderText("要重置的用户证件号码有误，请修改证件号码后再试！");
     } else {
       if (user.set("pass", encodeMD5String(user.get("number").toString().substring(user.get("number").toString().length()-8,user.get("number").toString().length()).trim())).update()){
@@ -325,10 +326,10 @@ public class UserController extends Controller {
     }else{
       users = User.dao.find("select * from user where" + username + " and " + userdept);
     }
-    if (users.size()>100) {
+    if (users.size()>100000) {
       setSessionAttr("UserName", "");
       setSessionAttr("UserDept", "");
-      renderText("导出数据数量超过上限！");
+      renderText("导出数据数量超过10万，请从后台操作！");
     }else{
       renderText("OK");
     }
@@ -372,19 +373,47 @@ public class UserController extends Controller {
     for (int i = 0; i < u.size(); i++) {
       XSSFRow nextRow = sheet.createRow(i+1);
       XSSFCell cell2 = nextRow.createCell(0);
-      cell2.setCellValue(u.get(i).get("id").toString());
+      if (u.get(i).get("id") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(u.get(i).get("id").toString());
+      }
       cell2 = nextRow.createCell(1);
-      cell2.setCellValue(u.get(i).get("name").toString());
+      if (u.get(i).get("name") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(u.get(i).get("name").toString());
+      }
       cell2 = nextRow.createCell(2);
-      cell2.setCellValue(u.get(i).get("number").toString());
+      if (u.get(i).get("number") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(u.get(i).get("number").toString());
+      }
       cell2 = nextRow.createCell(3);
-      cell2.setCellValue(u.get(i).get("phone").toString());
+      if (u.get(i).get("phone") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(u.get(i).get("phone").toString());
+      }
       cell2 = nextRow.createCell(4);
-      cell2.setCellValue(u.get(i).get("login").toString());
+      if (u.get(i).get("login") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(u.get(i).get("login").toString());
+      }
       cell2 = nextRow.createCell(5);
-      cell2.setCellValue(u.get(i).get("dname").toString());
+      if (u.get(i).get("dname") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(u.get(i).get("dname").toString());
+      }
       cell2 = nextRow.createCell(6);
-      cell2.setCellValue(u.get(i).get("state").toString());
+      if (u.get(i).get("state") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(u.get(i).get("state").toString());
+      }
       cell2 = nextRow.createCell(7);
       if (u.get(i).get("other") == null) {
         cell2.setCellValue("");
