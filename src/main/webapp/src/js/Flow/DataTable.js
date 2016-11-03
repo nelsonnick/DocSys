@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, message } from 'antd';
 import EditLink from './EditLink.js';
+import * as AjaxFunction from '../Util/AjaxFunction.js';
 
 export default class DataTable extends React.Component {
   constructor(props) {
@@ -82,10 +83,11 @@ export default class DataTable extends React.Component {
           );
           if (record.lflow.toString() === '转入') {
             operate.push(<span className="ant-divider" />);
+            operate.push(<a className="btn btn-xs btn-success" href={`${AjaxFunction.PrintOut}?lid=${record.lid}`} >转入打印</a>);
             operate.push();
           } else if (record.lflow.toString() === '转出') {
             operate.push(<span className="ant-divider" />);
-            operate.push(<a className="btn btn-xs btn-success" href={`/flow/print?lid=${record.lid}`} >打印</a>);
+            operate.push(<a className="btn btn-xs btn-warning" href={`${AjaxFunction.PrintIn}?lid=${record.lid}`} >转出打印</a>);
           } else {
             operate.push(<span className="ant-divider" />);
           }

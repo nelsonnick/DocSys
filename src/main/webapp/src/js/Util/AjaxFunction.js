@@ -1,5 +1,5 @@
-const h = '';
-// const h = '/ds';
+// const h = '';
+const h = '/ds';
 export const DepartmentCount = `${h}/department/count`;          // 数据总数     --参数：无
 export const DepartmentQuery = `${h}/department/query`;          // 数据查询     --参数：queryName
 export const DepartmentAdd = `${h}/department/add`;              // 添加部门     --参数：name,address,phone,other,active
@@ -62,6 +62,8 @@ export const FlowReason = `${h}/flow/reason`;                    // 检测原因
 export const FlowCount = `${h}/flow/count`;                      // 数据总数     --参数：PageNumber,PageSize,FileNumber,FileDept,PersonName,PersonNumber,FlowFlow
 export const FlowQuery = `${h}/flow/query`;                      // 数据查询     --参数：PageNumber,PageSize,FileNumber,FileDept,PersonName,PersonNumber,FlowFlow
 export const FlowDownload = `${h}/flow/download`;                // 检查导出     --参数：
+export const PrintOut = `${h}/flow/printOut`;                    // 转出打印     --参数：
+export const PrintIn = `${h}/flow/PrintIn`;                      // 转入打印     --参数：
 
 export const FlowIn = `${h}/count/flowIn`;                       // 存档数量     --参数：userDept
 export const FlowOut = `${h}/count/flowOut`;                     // 提档数量     --参数：userDept
@@ -71,3 +73,5 @@ export const MaleIn = `${h}/count/maleIn`;                       // 存档男性
 export const MaleOut = `${h}/count/maleOut`;                     // 提档男性     --参数：userDept
 export const FemaleIn = `${h}/count/femaleIn`;                   // 存档女性     --参数：userDept
 export const FemaleOut = `${h}/count/femaleOut`;                 // 提档女性     --参数：userDept
+
+export const Logout = `${h}/logout`;                             // 退出系统    --参数：

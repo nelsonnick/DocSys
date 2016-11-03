@@ -350,7 +350,43 @@ public class FlowController extends Controller {
    *@param: lid
    */
   @Before({Tx.class,LoginInterceptor.class})
-  public void print() {
+  public void printOut() {
+    Print r =new Print();
+    r.set("lid",getPara("lid"))
+            .set("uid",((User) getSessionAttr("user")).get("id").toString())
+            .set("time", new Date())
+            .save();
+    Flow l = Flow.dao.findById(getPara("lid"));
+    User u =User.dao.findById(l.getInt("uid"));
+    File f = File.dao.findById(l.getInt("fid"));
+    Department d = Department.dao.findById(l.getInt("did"));
+    Person p =Person.dao.findById(l.getInt("pid"));
+    System.out.println("111111111");
+    setAttr("fnumber",f.get("number").toString());
+    setAttr("uname",u.get("name").toString());
+    setAttr("pname",p.get("name").toString());
+    setAttr("dname",d.get("name").toString());
+    setAttr("dphone",d.get("phone").toString());
+    System.out.println("222222222");
+    setAttr("dcode",d.get("code").toString());
+    System.out.println("333333");
+    setAttr("ldirect",l.get("direct").toString());
+    setAttr("daddress",d.get("address").toString());
+
+    SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
+    SimpleDateFormat MM = new SimpleDateFormat("MM");
+    SimpleDateFormat dd = new SimpleDateFormat("dd");
+    setAttr("yyyy",yyyy.format(l.get("time")));
+    setAttr("mm",MM.format(l.get("time")));
+    setAttr("dd",dd.format(l.get("time")));
+    render("/dist/printOut.html");
+  }
+  /**
+   * 打印
+   *@param: lid
+   */
+  @Before({Tx.class,LoginInterceptor.class})
+  public void printIn() {
     Print r =new Print();
     r.set("lid",getPara("lid"))
             .set("uid",((User) getSessionAttr("user")).get("id").toString())
@@ -365,17 +401,24 @@ public class FlowController extends Controller {
     setAttr("uname",u.get("name").toString());
     setAttr("pname",p.get("name").toString());
     setAttr("dname",d.get("name").toString());
-    setAttr("dphone",d.get("phone").toString());
-    setAttr("dcode",d.get("code").toString());
-    setAttr("ldirect",l.get("direct").toString());
-    setAttr("daddress",d.get("address").toString());
+    setAttr("pnumber",p.get("number").toString());
+    setAttr("pphone1",p.get("phone1").toString());
+    setAttr("pphone2",p.get("phone2").toString());
+    setAttr("paddress",p.get("address").toString());
+    setAttr("pretire",p.get("retire").toString());
+    setAttr("pinfo",p.get("info").toString());
+    setAttr("pbirth",p.get("birth").toString());
+    setAttr("psex",p.get("sex").toString());
+    setAttr("fileAge",p.get("fileAge").toString());
+    setAttr("premark",p.get("remark").toString());
+    setAttr("fremark",f.get("remark").toString());
     SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
     SimpleDateFormat MM = new SimpleDateFormat("MM");
     SimpleDateFormat dd = new SimpleDateFormat("dd");
     setAttr("yyyy",yyyy.format(l.get("time")));
     setAttr("mm",MM.format(l.get("time")));
     setAttr("dd",dd.format(l.get("time")));
-    render("/dist/print.html");
+    render("/dist/printIn.html");
   }
 
 }

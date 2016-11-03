@@ -29,7 +29,7 @@ export default class Top extends React.Component {
           'url': AjaxFunction.CurrentDepartment,
           'dataType': 'text',
           'success': (CurrentDepartment) => {
-            $('#b').attr('href', '/logout');
+            $('#b').attr('href', AjaxFunction.Logout);
             this.setState(
               {
                 CurrentUser,
