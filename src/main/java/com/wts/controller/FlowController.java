@@ -448,6 +448,9 @@ public class FlowController extends Controller {
     File f = File.dao.findById(l.getInt("fid"));
     Department d = Department.dao.findById(l.getInt("did"));
     Person p =Person.dao.findById(l.getInt("pid"));
+    SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
+    SimpleDateFormat MM = new SimpleDateFormat("MM");
+    SimpleDateFormat dd = new SimpleDateFormat("dd");
     setAttr("fnumber",Util.CheckNull(f.getStr("number")));
     setAttr("uname",Util.CheckNull(u.getStr("name")));
     setAttr("pname",Util.CheckNull(p.getStr("name")));
@@ -458,14 +461,11 @@ public class FlowController extends Controller {
     setAttr("paddress",Util.CheckNull(p.getStr("address")));
     setAttr("pretire",Util.CheckNull(p.getStr("retire")));
     setAttr("pinfo",Util.CheckNull(p.getStr("info")));
-    setAttr("pbirth",Util.CheckNull(p.getStr("birth")));
+    setAttr("pbirth",yyyy.format(p.get("birth"))+MM.format(p.get("birth"))+dd.format(p.get("birth")));
     setAttr("psex",Util.CheckNull(p.getStr("sex")));
-    setAttr("fileAge",Util.CheckNull(p.getStr("fileAge")));
+    setAttr("fileAge",yyyy.format(p.get("fileAge"))+MM.format(p.get("fileAge"))+dd.format(p.get("fileAge")));
     setAttr("premark",Util.CheckNull(p.getStr("remark")));
     setAttr("fremark",Util.CheckNull(f.getStr("remark")));
-    SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
-    SimpleDateFormat MM = new SimpleDateFormat("MM");
-    SimpleDateFormat dd = new SimpleDateFormat("dd");
     setAttr("yyyy",yyyy.format(l.get("time")));
     setAttr("mm",MM.format(l.get("time")));
     setAttr("dd",dd.format(l.get("time")));
