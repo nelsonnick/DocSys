@@ -30,18 +30,30 @@ export default class Top extends React.Component {
           'url': AjaxFunction.CurrentDepartment,
           'dataType': 'text',
           'success': (CurrentDepartment) => {
-            $('#b').attr('href', AjaxFunction.Logout);
-            this.setState(
-              {
-                CurrentUser,
-                CurrentDepartment,
-              }
-            );
-            window.CurrentUser = CurrentUser.toString().trim();
-            window.CurrentDepartment = CurrentDepartment.toString().trim();
+            $.ajax({
+              'type': 'POST',
+              'url': AjaxFunction.CurrentDid,
+              'dataType': 'text',
+              'success': (CurrentDid) => {
+                $('#b').attr('href', AjaxFunction.Logout);
+                this.setState(
+                  {
+                    CurrentUser,
+                    CurrentDepartment,
+                    CurrentDid,
+                  }
+                );
+                window.CurrentUser = CurrentUser.toString().trim();
+                window.CurrentDepartment = CurrentDepartment.toString().trim();
+                window.CurrentDid = CurrentDid.toString().trim();
+              },
+              'error': () => {
+                openNotificationWithIcon('error', '请求错误', '无法读取当前用户所属部门ID，请检查网络情况');
+              },
+            });
           },
           'error': () => {
-            openNotificationWithIcon('error', '请求错误', '无法读取当前用户所属部门，请检查网络情况');
+            openNotificationWithIcon('error', '请求错误', '无法读取当前用户所属部门名称，请检查网络情况');
           },
         });
       },

@@ -1,5 +1,5 @@
-// const h = '';
-const h = '/ds';
+const h = '';
+// const h = '/ds';
 export const DepartmentCount = `${h}/department/count`;          // 数据总数     --参数：无
 export const DepartmentQuery = `${h}/department/query`;          // 数据查询     --参数：queryName
 export const DepartmentAdd = `${h}/department/add`;              // 添加部门     --参数：name,address,phone,other,active
@@ -37,6 +37,7 @@ export const DeptNow = `${h}/user/depts`;                        // 当前部门
 export const UserDownload = `${h}/user/download`;                // 检查导出     --参数：userName,userDid
 export const CurrentUser = `${h}/getCurrentUser`;                // 当前人员     --参数：无
 export const CurrentDepartment = `${h}/getCurrentDepartment`;    // 所属部门     --参数：无
+export const CurrentDid = `${h}/getCurrentDid`;                  // 所属部门     --参数：无
 export const UserExport = `${h}/user/export`;                    // 导出用户     --参数：id
 
 export const FileNew = `${h}/file/newNumber`;                    // 最新编号     --参数：无

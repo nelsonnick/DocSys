@@ -91,6 +91,14 @@ public class MainController extends Controller {
         }
     }
     @Before(LoginInterceptor.class)
+    public void getCurrentDid(){
+        if (getSessionAttr("user").equals("") || getSessionAttr("user")==null){
+            renderText("无法识别");
+        }else{
+            renderText(((User) getSessionAttr("user")).get("did").toString().trim());
+        }
+    }
+    @Before(LoginInterceptor.class)
     public void logout() {
         removeSessionAttr("user");
         redirect("/index");

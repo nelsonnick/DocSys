@@ -95,7 +95,11 @@ export default class DataTable extends React.Component {
                 afterEdit={this.afterEdit}
               />
             );
-          } else if (record.pstate.toString() === '已提' && record.fstate.toString() === '已提') {
+          } else {
+            operate.push(<span className="ant-divider" />);
+          }
+        } else {
+          if (record.pstate.toString() === '已提' && record.fstate.toString() === '已提') {
             operate.push(
               <BackLink
                 fileId={record.fid}
@@ -111,8 +115,8 @@ export default class DataTable extends React.Component {
                 personAddress={record.paddress}
                 fileAge={record.fileAge}
                 personRemark={record.premark}
-                departmentId={record.did}
-                departmentName={record.dname}
+                departmentId={window.CurrentDid}
+                departmentName={window.CurrentDepartment}
                 afterEdit={this.afterEdit}
               />
             );
