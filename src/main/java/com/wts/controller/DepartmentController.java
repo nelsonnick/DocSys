@@ -293,12 +293,12 @@ public class DepartmentController extends Controller {
         renderText("该部门编号数据库中已存在，请使用其他编号!");
       } else {
         if (department
-                .set("name",getPara("name"))
-                .set("phone",getPara("phone"))
-                .set("address",getPara("address"))
-                .set("code",getPara("code"))
-                .set("other",getPara("other"))
-                .set("number",getPara("number"))
+                .set("name",getPara("name").trim())
+                .set("phone",getPara("phone").trim())
+                .set("address",getPara("address").trim())
+                .set("code",getPara("code").trim())
+                .set("other",Util.CheckNull(getPara("other").trim()))
+                .set("number",getPara("number").trim())
                 .update()) {
           renderText("OK");
         } else{

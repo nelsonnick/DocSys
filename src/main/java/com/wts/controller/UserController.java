@@ -212,7 +212,7 @@ public class UserController extends Controller {
                 .set("phone",getPara("phone").trim())
                 .set("login",getPara("login").trim())
                 .set("did",getPara("did").trim())
-                .set("other",getPara("other").trim())
+                .set("other",Util.CheckNull(getPara("other").trim()))
                 .update()) {
           renderText("OK");
         } else{
