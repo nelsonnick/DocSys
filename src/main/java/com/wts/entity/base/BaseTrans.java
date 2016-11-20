@@ -161,12 +161,12 @@ public abstract class BaseTrans<M extends BaseTrans<M>> extends Model<M> impleme
 		return get("infoBefore");
 	}
 
-	public void setInfoeAfter(java.lang.String infoeAfter) {
-		set("infoeAfter", infoeAfter);
+	public void setInfoAfter(java.lang.String infoAfter) {
+		set("infoAfter", infoAfter);
 	}
 
-	public java.lang.String getInfoeAfter() {
-		return get("infoeAfter");
+	public java.lang.String getInfoAfter() {
+		return get("infoAfter");
 	}
 
 	public void setPremarkBefore(java.lang.String premarkBefore) {

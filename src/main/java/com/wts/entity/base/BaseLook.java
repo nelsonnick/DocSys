@@ -49,19 +49,19 @@ public abstract class BaseLook<M extends BaseLook<M>> extends Model<M> implement
 		return get("sql");
 	}
 
-	public void setPageNumber(java.lang.Integer pageNumber) {
+	public void setPageNumber(java.lang.String pageNumber) {
 		set("pageNumber", pageNumber);
 	}
 
-	public java.lang.Integer getPageNumber() {
+	public java.lang.String getPageNumber() {
 		return get("pageNumber");
 	}
 
-	public void setPageSize(java.lang.Integer pageSize) {
+	public void setPageSize(java.lang.String pageSize) {
 		set("pageSize", pageSize);
 	}
 
-	public java.lang.Integer getPageSize() {
+	public java.lang.String getPageSize() {
 		return get("pageSize");
 	}
 

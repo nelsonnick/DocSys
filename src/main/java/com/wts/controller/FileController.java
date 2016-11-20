@@ -164,9 +164,9 @@ public class FileController extends Controller {
       p.set("name", getPara("pname").trim())
               .set("number", getPara("pnumber").trim())
               .set("phone1", getPara("pphone1").trim())
-              .set("phone2", getPara("pphone2").trim())
+              .set("phone2", Util.CheckNull(getPara("pphone2").trim()))
               .set("address", getPara("paddress").trim())
-              .set("remark", getPara("premark").trim())
+              .set("remark", Util.CheckNull(getPara("premark").trim()))
               .set("info", getPara("pinfo").trim())
               .set("retire", getPara("pretire").trim())
               .set("fileAge", IDNumber.getFileDate(getPara("fileAge").trim()))
@@ -177,12 +177,12 @@ public class FileController extends Controller {
       File f = new File();
       f.set("number", getPara("fnumber").trim())
               .set("state", "在档")
-              .set("remark", getPara("fremark").trim())
+              .set("remark", Util.CheckNull(getPara("fremark").trim()))
               .set("did", ((User) getSessionAttr("user")).get("did").toString())
               .set("pid",p.get("id").toString())
               .save();
       Flow l = new Flow();
-      l.set("remark", getPara("lremark").trim())
+      l.set("remark", Util.CheckNull(getPara("lremark").trim()))
               .set("type", getPara("ltype").trim())
               .set("direct", getPara("ldirect").trim())
               .set("reason", getPara("lreason").trim())
@@ -266,12 +266,12 @@ public class FileController extends Controller {
                 .set("nameAfter", getPara("pname").trim())
                 .set("numberAfter", getPara("pnumber").trim())
                 .set("phone1After", getPara("pphone1").trim())
-                .set("phone2After", getPara("pphone2").trim())
+                .set("phone2After", Util.CheckNull(getPara("pphone2").trim()))
                 .set("addressAfter", getPara("paddress").trim())
                 .set("infoAfter", getPara("pinfo").trim())
                 .set("retireAfter", getPara("pretire").trim())
-                .set("premarkAfter", getPara("premark").trim())
-                .set("fremarkAfter", getPara("fremark").trim())
+                .set("premarkAfter", Util.CheckNull(getPara("premark").trim()))
+                .set("fremarkAfter", Util.CheckNull(getPara("fremark").trim()))
                 .set("fileAgeAfter", IDNumber.getFileDate(getPara("fileAge").trim()))
                 .set("nameBefore", Util.CheckNull(person.getStr("name")))
                 .set("numberBefore", Util.CheckNull(person.getStr("number")))
@@ -287,14 +287,14 @@ public class FileController extends Controller {
         person.set("name", getPara("pname").trim())
                 .set("number", getPara("pnumber").trim())
                 .set("phone1", getPara("pphone1").trim())
-                .set("phone2", getPara("pphone2").trim())
+                .set("phone2", Util.CheckNull(getPara("pphone2").trim()))
                 .set("address", getPara("paddress").trim())
                 .set("info", getPara("pinfo").trim())
                 .set("retire", getPara("pretire").trim())
-                .set("remark", getPara("premark").trim())
+                .set("remark", Util.CheckNull(getPara("premark").trim()))
                 .set("fileAge", IDNumber.getFileDate(getPara("fileAge").trim()))
                 .update();
-        file.set("remark", getPara("fremark").trim()).update();
+        file.set("remark", Util.CheckNull(getPara("fremark").trim())).update();
         renderText("OK");
       }
     }

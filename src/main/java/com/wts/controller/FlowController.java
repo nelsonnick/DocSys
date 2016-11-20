@@ -123,28 +123,28 @@ public class FlowController extends Controller {
         renderText("未找到修改内容，请核实后再修改！");
       } else if (getPara("ldirect").trim().length()<2) {
         renderText("档案流向必须在两个字符以上!");
-      } else if (getPara("reason").trim().length()<2) {
+      } else if (getPara("lreason").trim().length()<2) {
         renderText("流转原因必须在两个字符以上!");
       } else {
         Change c = new Change();
         c.set("lid",getPara("lid").trim())
                 .set("uid", ((User) getSessionAttr("user")).get("id").toString())
-                .set("fid",Util.CheckNull(flow.getStr("fid")).trim())
+                .set("fid",Util.CheckNull(flow.get("fid").toString()).trim())
                 .set("did", ((User) getSessionAttr("user")).get("did").toString())
                 .set("time", new Date())
-                .set("reasonAfter",getPara("lreason").trim())
-                .set("remarkAfter",getPara("lremark").trim())
-                .set("typeAfter",getPara("ltype").trim())
-                .set("directAfter",getPara("ldirect").trim())
+                .set("reasonAfter",Util.CheckNull(getPara("lreason")).trim())
+                .set("remarkAfter",Util.CheckNull(getPara("lremark")).trim())
+                .set("directAfter",Util.CheckNull(getPara("ldirect")).trim())
+                .set("typeAfter",Util.CheckNull(getPara("ltype")).trim())
                 .set("reasonBefore",Util.CheckNull(flow.getStr("reason")).trim())
                 .set("remarkBefore",Util.CheckNull(flow.getStr("remark")).trim())
-                .set("typeBefore",Util.CheckNull(flow.getStr("type")).trim())
                 .set("directBefore",Util.CheckNull(flow.getStr("direct")).trim())
+                .set("typeBefore",Util.CheckNull(flow.getStr("type")).trim())
                 .save();
-        flow.set("reason",getPara("lreason").trim())
-                .set("remark",getPara("lremark").trim())
-                .set("type",getPara("ltype").trim())
-                .set("direct",getPara("ldirect").trim())
+        flow.set("reason",Util.CheckNull(getPara("lreason")).trim())
+                .set("remark",Util.CheckNull(getPara("lremark").trim()))
+                .set("type",Util.CheckNull(getPara("ltype")).trim())
+                .set("direct",Util.CheckNull(getPara("ldirect")).trim())
                 .update();
         renderText("OK");
       }

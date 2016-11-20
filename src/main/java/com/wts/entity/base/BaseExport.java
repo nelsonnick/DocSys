@@ -25,20 +25,20 @@ public abstract class BaseExport<M extends BaseExport<M>> extends Model<M> imple
 		return get("uid");
 	}
 
-	public void setType(java.lang.String type) {
-		set("type", type);
-	}
-
-	public java.lang.String getType() {
-		return get("type");
-	}
-
 	public void setTime(java.util.Date time) {
 		set("time", time);
 	}
 
 	public java.util.Date getTime() {
 		return get("time");
+	}
+
+	public void setType(java.lang.String type) {
+		set("type", type);
+	}
+
+	public java.lang.String getType() {
+		return get("type");
 	}
 
 	public void setSql(java.lang.String sql) {

@@ -38,9 +38,9 @@ Table: export
 -------+--------------+------+-----+---------+---------
  id    | INT(10)      | NO   | PRI |         |         
  uid   | INT(10)      | YES  |     |         |         
- type  | VARCHAR(255) | YES  |     |         |         
  time  | DATETIME(19) | YES  |     |         |         
- sql   | VARCHAR(255) | YES  |     |         |         
+ type  | VARCHAR(255) | YES  |     |         |         
+ sql   | VARCHAR(999) | YES  |     |         |         
 -------+--------------+------+-----+---------+---------
 
 Table: file
@@ -92,9 +92,9 @@ Table: look
  uid        | INT(10)      | YES  |     |         |         
  time       | DATETIME(19) | YES  |     |         |         
  type       | VARCHAR(255) | YES  |     |         |         
- sql        | VARCHAR(255) | YES  |     |         |         
- pageNumber | INT(10)      | YES  |     |         |         
- pageSize   | INT(10)      | YES  |     |         |         
+ sql        | VARCHAR(999) | YES  |     |         |         
+ pageNumber | VARCHAR(255) | YES  |     |         |         
+ pageSize   | VARCHAR(255) | YES  |     |         |         
 ------------+--------------+------+-----+---------+---------
 
 Table: person
@@ -149,7 +149,7 @@ Table: trans
  fileAgeBefore | DATETIME(19) | YES  |     |         |         
  fileAgeAfter  | DATETIME(19) | YES  |     |         |         
  infoBefore    | VARCHAR(255) | YES  |     |         |         
- infoeAfter    | VARCHAR(255) | YES  |     |         |         
+ infoAfter     | VARCHAR(255) | YES  |     |         |         
  premarkBefore | VARCHAR(255) | YES  |     |         |         
  premarkAfter  | VARCHAR(255) | YES  |     |         |         
  retireBefore  | VARCHAR(255) | YES  |     |         |         
