@@ -43,9 +43,9 @@ public class FileController extends Controller {
   @Before(LoginInterceptor.class)
   public void numbers() {
     List<File> files = File.dao.find(
-            "select * from file where number=?", getPara("number"));
+            "select * from file where number=? and did=?", getPara("number"),((User) getSessionAttr("user")).get("did").toString());
     if (files.size() >1) {
-      renderText("该档案编号已存在，请更换!");
+      renderText("该档案编号在当前部门已存在，请更换!");
     } else {
       renderText("OK");
     }
@@ -207,6 +207,7 @@ public class FileController extends Controller {
    * pinfo
    * pretire
    * premark
+   * fnumber
    * fremark
    * fileAge
    */
@@ -224,6 +225,7 @@ public class FileController extends Controller {
       renderText("要修改的人员不存在，请刷新页面后再试！");
     } else {
       if (Util.CheckNull(file.getStr("remark")).equals(getPara("fremark").trim())
+              && Util.CheckNull(file.getStr("number")).equals(getPara("fnumber").trim())
               && Util.CheckNull(person.getStr("name")).equals(getPara("pname").trim())
               && Util.CheckNull(person.getStr("number")).equals(getPara("pnumber").trim())
               && Util.CheckNull(person.getStr("phone1")).equals(getPara("pphone1").trim())
@@ -237,8 +239,12 @@ public class FileController extends Controller {
         renderText("未找到修改内容，请核实后再修改！");
       } else if (!Util.CheckNull(person.getStr("number")).equals(getPara("pnumber"))
               && Person.dao.find("select * from person where number=?", getPara("pnumber")).size() > 0
-              && !getPara("number").equals("000000000000000000")) {
+              && !getPara("pnumber").equals("000000000000000000")) {
         renderText("该证件号码数据库中已存在，请核实！");
+      } else if (!Util.CheckNull(file.getStr("number")).equals(getPara("fnumber"))
+              && File.dao.find("select * from file where number=? and did=?", getPara("fnumber"),((User) getSessionAttr("user")).get("did").toString()).size() > 0
+              ) {
+        renderText("该档案编号数据库中已存在，请核实！");
       } else if (!getPara("pname").matches("[\u4e00-\u9fa5]+")) {
         renderText("市民姓名必须为汉字!");
       } else if (getPara("pname").length() < 2) {
@@ -261,7 +267,8 @@ public class FileController extends Controller {
                 .set("did", ((User) getSessionAttr("user")).get("did").toString())
                 .set("time", new Date())
                 .set("nameAfter", getPara("pname").trim())
-                .set("numberAfter", getPara("pnumber").trim())
+                .set("pnumberAfter", getPara("pnumber").trim())
+                .set("fnumberAfter", getPara("fnumber").trim())
                 .set("phone1After", getPara("pphone1").trim())
                 .set("phone2After", Util.CheckNull(getPara("pphone2").trim()))
                 .set("addressAfter", getPara("paddress").trim())
@@ -271,7 +278,8 @@ public class FileController extends Controller {
                 .set("fremarkAfter", Util.CheckNull(getPara("fremark").trim()))
                 .set("fileAgeAfter", IDNumber.getFileDate(getPara("fileAge").trim()))
                 .set("nameBefore", Util.CheckNull(person.getStr("name")))
-                .set("numberBefore", Util.CheckNull(person.getStr("number")))
+                .set("pnumberBefore", Util.CheckNull(person.getStr("number")))
+                .set("fnumberBefore", Util.CheckNull(file.getStr("number")))
                 .set("phone1Before", Util.CheckNull(person.getStr("phone1")))
                 .set("phone2Before", Util.CheckNull(person.getStr("phone2")))
                 .set("addressBefore", Util.CheckNull(person.getStr("address")))
@@ -291,7 +299,9 @@ public class FileController extends Controller {
                 .set("remark", Util.CheckNull(getPara("premark").trim()))
                 .set("fileAge", IDNumber.getFileDate(getPara("fileAge").trim()))
                 .update();
-        file.set("remark", Util.CheckNull(getPara("fremark").trim())).update();
+        file.set("remark", Util.CheckNull(getPara("fremark").trim()))
+                .set("number", getPara("fnumber").trim())
+                .update();
         renderText("OK");
       }
     }

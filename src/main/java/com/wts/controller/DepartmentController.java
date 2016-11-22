@@ -7,6 +7,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wts.entity.model.Department;
+import com.wts.entity.model.Export;
 import com.wts.interceptor.LoginInterceptor;
 import com.wts.util.Util;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -17,6 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.List;
 
 public class DepartmentController extends Controller {
@@ -349,12 +351,11 @@ public class DepartmentController extends Controller {
       cell=row.createCell(i);
       cell.setCellValue(title[i]);
     }
-//    Export e =new Export();
-//    e.set("time", new Date())
-//            .set("uid",null)
-//            .set("type","部门导出")
-//            .set("sql","select * from department where name like '%"+getSessionAttr("Dept")+"%'")
-//            .save();
+    Export e =new Export();
+    e.set("time", new Date())
+            .set("type","部门导出")
+            .set("sql","select * from department where name like '%"+getSessionAttr("Dept")+"%'")
+            .save();
     List<Department> d= Department.dao.find("select * from department where name like '%"+getSessionAttr("Dept")+"%'");
     for (int i = 0; i < d.size(); i++) {
       XSSFRow nextRow = sheet.createRow(i+1);

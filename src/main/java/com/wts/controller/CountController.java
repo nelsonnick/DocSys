@@ -77,6 +77,30 @@ public class CountController extends Controller {
             renderText(count);
         }
     }
+    public void flowInAll() {
+        renderText(Db.queryLong("select count(*) from flow where flow.flow = '转入' ").toString());
+    }
+    public void flowOutAll() {
+        renderText(Db.queryLong("select count(*) from flow where flow.flow = '转出' ").toString());
+    }
+    public void flowChangeAll() {
+        renderText(Db.queryLong("select count(*) from trans ").toString());
+    }
+    public void personChangeAll() {
+        renderText(Db.queryLong("select count(*) from `change` ").toString());
+    }
+    public void maleInAll() {
+        renderText(Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='在档' and person.sex='男' ").toString());
+    }
+    public void maleOutAll() {
+        renderText(Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='已提' and person.sex='男' ").toString());
+    }
+    public void femaleInAll() {
+        renderText(Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='在档' and person.sex='女' ").toString());
+    }
+    public void femaleOutAll() {
+        renderText(Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='已提' and person.sex='女' ").toString());
+    }
 }
 
 

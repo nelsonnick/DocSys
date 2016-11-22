@@ -240,7 +240,7 @@ class AddFrom extends React.Component {
                   { validator: this.fileNumberCheck },
                 ],
               })(
-                <Input placeholder="请输入档案编号" disabled />
+                <Input placeholder="请输入档案编号" />
               )}
             </FormItem>
             <FormItem

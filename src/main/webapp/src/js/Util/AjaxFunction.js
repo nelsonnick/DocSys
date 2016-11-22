@@ -1,5 +1,5 @@
-// const h = '';
-const h = '/ds';
+const h = '';
+// const h = '/ds';
 export const DepartmentCount = `${h}/department/count`;          // 数据总数     --参数：无
 export const DepartmentQuery = `${h}/department/query`;          // 数据查询     --参数：queryName
 export const DepartmentAdd = `${h}/department/add`;              // 添加部门     --参数：name,address,phone,other,active
@@ -78,5 +78,19 @@ export const MaleIn = `${h}/count/maleIn`;                       // 存档男性
 export const MaleOut = `${h}/count/maleOut`;                     // 提档男性     --参数：userDept
 export const FemaleIn = `${h}/count/femaleIn`;                   // 存档女性     --参数：userDept
 export const FemaleOut = `${h}/count/femaleOut`;                 // 提档女性     --参数：userDept
+export const FlowInAll = `${h}/count/flowInAll`;                 // 存档数量总数 --参数：无
+export const FlowOutAll = `${h}/count/flowOutAll`;               // 提档数量总数 --参数：无
+export const FlowChangeAll = `${h}/count/flowChangeAll`;         // 流动变更总数 --参数：无
+export const PersonChangeAll = `${h}/count/personChangeAll`;     // 人员变更总数 --参数：无
+export const MaleInAll = `${h}/count/maleInAll`;                 // 存档男性总数 --参数：无
+export const MaleOutAll = `${h}/count/maleOutAll`;               // 提档男性总数 --参数：无
+export const FemaleInAll = `${h}/count/femaleInAll`;             // 存档女性总数 --参数：无
+export const FemaleOutAll = `${h}/count/femaleOutAll`;           // 提档女性总数 --参数：无
 
 export const Logout = `${h}/logout`;                             // 退出系统     --参数：
+export const ExportChange = `${h}/exportChange`;                 // 下载     --参数：无
+export const ExportTrans = `${h}/exportTrans`;                   // 下载     --参数：无
+export const ExportLook = `${h}/exportLook`;                     // 下载     --参数：无
+export const ExportExport = `${h}/exportExport`;                 // 下载     --参数：无
+export const ExportPrint = `${h}/exportPrint`;                   // 下载     --参数：无
+export const ExportLogin = `${h}/exportLogin`;                   // 下载     --参数：无

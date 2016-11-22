@@ -31,11 +31,11 @@ class DataSearch extends React.Component {
           <FormItem label="部门名称：" >
             <Input placeholder="请输入部门名称" initialValue={this.props.deptName} {...getFieldProps('departmentName')} />
           </FormItem>
-          <Button type="primary" htmlType="submit">查找</Button>
+          <Button type="primary" htmlType="submit" icon="search">查找</Button>
           <span>&nbsp;&nbsp;&nbsp;</span>
-          <Button type="ghost" onClick={this.handleReset}>重置</Button>
+          <Button type="ghost" onClick={this.handleReset} icon="reload">重置</Button>
           <span>&nbsp;&nbsp;&nbsp;</span>
-          <Button onClick={this.download}>导出</Button>
+          <Button onClick={this.download} icon="download">导出</Button>
         </Form>
       </Row>
     );

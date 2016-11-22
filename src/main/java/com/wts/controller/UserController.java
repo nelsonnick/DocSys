@@ -17,6 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.List;
 
 import static com.wts.util.EncryptUtils.encodeMD5String;
@@ -159,6 +160,7 @@ public class UserController extends Controller {
     }else {
       User user = new User();
       user.set("name", getPara("name").trim())
+              .set("time", new Date())
               .set("number", getPara("number").trim())
               .set("phone", getPara("phone").trim())
               .set("login", getPara("login").trim())
@@ -338,7 +340,7 @@ public class UserController extends Controller {
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void export() throws IOException {
-    String[] title={"序号","姓名","证件号码","联系电话","登录名称","所属部门","状态","备注"};
+    String[] title={"序号","姓名","证件号码","联系电话","登录名称","所属部门","状态"," 入职时间","备注"};
     //创建Excel工作簿
     XSSFWorkbook workbook = new XSSFWorkbook();
     //创建一个工作表
@@ -363,11 +365,11 @@ public class UserController extends Controller {
       sql="select user.*,department.name as dname from user inner join department on user.did=department.id where user.name like '%"+getSessionAttr("UserName")+"%' and user.did = "+getSessionAttr("UserDept");
 
     }
-//    Export e =new Export();
-//    e.set("time", new Date())
-//            .set("type","用户导出")
-//            .set("sql",sql)
-//            .save();
+    Export e =new Export();
+    e.set("time", new Date())
+            .set("type","用户导出")
+            .set("sql",sql)
+            .save();
     u = User.dao.find(sql);
     for (int i = 0; i < u.size(); i++) {
       XSSFRow nextRow = sheet.createRow(i+1);
@@ -414,6 +416,12 @@ public class UserController extends Controller {
         cell2.setCellValue(u.get(i).get("state").toString());
       }
       cell2 = nextRow.createCell(7);
+      if (u.get(i).get("time") == null) {
+        cell2.setCellValue("");
+      } else {
+        cell2.setCellValue(u.get(i).get("time").toString());
+      }
+      cell2 = nextRow.createCell(8);
       if (u.get(i).get("other") == null) {
         cell2.setCellValue("");
       } else {

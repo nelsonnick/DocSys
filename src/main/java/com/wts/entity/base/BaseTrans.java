@@ -73,20 +73,36 @@ public abstract class BaseTrans<M extends BaseTrans<M>> extends Model<M> impleme
 		return get("nameAfter");
 	}
 
-	public void setNumberBefore(java.lang.String numberBefore) {
-		set("numberBefore", numberBefore);
+	public void setPnumberBefore(java.lang.String pnumberBefore) {
+		set("pnumberBefore", pnumberBefore);
 	}
 
-	public java.lang.String getNumberBefore() {
-		return get("numberBefore");
+	public java.lang.String getPnumberBefore() {
+		return get("pnumberBefore");
 	}
 
-	public void setNumberAfter(java.lang.String numberAfter) {
-		set("numberAfter", numberAfter);
+	public void setPnumberAfter(java.lang.String pnumberAfter) {
+		set("pnumberAfter", pnumberAfter);
 	}
 
-	public java.lang.String getNumberAfter() {
-		return get("numberAfter");
+	public java.lang.String getPnumberAfter() {
+		return get("pnumberAfter");
+	}
+
+	public void setFnumberBefore(java.lang.String fnumberBefore) {
+		set("fnumberBefore", fnumberBefore);
+	}
+
+	public java.lang.String getFnumberBefore() {
+		return get("fnumberBefore");
+	}
+
+	public void setFnumberAfter(java.lang.String fnumberAfter) {
+		set("fnumberAfter", fnumberAfter);
+	}
+
+	public java.lang.String getFnumberAfter() {
+		return get("fnumberAfter");
 	}
 
 	public void setPhone1Before(java.lang.String phone1Before) {

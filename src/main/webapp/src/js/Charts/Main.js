@@ -87,6 +87,88 @@ export default class User extends React.Component {
         openNotificationWithIcon('error', '请求错误', '无法读取部门总数，请检查网络情况');
       },
     });
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.FlowInAll,
+      'dataType': 'text',
+      'success': (FlowIn) => {
+        $.ajax({
+          'type': 'POST',
+          'url': AjaxFunction.FlowOutAll,
+          'dataType': 'text',
+          'success': (FlowOut) => {
+            $.ajax({
+              'type': 'POST',
+              'url': AjaxFunction.FlowChangeAll,
+              'dataType': 'text',
+              'success': (FlowChange) => {
+                $.ajax({
+                  'type': 'POST',
+                  'url': AjaxFunction.PersonChangeAll,
+                  'dataType': 'text',
+                  'success': (PersonChange) => {
+                    $.ajax({
+                      'type': 'POST',
+                      'url': AjaxFunction.MaleInAll,
+                      'dataType': 'text',
+                      'success': (MaleIn) => {
+                        $.ajax({
+                          'type': 'POST',
+                          'url': AjaxFunction.MaleOutAll,
+                          'dataType': 'text',
+                          'success': (MaleOut) => {
+                            $.ajax({
+                              'type': 'POST',
+                              'url': AjaxFunction.FemaleInAll,
+                              'dataType': 'text',
+                              'success': (FemaleIn) => {
+                                $.ajax({
+                                  'type': 'POST',
+                                  'url': AjaxFunction.FemaleOutAll,
+                                  'dataType': 'text',
+                                  'success': (FemaleOut) => {
+                                    this.drawChartsA(FlowIn, FlowOut, FlowChange, PersonChange);
+                                    this.drawChartsB(MaleIn, MaleOut, FemaleIn, FemaleOut);
+                                  },
+                                  'error': () => {
+                                    openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                                  },
+                                });
+                              },
+                              'error': () => {
+                                openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                              },
+                            });
+                          },
+                          'error': () => {
+                            openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                          },
+                        });
+                      },
+                      'error': () => {
+                        openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                      },
+                    });
+                  },
+                  'error': () => {
+                    openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                  },
+                });
+              },
+              'error': () => {
+                openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+              },
+            });
+          },
+          'error': () => {
+            openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+          },
+        });
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+      },
+    });
   }
   onChange(userDept) {
     $.ajax({

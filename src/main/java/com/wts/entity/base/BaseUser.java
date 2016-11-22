@@ -81,4 +81,12 @@ public abstract class BaseUser<M extends BaseUser<M>> extends Model<M> implement
 		return get("state");
 	}
 
+	public void setTime(java.util.Date time) {
+		set("time", time);
+	}
+
+	public java.util.Date getTime() {
+		return get("time");
+	}
+
 }

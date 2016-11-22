@@ -58,6 +58,7 @@ export default class EditLink extends React.Component {
           'pinfo': values.personInfo,
           'pretire': values.personRetire,
           'premark': values.personRemark || '',
+          'fnumber': values.fileNumber,
           'fremark': values.fileRemark || '',
           'fileAge': values.fileAge,
         },

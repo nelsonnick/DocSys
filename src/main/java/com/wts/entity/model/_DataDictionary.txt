@@ -138,8 +138,10 @@ Table: trans
  time          | DATETIME(19) | YES  |     |         |         
  nameBefore    | VARCHAR(255) | YES  |     |         |         
  nameAfter     | VARCHAR(255) | YES  |     |         |         
- numberBefore  | VARCHAR(255) | YES  |     |         |         
- numberAfter   | VARCHAR(255) | YES  |     |         |         
+ pnumberBefore | VARCHAR(255) | YES  |     |         |         
+ pnumberAfter  | VARCHAR(255) | YES  |     |         |         
+ fnumberBefore | VARCHAR(255) | YES  |     |         |         
+ fnumberAfter  | VARCHAR(255) | YES  |     |         |         
  phone1Before  | VARCHAR(255) | YES  |     |         |         
  phone1After   | VARCHAR(255) | YES  |     |         |         
  phone2Before  | VARCHAR(255) | YES  |     |         |         
@@ -171,5 +173,6 @@ Table: user
  did    | INT(10)      | YES  |     |         |         
  other  | VARCHAR(255) | YES  |     |         |         
  state  | VARCHAR(255) | YES  |     |         |         
+ time   | DATETIME(19) | YES  |     |         |         
 --------+--------------+------+-----+---------+---------
 

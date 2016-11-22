@@ -1,4 +1,4 @@
-import { Modal, Button, notification } from 'antd';
+import { Modal, Button, notification, Icon } from 'antd';
 import React from 'react';
 import EditForm from './EditForm';
 import * as AjaxFunction from '../Util/AjaxFunction.js';
@@ -97,7 +97,7 @@ export default class EditLink extends React.Component {
     const { departmentId, departmentName, departmentPhone, departmentAddress, departmentState, departmentOther, departmentNumber, departmentCode } = this.props;
     return (
       <span>
-        <a onClick={this.showModal} className="btn btn-primary btn-xs" >修改</a>
+        <a onClick={this.showModal} className="btn btn-primary btn-xs"><Icon type="edit" /><span className="glyphicon glyphicon-edit">修改</span></a>
         <Modal
           maskClosable={false}
           title="修改部门信息"
@@ -106,9 +106,9 @@ export default class EditLink extends React.Component {
           confirmLoading={this.state.confirmLoading}
           onCancel={this.handleCancel}
           footer={[
-            <Button key="back" onClick={this.handleCancel}>返 回</Button>,
-            <Button key="reset" type="ghost" size="large" onClick={this.handleReset}>重 置</Button>,
-            <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleOk}>提 交</Button>,
+            <Button key="back" onClick={this.handleCancel} icon="rollback">返 回</Button>,
+            <Button key="reset" type="ghost" size="large" onClick={this.handleReset} icon="retweet">重 置</Button>,
+            <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleOk} icon="enter">提 交</Button>,
           ]}
         >
           <EditForm
