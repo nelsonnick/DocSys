@@ -2,14 +2,6 @@ package com.wts.controller;
 
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
-import com.wts.entity.model.Login;
-import com.wts.entity.model.User;
-import com.wts.util.IpKit;
-import com.wts.util.Util;
-
-import java.util.Date;
-
-import static com.wts.util.EncryptUtils.encodeMD5String;
 
 public class CountController extends Controller {
 

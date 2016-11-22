@@ -22,9 +22,9 @@ import java.util.List;
 public class DepartmentController extends Controller {
   /**
    * 查询部门
-   *@param: PageNumber
-   *@param: PageSize
-   *@param: QueryString
+   * PageNumber
+   * PageSize
+   * QueryString
    */
   @Before(LoginInterceptor.class)
   public void query() {
@@ -33,7 +33,7 @@ public class DepartmentController extends Controller {
   }
   /**
    * 查询部门数量
-   *@param: DeptName
+   * DeptName
    */
   @Before(LoginInterceptor.class)
   public void count() {
@@ -60,7 +60,7 @@ public class DepartmentController extends Controller {
   }
   /**
    * 核查部门名称
-   *@param: name
+   * name
    */
   @Before(LoginInterceptor.class)
   public void name() {
@@ -78,7 +78,7 @@ public class DepartmentController extends Controller {
   }
   /**
    * 核查部门名称
-   *@param: names
+   * names
    */
   @Before(LoginInterceptor.class)
   public void names() {
@@ -92,7 +92,7 @@ public class DepartmentController extends Controller {
   }
   /**
    * 核查部门编号
-   *@param: number
+   * number
    */
   @Before(LoginInterceptor.class)
   public void number() {
@@ -110,7 +110,7 @@ public class DepartmentController extends Controller {
   }
   /**
    * 核查部门编号
-   *@param: numbers
+   * numbers
    */
   @Before(LoginInterceptor.class)
   public void numbers() {
@@ -309,7 +309,7 @@ public class DepartmentController extends Controller {
   }
   /**
    * 检查导出
-   *@param: DeptName
+   * DeptName
    */
   @Before(LoginInterceptor.class)
   public void download() {

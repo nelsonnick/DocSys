@@ -1,6 +1,5 @@
 package com.wts.common;
 
-
 import com.jfinal.config.*;
 import com.jfinal.core.JFinal;
 import com.jfinal.ext.handler.ContextPathHandler;
@@ -52,8 +51,6 @@ public class Config extends JFinalConfig {
         ActiveRecordPlugin arp = new ActiveRecordPlugin(c3p0Plugin);
         arp.setShowSql(false);
         me.add(arp);
-//        arp.addMapping("department", Department.class);
-//        arp.addMapping("user", User.class);
         _MappingKit.mapping(arp);
     }
 

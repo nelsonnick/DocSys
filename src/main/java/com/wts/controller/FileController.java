@@ -21,12 +21,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static com.sun.scenario.Settings.set;
-
 public class FileController extends Controller {
   /**
    * 核查档案编号
-   *@param: number
+   * number
    */
   @Before(LoginInterceptor.class)
   public void number() {
@@ -40,7 +38,7 @@ public class FileController extends Controller {
   }
   /**
    * 核查档案编号
-   *@param: number
+   * number
    */
   @Before(LoginInterceptor.class)
   public void numbers() {
@@ -66,12 +64,12 @@ public class FileController extends Controller {
   }
   /**
    * 查询档案
-   *@param: PageNumber
-   *@param: PageSize
-   *@param: PersonName
-   *@param: PersonNumber
-   *@param: FileNumber
-   *@param: FileDept
+   * PageNumber
+   * PageSize
+   * PersonName
+   * PersonNumber
+   * FileNumber
+   * FileDept
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void query() {
@@ -96,10 +94,10 @@ public class FileController extends Controller {
   }
   /**
    * 查询档案数量
-   *@param: PersonName
-   *@param: PersonNumber
-   *@param: FileNumber
-   *@param: FileDept
+   * PersonName
+   * PersonNumber
+   * FileNumber
+   * FileDept
    */
   @Before(LoginInterceptor.class)
   public void count() {
@@ -113,21 +111,21 @@ public class FileController extends Controller {
   }
   /**
    * 新增档案
-   *@param: pname
-   *@param: pnumber
-   *@param: pphone1
-   *@param: pphone2
-   *@param: paddress
-   *@param: pinfo
-   *@param: pretire
-   *@param: premark
-   *@param: fnumber
-   *@param: fremark
-   *@param: lremark
-   *@param: lreason
-   *@param: fileAge
-   *@param: ltype
-   *@param: ldirect
+   * pname
+   * pnumber
+   * pphone1
+   * pphone2
+   * paddress
+   * pinfo
+   * pretire
+   * premark
+   * fnumber
+   * fremark
+   * lremark
+   * lreason
+   * fileAge
+   * ltype
+   * ldirect
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void add() {
@@ -139,7 +137,7 @@ public class FileController extends Controller {
             "select * from person where number=?", getPara("pnumber"));
     if (files.size() != 0) {
       renderText("该档案编号数据库中已存在，请核实!");
-    } else if (persons.size() != 0) {
+    } else if (persons.size() != 0 && !getPara("number").equals("000000000000000000")) {
       renderText("该证件号码数据库中已存在，请核实!");
     } else if (!getPara("pname").matches("[\u4e00-\u9fa5]+")) {
       renderText("人员姓名必须为汉字!");
@@ -199,19 +197,18 @@ public class FileController extends Controller {
 
   /**
    * 修改档案
-   *@param: fid
-   *@param: pid
-   *@param: pname
-   *@param: pnumber
-   *@param: pphone1
-   *@param: pphone2
-   *@param: paddress
-   *@param: pinfo
-   *@param: pretire
-   *@param: premark
-   *@param: fremark
-   *@param: fileAge
-
+   * fid
+   * pid
+   * pname
+   * pnumber
+   * pphone1
+   * pphone2
+   * paddress
+   * pinfo
+   * pretire
+   * premark
+   * fremark
+   * fileAge
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void edit() {
@@ -223,7 +220,7 @@ public class FileController extends Controller {
     String fileAge = sdf.format(person.get("fileAge"));
     if (file == null) {
       renderText("要修改的档案不存在，请刷新页面后再试！");
-    } else if (person == null) {
+    } else if (Person.dao.findById(getPara("pid")) == null) {
       renderText("要修改的人员不存在，请刷新页面后再试！");
     } else {
       if (Util.CheckNull(file.getStr("remark")).equals(getPara("fremark").trim())
@@ -240,7 +237,7 @@ public class FileController extends Controller {
         renderText("未找到修改内容，请核实后再修改！");
       } else if (!Util.CheckNull(person.getStr("number")).equals(getPara("pnumber"))
               && Person.dao.find("select * from person where number=?", getPara("pnumber")).size() > 0
-              ) {
+              && !getPara("number").equals("000000000000000000")) {
         renderText("该证件号码数据库中已存在，请核实！");
       } else if (!getPara("pname").matches("[\u4e00-\u9fa5]+")) {
         renderText("市民姓名必须为汉字!");
@@ -302,12 +299,12 @@ public class FileController extends Controller {
 
   /**
    * 档案转出
-   *@param: fid
-   *@param: pid
-   *@param: ltype
-   *@param: ldirect
-   *@param: lreason
-   *@param: lremark
+   * fid
+   * pid
+   * ltype
+   * ldirect
+   * lreason
+   * lremark
    */
   @Before({Tx.class, LoginInterceptor.class})
   public void flow() {
@@ -338,13 +335,13 @@ public class FileController extends Controller {
 
   /**
    * 重存档案
-   *@param: fnumber
-   *@param: pid
-   *@param: fremark
-   *@param: lremark
-   *@param: lreason
-   *@param: ltype
-   *@param: ldirect
+   * fnumber
+   * pid
+   * fremark
+   * lremark
+   * lreason
+   * ltype
+   * ldirect
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void back() {
@@ -386,11 +383,11 @@ public class FileController extends Controller {
 
   /**
    * 检查导出
-   *@param: PersonName
-   *@param: PersonNumber
-   *@param: FileDept
-   *@param: FileNumber
-   *@param: FileState
+   * PersonName
+   * PersonNumber
+   * FileDept
+   * FileNumber
+   * FileState
    */
   @Before(LoginInterceptor.class)
   public void download() {

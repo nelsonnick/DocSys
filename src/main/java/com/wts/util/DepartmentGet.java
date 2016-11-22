@@ -1,6 +1,6 @@
 package com.wts.util;
 
-import com.wts.entity.Department;
+import com.wts.entity.model.Department;
 
 public class DepartmentGet {
     public static String getDepartmentName(String departmentId) {

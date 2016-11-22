@@ -1,5 +1,5 @@
-const h = '';
-// const h = '/ds';
+// const h = '';
+const h = '/ds';
 export const DepartmentCount = `${h}/department/count`;          // 数据总数     --参数：无
 export const DepartmentQuery = `${h}/department/query`;          // 数据查询     --参数：queryName
 export const DepartmentAdd = `${h}/department/add`;              // 添加部门     --参数：name,address,phone,other,active

@@ -5,7 +5,6 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
-import com.wts.entity.*;
 import com.wts.entity.model.*;
 import com.wts.entity.model.Department;
 import com.wts.entity.model.File;
@@ -13,7 +12,6 @@ import com.wts.entity.model.Flow;
 import com.wts.entity.model.Person;
 import com.wts.entity.model.User;
 import com.wts.interceptor.LoginInterceptor;
-import com.wts.util.IDNumber;
 import com.wts.util.Util;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -30,7 +28,7 @@ import java.util.List;
 public class FlowController extends Controller {
   /**
    * 检测来源
-   *@param: direct
+   * direct
    */
   @Before(LoginInterceptor.class)
   public void direct() {
@@ -42,7 +40,7 @@ public class FlowController extends Controller {
   }
   /**
    * 检测原因
-   *@param: reason
+   * reason
    */
   @Before(LoginInterceptor.class)
   public void reason() {
@@ -55,13 +53,13 @@ public class FlowController extends Controller {
 
   /**
    * 查询流动
-   *@param: PageNumber
-   *@param: PageSize
-   *@param: PersonName
-   *@param: PersonNumber
-   *@param: FileNumber
-   *@param: FileDept
-   *@param: FlowFlow
+   * PageNumber
+   * PageSize
+   * PersonName
+   * PersonNumber
+   * FileNumber
+   * FileDept
+   * FlowFlow
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void query() {
@@ -84,11 +82,11 @@ public class FlowController extends Controller {
   }
   /**
    * 查询档案数量
-   *@param: PersonName
-   *@param: PersonNumber
-   *@param: FileNumber
-   *@param: FileDept
-   *@param: FlowFlow
+   * PersonName
+   * PersonNumber
+   * FileNumber
+   * FileDept
+   * FlowFlow
    */
   @Before(LoginInterceptor.class)
   public void count() {
@@ -102,12 +100,11 @@ public class FlowController extends Controller {
   }
   /**
    * 修改档案
-   *@param: lid
-   *@param: lreason
-   *@param: lremark
-   *@param: ltype
-   *@param: ldirect
-
+   * lid
+   * lreason
+   * lremark
+   * ltype
+   * ldirect
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void edit() {
@@ -153,11 +150,11 @@ public class FlowController extends Controller {
 
   /**
    * 检查导出
-   *@param: PersonName
-   *@param: PersonNumber
-   *@param: FileDept
-   *@param: FileNumber
-   *@param: FlowFlow
+   * PersonName
+   * PersonNumber
+   * FileDept
+   * FileNumber
+   * FlowFlow
    */
   @Before(LoginInterceptor.class)
   public void download() {
@@ -402,7 +399,7 @@ public class FlowController extends Controller {
   }
   /**
    * 打印
-   *@param: lid
+   * lid
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void printOut() {
@@ -434,7 +431,7 @@ public class FlowController extends Controller {
   }
   /**
    * 打印
-   *@param: lid
+   * lid
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void printIn() {

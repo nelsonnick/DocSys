@@ -2,15 +2,10 @@ package com.wts.common;
 
 import org.apache.log4j.Logger;
 
-/**
- * Created by 王天硕 on 2016/10/10.
- */
 public class Test {
   private static Logger logger = Logger.getLogger(Test.class);
 
-  /**
-   * @param args
-   */
+
   public static void main(String[] args) {
     // System.out.println("This is println message.");
 

@@ -17,7 +17,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Date;
 import java.util.List;
 
 import static com.wts.util.EncryptUtils.encodeMD5String;
@@ -25,10 +24,10 @@ import static com.wts.util.EncryptUtils.encodeMD5String;
 public class UserController extends Controller {
   /**
    * 查询用户
-   *@param: PageNumber
-   *@param: PageSize
-   *@param: UserName
-   *@param: UserDept
+   * PageNumber
+   * PageSize
+   * UserName
+   * UserDept
    */
   @Before(LoginInterceptor.class)
   public void query() {
@@ -37,8 +36,8 @@ public class UserController extends Controller {
   }
   /**
    * 查询用户数量
-   *@param: UserName
-   *@param: UserDept
+   * UserName
+   * UserDept
    */
   @Before(LoginInterceptor.class)
   public void count() {
@@ -53,7 +52,7 @@ public class UserController extends Controller {
 
   /**
    * 核查用户真实姓名
-   *@param: name
+   * name
    */
   @Before(LoginInterceptor.class)
   public void name() {
@@ -67,7 +66,7 @@ public class UserController extends Controller {
   }
   /**
    * 核查用户证件号码
-   *@param: number
+   * number
    */
   @Before(LoginInterceptor.class)
   public void number() {
@@ -75,7 +74,7 @@ public class UserController extends Controller {
   }
   /**
    * 核查用户联系电话
-   *@param: phone
+   * phone
    */
   @Before(LoginInterceptor.class)
   public void phone() {
@@ -87,7 +86,7 @@ public class UserController extends Controller {
   }
   /**
    * 核查用户登录名称
-   *@param: login
+   * login
    */
   @Before(LoginInterceptor.class)
   public void login() {
@@ -103,7 +102,7 @@ public class UserController extends Controller {
   }
   /**
    * 核查用户登录名称
-   *@param: logins
+   * logins
    */
   @Before(LoginInterceptor.class)
   public void logins() {
@@ -115,7 +114,7 @@ public class UserController extends Controller {
   }
   /**
    * 核查用户所属部门
-   *@param: name
+   * name
    */
   @Before(LoginInterceptor.class)
   public void dept() {
@@ -127,7 +126,7 @@ public class UserController extends Controller {
   }
   /**
    * 获取户所属部门
-   *@param: did
+   * did
    */
   @Before(LoginInterceptor.class)
   public void depts() {
@@ -295,8 +294,8 @@ public class UserController extends Controller {
   }
   /**
    * 检查导出
-   *@param: UserName
-   *@param: UserDept
+   * UserName
+   * UserDept
    */
   @Before(LoginInterceptor.class)
   public void download() {
@@ -434,7 +433,7 @@ public class UserController extends Controller {
   }
   /**
    * 修改密码
-   *@param: did
+   * did
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void pass() {

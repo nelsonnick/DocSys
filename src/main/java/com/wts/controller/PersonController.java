@@ -11,7 +11,7 @@ import java.util.List;
 public class PersonController extends Controller {
   /**
    * 核查真实姓名
-   *@param: name
+   * name
    */
   @Before(LoginInterceptor.class)
   public void name() {
@@ -25,35 +25,43 @@ public class PersonController extends Controller {
   }
   /**
    * 核查证件号码
-   *@param: number
+   * number
    */
   @Before(LoginInterceptor.class)
   public void number() {
-    List<Person> persons = Person.dao.find(
-            "select * from person where number=?", getPara("number"));
-    if (persons.size() != 0) {
-      renderText("该证件号码已存在，请更换!");
+    if (getPara("number").equals("000000000000000000")) {
+      renderText("OK");
     } else {
-      renderText(IDNumber.checkIDNumber(getPara("number")));
+      List<Person> persons = Person.dao.find(
+              "select * from person where number=?", getPara("number"));
+      if (persons.size() != 0) {
+        renderText("该证件号码已存在，请更换!");
+      } else {
+        renderText(IDNumber.checkIDNumber(getPara("number")));
+      }
     }
   }
   /**
    * 核查证件号码
-   *@param: number
+   * number
    */
   @Before(LoginInterceptor.class)
   public void numbers() {
-    List<Person> persons = Person.dao.find(
-            "select * from person where number=?", getPara("number"));
-    if (persons.size() > 1 ) {
-      renderText("该证件号码已存在，请更换!");
+    if (getPara("number").equals("000000000000000000")) {
+      renderText("OK");
     } else {
-      renderText(IDNumber.checkIDNumber(getPara("number")));
+      List<Person> persons = Person.dao.find(
+              "select * from person where number=?", getPara("number"));
+      if (persons.size() > 1) {
+        renderText("该证件号码已存在，请更换!");
+      } else {
+        renderText(IDNumber.checkIDNumber(getPara("number")));
+      }
     }
   }
   /**
    * 核查联系电话1
-   *@param: phone1
+   * phone1
    */
   @Before(LoginInterceptor.class)
   public void phone1() {
@@ -65,7 +73,7 @@ public class PersonController extends Controller {
   }
   /**
    * 核查联系电话2
-   *@param: phone2
+   * phone2
    */
   @Before(LoginInterceptor.class)
   public void phone2() {
@@ -81,7 +89,7 @@ public class PersonController extends Controller {
   }
   /**
    * 核查联系地址
-   *@param: address
+   * address
    */
   @Before(LoginInterceptor.class)
   public void address() {
@@ -93,7 +101,7 @@ public class PersonController extends Controller {
   }
   /**
    * 核查年龄
-   *@param: age
+   * age
    */
   @Before(LoginInterceptor.class)
   public void age() {
