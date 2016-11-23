@@ -317,7 +317,6 @@ public class UserController extends Controller {
       userdept = " did = "+getPara("UserDept");
       setSessionAttr("UserDept", getPara("UserDept"));
     }
-
     if (username.equals("") && userdept.equals("")) {
       users = User.dao.find("select * from user");
     }else if (username.equals("") && !userdept.equals("")) {
