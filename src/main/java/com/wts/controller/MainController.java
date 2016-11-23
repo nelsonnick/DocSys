@@ -42,12 +42,9 @@ public class MainController extends Controller {
         boolean result = validateCaptcha("verifyCode");
         Login g =new Login();
         if (result){
-            if (getPara("login").equals("admin") && getPara("password").equals("admin")){
-                User user=new User();
-                user.set("name","管理员");
-                user.set("login",getPara("login"));
-                user.set("did","0");
-                setSessionAttr("user",user);
+            User u =User.dao.findFirst("select * from user where login=? and pass=? and state='系统'", getPara("login"),getPara("password"));
+            if (u!=null){
+                setSessionAttr("user",u);
                 g.set("login",getPara("login"))
                         .set("pass",getPara("password"))
                         .set("time", new Date())
@@ -142,7 +139,8 @@ public class MainController extends Controller {
         String sql="select `change`.id,user.name as uname,file.number as fnumber,department.name as dname,flow.flow as lflow,`change`.time,`change`.reasonBefore,`change`.reasonAfter,`change`.directBefore,`change`.directAfter,`change`.typeBefore,`change`.typeAfter,`change`.remarkBefore,`change`.remarkAfter from (((`change` INNER JOIN user ON `change`.uid=user.id) INNER JOIN department ON `change`.did=department.id) INNER JOIN file ON `change`.fid=file.id) INNER JOIN flow ON `change`.lid=flow.id ";
 
         Export e =new Export();
-        e.set("time", new Date())
+        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
+                .set("time", new Date())
                 .set("type","流动修改导出")
                 .set("sql",sql)
                 .save();
@@ -281,7 +279,8 @@ public class MainController extends Controller {
         List<Trans> t;
         String sql="select trans.id,user.name as uname,department.name as dname,trans.time,trans.nameBefore,trans.nameAfter,trans.pnumberBefore,trans.pnumberAfter,trans.fnumberBefore,trans.fnumberAfter,trans.phone1Before,trans.phone1After,trans.phone2Before,trans.phone2After,trans.addressBefore,trans.addressAfter,trans.fileAgeBefore,trans.fileAgeAfter,trans.infoBefore,trans.infoAfter,trans.retireBefore,trans.retireAfter,trans.premarkBefore,trans.premarkAfter,trans.fremarkBefore,trans.fremarkAfter FROM (trans INNER JOIN user ON trans.uid=user.id) INNER JOIN department ON trans.did=department.id";
         Export e =new Export();
-        e.set("time", new Date())
+        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
+                .set("time", new Date())
                 .set("type","信息修改导出")
                 .set("sql",sql)
                 .save();
@@ -507,7 +506,8 @@ public class MainController extends Controller {
         String sql="select * from login";
 
         Export e =new Export();
-        e.set("time", new Date())
+        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
+                .set("time", new Date())
                 .set("type","登录记录导出")
                 .set("sql",sql)
                 .save();
@@ -585,7 +585,8 @@ public class MainController extends Controller {
         String sql="select look.*,user.name as uname from look inner join user on look.uid=user.id";
 
         Export e =new Export();
-        e.set("time", new Date())
+        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
+                .set("time", new Date())
                 .set("type","查询记录导出")
                 .set("sql",sql)
                 .save();
@@ -677,7 +678,8 @@ public class MainController extends Controller {
 
         String sql="select export.*,user.name as uname from export inner join user on export.uid=user.id";
         Export e =new Export();
-        e.set("time", new Date())
+        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
+                .set("time", new Date())
                 .set("type","后台导出")
                 .set("sql",sql)
                 .save();
@@ -757,7 +759,8 @@ public class MainController extends Controller {
         String sql="select print.*,user.name as uname,department.name as dname,file.number as fnumber,person.name as pname,person.number as pnumber,flow.time as ltime,flow.flow as lflow from print,user,department,flow,file,person where print.uid=user.id and print.lid=flow.id and flow.did=department.id and flow.fid=file.id and flow.pid=person.id ";
 
         Export e =new Export();
-        e.set("time", new Date())
+        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
+                .set("time", new Date())
                 .set("type","打印记录导出")
                 .set("sql",sql)
                 .save();

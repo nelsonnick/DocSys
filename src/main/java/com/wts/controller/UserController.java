@@ -43,10 +43,10 @@ public class UserController extends Controller {
   @Before(LoginInterceptor.class)
   public void count() {
     if (getPara("UserDept").equals("")) {
-      String count = Db.queryLong("select count(*) from user where name like '%" + getPara("UserName") + "%' and state<>'删除' ").toString();
+      String count = Db.queryLong("select count(*) from user where name like '%" + getPara("UserName") + "%' and state<>'删除' and state<>'系统' ").toString();
       renderText(count);
     } else {
-      String count = Db.queryLong("select count(*) from user where name like '%" + getPara("UserName") + "%' and did = " + getPara("UserDept") + " and state<>'删除' ").toString();
+      String count = Db.queryLong("select count(*) from user where name like '%" + getPara("UserName") + "%' and did = " + getPara("UserDept") + " and state<>'删除' and state<>'系统' ").toString();
       renderText(count);
     }
   }
