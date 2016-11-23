@@ -126,6 +126,18 @@ Table: print
  time  | DATETIME(19) | YES  |     |         |         
 -------+--------------+------+-----+---------+---------
 
+Table: prove
+-------+--------------+------+-----+---------+---------
+ Field | Type         | Null | Key | Default | Remarks 
+-------+--------------+------+-----+---------+---------
+ id    | INT(10)      | NO   | PRI |         |         
+ uid   | INT(10)      | YES  |     |         |         
+ fid   | INT(10)      | YES  |     |         |         
+ did   | INT(10)      | YES  |     |         |         
+ type  | VARCHAR(255) | YES  |     |         |         
+ time  | DATETIME(19) | YES  |     |         |         
+-------+--------------+------+-----+---------+---------
+
 Table: trans
 ---------------+--------------+------+-----+---------+---------
  Field         | Type         | Null | Key | Default | Remarks 

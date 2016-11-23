@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>存档证明</title>
+    <link rel="stylesheet" href="../src/css/bootstrap-3.3.0/css/bootstrap.min.css">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#print").click(function() {
+                $(".my_show").jqprint();
+            });
+        });
+    </script>
+    <style media="print">
+        .Noprint {
+            display: none;
+        }
+        .PageNext {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+<div class="Noprint" style="position:absolute; top: 0cm; left:0cm;">
+    <p>
+        <object id="WebBrowser" classid="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2" height="0" width="0"></object>
+        <button type="button"  class="btn btn-success"  onclick="window.print()">直接打印</button>
+        <button type="button"  class="btn btn-default"  onclick="history.go(-1)">返回首页</button>
+        <br />
+    </p>
+</div>
+    <div class="my_show">
+        <div style="position:absolute; top: 3cm; left:7cm;"><span><h1>证&nbsp;&nbsp;明</h1></span></div>
+        <div style="position:absolute; top: 6cm; left:3cm;"><span><h3>姓名：${(pname)!''}&nbsp;&nbsp;身份证号码：${(pnumber)!''}</h3></span></div>
+        <div style="position:absolute; top: 8cm; left:2cm;"><span><h3>该同志系我处代理人员，其人事档案由我处代管。</h3></span></div>
+        <div style="position:absolute; top: 10cm; left:2cm;"><span><h3>特此证明！</h3></span></div>
+        <div style="position:absolute; top: 20cm; left:10cm;"><span><h4>${(dname)!''}（盖章）</h4></span></div>
+        <div style="position:absolute; top: 22cm; left:10cm;"><span><h4>${(yyyy)!''}年${(mm)!''}月${(dd)!''}日</h4></span></div>
+    </div>
+</body>
+</html>

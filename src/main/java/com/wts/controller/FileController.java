@@ -664,7 +664,81 @@ public class FileController extends Controller {
     workbook.close();
     renderNull() ;
   }
+  /**
+   * 打印存档证明
+   * fid
+   */
+  @Before({Tx.class,LoginInterceptor.class})
+  public void printProve() {
+    Prove r =new Prove();
+    r.set("fid",getPara("fid"))
+            .set("uid",((User) getSessionAttr("user")).get("id").toString())
+            .set("type","存档证明")
+            .set("time", new Date())
+            .save();
+    File f = File.dao.findById(getPara("fid"));
+    Department d = Department.dao.findById(f.getInt("did"));
+    Person p =Person.dao.findById(f.getInt("pid"));
+    setAttr("pname",Util.CheckNull(p.getStr("name")));
+    setAttr("pnumber",Util.CheckNull(p.getStr("number")));
+    setAttr("dname",Util.CheckNull(d.getStr("name")));
+    SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
+    SimpleDateFormat MM = new SimpleDateFormat("MM");
+    SimpleDateFormat dd = new SimpleDateFormat("dd");
+    setAttr("yyyy",yyyy.format(new Date()));
+    setAttr("mm",MM.format(new Date()));
+    setAttr("dd",dd.format(new Date()));
+    render("/dist/printProve.html");
+  }
+  /**
+   * 打印政审证明
+   * fid
+   * pid
+   * pnation
+   * plearn
+   * pface
+   * ptime
+   * pwork
+   * pzl
+   * pwg
+   * pfl
+   */
+  @Before({Tx.class,LoginInterceptor.class})
+  public void printPolity() {
+    Prove r =new Prove();
+    r.set("fid",getPara("fid"))
+            .set("uid",((User) getSessionAttr("user")).get("id").toString())
+            .set("type","政审证明")
+            .set("time", new Date())
+            .save();
+    File f = File.dao.findById(getPara("fid"));
+    Department d = Department.dao.findById(f.getInt("did"));
+    Person p =Person.dao.findById(f.getInt("pid"));
+    setAttr("pname",Util.CheckNull(p.getStr("name")));
+    setAttr("pnumber",Util.CheckNull(p.getStr("number")));
+    setAttr("psex",Util.CheckNull(p.getStr("sex")));
+    setAttr("pnation",Util.CheckNull(getPara("pnation")));
+    setAttr("plearn",Util.CheckNull(getPara("plearn")));
+    setAttr("pface",Util.CheckNull(getPara("pface")));
+    setAttr("ptime",Util.CheckNull(getPara("ptime")));
+    setAttr("pwork",Util.CheckNull(getPara("pwork")));
+    setAttr("pzl",Util.CheckNull(getPara("pzl")));
+    setAttr("pwg",Util.CheckNull(getPara("pwg")));
+    setAttr("pfl",Util.CheckNull(getPara("pfl")));
+    setAttr("dname",Util.CheckNull(d.getStr("name")));
+    SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
+    SimpleDateFormat MM = new SimpleDateFormat("MM");
+    SimpleDateFormat dd = new SimpleDateFormat("dd");
+    setAttr("yyyy",yyyy.format(new Date()));
+    setAttr("mm",MM.format(new Date()));
+    setAttr("dd",dd.format(new Date()));
 
+    setAttr("byyyy",yyyy.format(p.getBirth()));
+    setAttr("bmm",MM.format(p.getBirth()));
+    setAttr("bdd",dd.format(p.getBirth()));
+
+    render("/dist/printPolity.html");
+  }
 }
 
 

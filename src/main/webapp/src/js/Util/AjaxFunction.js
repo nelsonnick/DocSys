@@ -51,6 +51,8 @@ export const FileCount = `${h}/file/count`;                      // 数据总数
 export const FileQuery = `${h}/file/query`;                      // 数据查询     --参数：PageNumber,PageSize,FileNumber,FileDept,PersonName,PersonNumber,FileState
 export const FileDownload = `${h}/file/download`;                // 检查导出     --参数：
 export const FileExport = `${h}/file/export`;                    // 导出档案     --参数：
+export const PrintProve = `${h}/file/printProve`;                // 存档证明     --参数：
+export const PrintPolity = `${h}/file/printPolity`;                // 存档证明     --参数：
 
 export const PersonName = `${h}/person/name`;                    // 检测姓名     --参数：name
 export const PersonNumber = `${h}/person/number`;                // 检测证件     --参数：number

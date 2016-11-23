@@ -25,6 +25,7 @@ public class _MappingKit {
 		arp.addMapping("look", "id", Look.class);
 		arp.addMapping("person", "id", Person.class);
 		arp.addMapping("print", "id", Print.class);
+		arp.addMapping("prove", "id", Prove.class);
 		arp.addMapping("trans", "id", Trans.class);
 		arp.addMapping("user", "id", User.class);
 	}

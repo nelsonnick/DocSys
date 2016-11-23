@@ -3,6 +3,7 @@ import { Table, message } from 'antd';
 import EditLink from './EditLink.js';
 import FlowLink from './FlowLink.js';
 import BackLink from './BackLink.js';
+import * as AjaxFunction from '../Util/AjaxFunction.js';
 
 export default class DataTable extends React.Component {
   constructor(props) {
@@ -95,6 +96,8 @@ export default class DataTable extends React.Component {
                 afterEdit={this.afterEdit}
               />
             );
+            operate.push(<span className="ant-divider" />);
+            operate.push(<a className="btn btn-xs btn-link" href={`${AjaxFunction.PrintProve}?fid=${record.fid}`} >存档证明</a>);
           } else {
             operate.push(<span className="ant-divider" />);
           }
