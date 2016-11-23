@@ -45,6 +45,7 @@ public class MainController extends Controller {
             if (getPara("login").equals("admin") && getPara("password").equals("admin")){
                 User user=new User();
                 user.set("name","管理员");
+                user.set("login",getPara("login"));
                 user.set("did","0");
                 setSessionAttr("user",user);
                 g.set("login",getPara("login"))
