@@ -1,4 +1,4 @@
-import { Modal, Button, notification, Icon } from 'antd';
+import { Modal, Button, notification } from 'antd';
 import React from 'react';
 import EditForm from './EditForm';
 import * as AjaxFunction from '../Util/AjaxFunction.js';
@@ -97,7 +97,7 @@ export default class EditLink extends React.Component {
     const { departmentId, departmentName, departmentPhone, departmentAddress, departmentState, departmentOther, departmentNumber, departmentCode } = this.props;
     return (
       <span>
-        <a onClick={this.showModal} className="btn btn-primary btn-xs"><Icon type="edit" /><span className="glyphicon glyphicon-edit">修改</span></a>
+        <a onClick={this.showModal} className="btn btn-primary btn-xs">修改</a>
         <Modal
           maskClosable={false}
           title="修改部门信息"

@@ -86,7 +86,7 @@ class BackFrom extends React.Component {
               help={isFieldValidating('fileNumber') ? '校验中...' : (getFieldError('fileNumber') || [])}
             >
               {getFieldDecorator('fileNumber', { initialValue: fileNumber })(
-                <Input placeholder="请输入档案编号" disabled />
+                <Input placeholder="请输入档案编号" />
               )}
             </FormItem>
             <FormItem

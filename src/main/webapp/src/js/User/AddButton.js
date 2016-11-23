@@ -134,7 +134,7 @@ export default class AddButton extends React.Component {
   render() {
     return (
       <Row type="flex" justify="start">
-        <Button type="primary" size="large" onClick={this.showModal} >新增用户</Button>
+        <Button type="primary" size="large" onClick={this.showModal} icon="plus">新增用户</Button>
         <Modal
           maskClosable={false}
           title="新增用户"
@@ -143,9 +143,9 @@ export default class AddButton extends React.Component {
           confirmLoading={this.state.confirmLoading}
           onCancel={this.handleCancel}
           footer={[
-            <Button key="back" onClick={this.handleCancel}>返 回</Button>,
-            <Button key="reset" type="ghost" size="large" onClick={this.handleReset}>重 置</Button>,
-            <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleOk}>提 交</Button>,
+            <Button key="back" onClick={this.handleCancel} icon="rollback">返 回</Button>,
+            <Button key="reset" type="ghost" size="large" onClick={this.handleReset} icon="retweet">重 置</Button>,
+            <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleOk} icon="enter">提 交</Button>,
           ]}
         >
           <AddForm

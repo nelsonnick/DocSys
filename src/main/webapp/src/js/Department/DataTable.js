@@ -96,7 +96,7 @@ export default class DataTable extends React.Component {
       title: '部门名称',
       dataIndex: 'name',
       key: 'name',
-      width: 150,
+      width: 100,
     }, {
       title: '部门编号',
       dataIndex: 'number',
@@ -111,12 +111,12 @@ export default class DataTable extends React.Component {
       title: '邮政编码',
       dataIndex: 'code',
       key: 'code',
-      width: 150,
+      width: 100,
     }, {
       title: '办公地点',
       dataIndex: 'address',
       key: 'address',
-      width: 150,
+      width: 220,
     }, {
       title: '当前状态',
       dataIndex: 'state',

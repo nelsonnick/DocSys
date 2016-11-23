@@ -55,11 +55,11 @@ class DataSearch extends React.Component {
               </Select>
             )}
           </FormItem>
-          <Button type="primary" htmlType="submit">查找</Button>
+          <Button htmlType="submit" icon="search">查找</Button>
           <span>&nbsp;&nbsp;&nbsp;</span>
-          <Button type="ghost" onClick={this.handleReset}>重置</Button>
+          <Button type="ghost" onClick={this.handleReset} icon="reload">重置</Button>
           <span>&nbsp;&nbsp;&nbsp;</span>
-          <Button onClick={this.download}>导出</Button>
+          <Button type="dashed" onClick={this.download} icon="download">导出</Button>
         </Form>
       </Row>
     );

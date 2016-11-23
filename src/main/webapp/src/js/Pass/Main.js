@@ -104,9 +104,9 @@ class Pass extends React.Component {
           )}
         </FormItem>
         <FormItem wrapperCol={{ span: 12, offset: 7 }}>
-          <Button type="primary" onClick={this.handleSubmit}>修改</Button>
+          <Button type="primary" onClick={this.handleSubmit} icon="enter">修改</Button>
           &nbsp;&nbsp;&nbsp;
-          <Button type="ghost" onClick={this.handleReset}>重置</Button>
+          <Button type="ghost" onClick={this.handleReset} icon="retweet">重置</Button>
           <span>&nbsp;&nbsp;&nbsp;</span>
           <a id="c"> </a>
         </FormItem>
