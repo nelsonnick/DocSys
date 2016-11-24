@@ -419,21 +419,21 @@ class AddFrom extends React.Component {
               )}
             </FormItem>
             <FormItem
+              label="档案材料"
+              {...formItemLayout}
+              hasFeedback
+            >
+              {getFieldDecorator('fileRemark')(
+                <Input type="textarea" rows="8" placeholder="请逐行填写档案中所含材料" />
+              )}
+            </FormItem>
+            <FormItem
               label="人员备注"
               {...formItemLayout}
               hasFeedback
             >
               {getFieldDecorator('personRemark')(
-                <Input type="textarea" rows="3" placeholder="其他需要填写的信息" />
-              )}
-            </FormItem>
-            <FormItem
-              label="档案备注"
-              {...formItemLayout}
-              hasFeedback
-            >
-              {getFieldDecorator('fileRemark')(
-                <Input type="textarea" rows="3" placeholder="其他需要填写的信息" />
+                <Input type="textarea" rows="2" placeholder="其他需要填写的信息" />
               )}
             </FormItem>
             <FormItem
@@ -442,7 +442,7 @@ class AddFrom extends React.Component {
               hasFeedback
             >
               {getFieldDecorator('flowRemark')(
-                <Input type="textarea" rows="3" placeholder="其他需要填写的信息" />
+                <Input type="textarea" rows="2" placeholder="其他需要填写的信息" />
               )}
             </FormItem>
           </Col>

@@ -216,93 +216,98 @@ public class FileController extends Controller {
     // String a = "^(?:(?!0000)[0-9]{4}(?:(?:0[1-9]|1[0-2])(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$";
     String a = "^([\\d]{4}(((0[13578]|1[02])((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|11)((0[1-9])|([12][1-9])|30))|(02((0[1-9])|(1[0-9])|(2[1-8])))))|((((([02468][048])|([13579][26]))00)|([0-9]{2}(([02468][048])|([13579][26]))))(((0[13578]|1[02])((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|11)((0[1-9])|([12][1-9])|30))|(02((0[1-9])|(1[0-9])|(2[1-9])))))";
     File file = File.dao.findById(getPara("fid"));
-    Person person = Person.dao.findById(getPara("pid"));
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-    String fileAge = sdf.format(person.get("fileAge"));
-    if (file == null) {
-      renderText("要修改的档案不存在，请刷新页面后再试！");
-    } else if (Person.dao.findById(getPara("pid")) == null) {
-      renderText("要修改的人员不存在，请刷新页面后再试！");
-    } else {
-      if (Util.CheckNull(file.getStr("remark")).equals(getPara("fremark").trim())
-              && Util.CheckNull(file.getStr("number")).equals(getPara("fnumber").trim())
-              && Util.CheckNull(person.getStr("name")).equals(getPara("pname").trim())
-              && Util.CheckNull(person.getStr("number")).equals(getPara("pnumber").trim())
-              && Util.CheckNull(person.getStr("phone1")).equals(getPara("pphone1").trim())
-              && Util.CheckNull(person.getStr("phone2")).equals(getPara("pphone2").trim())
-              && Util.CheckNull(person.getStr("address")).equals(getPara("paddress").trim())
-              && Util.CheckNull(person.getStr("info")).equals(getPara("pinfo").trim())
-              && Util.CheckNull(person.getStr("remark")).equals(getPara("premark").trim())
-              && Util.CheckNull(person.getStr("retire")).equals(getPara("pretire").trim())
-              && fileAge.equals(getPara("fileAge").trim())
-              ) {
-        renderText("未找到修改内容，请核实后再修改！");
-      } else if (!Util.CheckNull(person.getStr("number")).equals(getPara("pnumber"))
-              && Person.dao.find("select * from person where number=?", getPara("pnumber")).size() > 0
-              && !getPara("pnumber").equals("000000000000000000")) {
-        renderText("该证件号码数据库中已存在，请核实！");
-      } else if (!Util.CheckNull(file.getStr("number")).equals(getPara("fnumber"))
-              && File.dao.find("select * from file where number=? and did=?", getPara("fnumber"),((User) getSessionAttr("user")).get("did").toString()).size() > 0
-              ) {
-        renderText("该档案编号数据库中已存在，请核实！");
-      } else if (!getPara("pname").matches("[\u4e00-\u9fa5]+")) {
-        renderText("市民姓名必须为汉字!");
-      } else if (getPara("pname").length() < 2) {
-        renderText("市民姓名必须为两个以上汉字，请核实!");
-      } else if (!getPara("pphone1").matches("\\d{11}")) {
-        renderText("联系电话1必须为11位数字!");
-      } else if (!IDNumber.availableIDNumber(getPara("pnumber"))) {
-        renderText("证件号码错误，请核实！");
-      } else if ((!getPara("pphone2").trim().equals("")) && (!getPara("pphone2").matches("\\d{11}"))) {
-        renderText("联系电话2必须为11位数字或不填写!");
-      } else if (getPara("paddress").length() < 2) {
-        renderText("联系地址应该在两个字符以上！");
-      } else if (!getPara("fileAge").matches(a)) {
-        renderText("档案年龄日期有误!");
+    if (((User) getSessionAttr("user")).get("did")!=file.getInt("did")){
+      removeSessionAttr("user");
+      redirect("/index");
+    }else{
+      Person person = Person.dao.findById(getPara("pid"));
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+      String fileAge = sdf.format(person.get("fileAge"));
+      if (file == null) {
+        renderText("要修改的档案不存在，请刷新页面后再试！");
+      } else if (Person.dao.findById(getPara("pid")) == null) {
+        renderText("要修改的人员不存在，请刷新页面后再试！");
       } else {
-        Trans t = new Trans();
-        t.set("pid", getPara("pid").trim())
-                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
-                .set("fid", getPara("fid").trim())
-                .set("did", ((User) getSessionAttr("user")).get("did").toString())
-                .set("time", new Date())
-                .set("nameAfter", getPara("pname").trim())
-                .set("pnumberAfter", getPara("pnumber").trim())
-                .set("fnumberAfter", getPara("fnumber").trim())
-                .set("phone1After", getPara("pphone1").trim())
-                .set("phone2After", Util.CheckNull(getPara("pphone2").trim()))
-                .set("addressAfter", getPara("paddress").trim())
-                .set("infoAfter", getPara("pinfo").trim())
-                .set("retireAfter", getPara("pretire").trim())
-                .set("premarkAfter", Util.CheckNull(getPara("premark").trim()))
-                .set("fremarkAfter", Util.CheckNull(getPara("fremark").trim()))
-                .set("fileAgeAfter", IDNumber.getFileDate(getPara("fileAge").trim()))
-                .set("nameBefore", Util.CheckNull(person.getStr("name")))
-                .set("pnumberBefore", Util.CheckNull(person.getStr("number")))
-                .set("fnumberBefore", Util.CheckNull(file.getStr("number")))
-                .set("phone1Before", Util.CheckNull(person.getStr("phone1")))
-                .set("phone2Before", Util.CheckNull(person.getStr("phone2")))
-                .set("addressBefore", Util.CheckNull(person.getStr("address")))
-                .set("infoBefore", Util.CheckNull(person.getStr("info")))
-                .set("retireBefore", Util.CheckNull(person.getStr("retire")))
-                .set("premarkBefore", Util.CheckNull(person.getStr("remark")))
-                .set("fremarkBefore", Util.CheckNull(file.getStr("remark")))
-                .set("fileAgeBefore", person.get("fileAge"))
-                .save();
-        person.set("name", getPara("pname").trim())
-                .set("number", getPara("pnumber").trim())
-                .set("phone1", getPara("pphone1").trim())
-                .set("phone2", Util.CheckNull(getPara("pphone2").trim()))
-                .set("address", getPara("paddress").trim())
-                .set("info", getPara("pinfo").trim())
-                .set("retire", getPara("pretire").trim())
-                .set("remark", Util.CheckNull(getPara("premark").trim()))
-                .set("fileAge", IDNumber.getFileDate(getPara("fileAge").trim()))
-                .update();
-        file.set("remark", Util.CheckNull(getPara("fremark").trim()))
-                .set("number", getPara("fnumber").trim())
-                .update();
-        renderText("OK");
+        if (Util.CheckNull(file.getStr("remark")).equals(getPara("fremark").trim())
+                && Util.CheckNull(file.getStr("number")).equals(getPara("fnumber").trim())
+                && Util.CheckNull(person.getStr("name")).equals(getPara("pname").trim())
+                && Util.CheckNull(person.getStr("number")).equals(getPara("pnumber").trim())
+                && Util.CheckNull(person.getStr("phone1")).equals(getPara("pphone1").trim())
+                && Util.CheckNull(person.getStr("phone2")).equals(getPara("pphone2").trim())
+                && Util.CheckNull(person.getStr("address")).equals(getPara("paddress").trim())
+                && Util.CheckNull(person.getStr("info")).equals(getPara("pinfo").trim())
+                && Util.CheckNull(person.getStr("remark")).equals(getPara("premark").trim())
+                && Util.CheckNull(person.getStr("retire")).equals(getPara("pretire").trim())
+                && fileAge.equals(getPara("fileAge").trim())
+                ) {
+          renderText("未找到修改内容，请核实后再修改！");
+        } else if (!Util.CheckNull(person.getStr("number")).equals(getPara("pnumber"))
+                && Person.dao.find("select * from person where number=?", getPara("pnumber")).size() > 0
+                && !getPara("pnumber").equals("000000000000000000")) {
+          renderText("该证件号码数据库中已存在，请核实！");
+        } else if (!Util.CheckNull(file.getStr("number")).equals(getPara("fnumber"))
+                && File.dao.find("select * from file where number=? and did=?", getPara("fnumber"), ((User) getSessionAttr("user")).get("did").toString()).size() > 0
+                ) {
+          renderText("该档案编号数据库中已存在，请核实！");
+        } else if (!getPara("pname").matches("[\u4e00-\u9fa5]+")) {
+          renderText("市民姓名必须为汉字!");
+        } else if (getPara("pname").length() < 2) {
+          renderText("市民姓名必须为两个以上汉字，请核实!");
+        } else if (!getPara("pphone1").matches("\\d{11}")) {
+          renderText("联系电话1必须为11位数字!");
+        } else if (!IDNumber.availableIDNumber(getPara("pnumber"))) {
+          renderText("证件号码错误，请核实！");
+        } else if ((!getPara("pphone2").trim().equals("")) && (!getPara("pphone2").matches("\\d{11}"))) {
+          renderText("联系电话2必须为11位数字或不填写!");
+        } else if (getPara("paddress").length() < 2) {
+          renderText("联系地址应该在两个字符以上！");
+        } else if (!getPara("fileAge").matches(a)) {
+          renderText("档案年龄日期有误!");
+        } else {
+          Trans t = new Trans();
+          t.set("pid", getPara("pid").trim())
+                  .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                  .set("fid", getPara("fid").trim())
+                  .set("did", ((User) getSessionAttr("user")).get("did").toString())
+                  .set("time", new Date())
+                  .set("nameAfter", getPara("pname").trim())
+                  .set("pnumberAfter", getPara("pnumber").trim())
+                  .set("fnumberAfter", getPara("fnumber").trim())
+                  .set("phone1After", getPara("pphone1").trim())
+                  .set("phone2After", Util.CheckNull(getPara("pphone2").trim()))
+                  .set("addressAfter", getPara("paddress").trim())
+                  .set("infoAfter", getPara("pinfo").trim())
+                  .set("retireAfter", getPara("pretire").trim())
+                  .set("premarkAfter", Util.CheckNull(getPara("premark").trim()))
+                  .set("fremarkAfter", Util.CheckNull(getPara("fremark").trim()))
+                  .set("fileAgeAfter", IDNumber.getFileDate(getPara("fileAge").trim()))
+                  .set("nameBefore", Util.CheckNull(person.getStr("name")))
+                  .set("pnumberBefore", Util.CheckNull(person.getStr("number")))
+                  .set("fnumberBefore", Util.CheckNull(file.getStr("number")))
+                  .set("phone1Before", Util.CheckNull(person.getStr("phone1")))
+                  .set("phone2Before", Util.CheckNull(person.getStr("phone2")))
+                  .set("addressBefore", Util.CheckNull(person.getStr("address")))
+                  .set("infoBefore", Util.CheckNull(person.getStr("info")))
+                  .set("retireBefore", Util.CheckNull(person.getStr("retire")))
+                  .set("premarkBefore", Util.CheckNull(person.getStr("remark")))
+                  .set("fremarkBefore", Util.CheckNull(file.getStr("remark")))
+                  .set("fileAgeBefore", person.get("fileAge"))
+                  .save();
+          person.set("name", getPara("pname").trim())
+                  .set("number", getPara("pnumber").trim())
+                  .set("phone1", getPara("pphone1").trim())
+                  .set("phone2", Util.CheckNull(getPara("pphone2").trim()))
+                  .set("address", getPara("paddress").trim())
+                  .set("info", getPara("pinfo").trim())
+                  .set("retire", getPara("pretire").trim())
+                  .set("remark", Util.CheckNull(getPara("premark").trim()))
+                  .set("fileAge", IDNumber.getFileDate(getPara("fileAge").trim()))
+                  .update();
+          file.set("remark", Util.CheckNull(getPara("fremark").trim()))
+                  .set("number", getPara("fnumber").trim())
+                  .update();
+          renderText("OK");
+        }
       }
     }
   }
@@ -319,27 +324,32 @@ public class FileController extends Controller {
   @Before({Tx.class, LoginInterceptor.class})
   public void flow() {
     File file = File.dao.findById(getPara("fid"));
-    Person person = Person.dao.findById(getPara("pid"));
-    if (Util.CheckNull(file.getStr("state")).equals("已提")) {
-      renderText("该档案已办理提档手续！");
-    } else if (Util.CheckNull(person.getStr("state")).equals("已提")) {
-      renderText("该人员已处于提档状态！");
-    } else {
-      Flow l = new Flow();
-      l.set("pid", getPara("pid").trim())
-              .set("uid", ((User) getSessionAttr("user")).get("id").toString())
-              .set("fid", getPara("fid").trim())
-              .set("did", ((User) getSessionAttr("user")).get("did").toString())
-              .set("type", getPara("ltype").trim())
-              .set("direct", getPara("ldirect").trim())
-              .set("reason", getPara("lreason").trim())
-              .set("remark", getPara("lremark").trim())
-              .set("time", new Date())
-              .set("flow", "转出")
-              .save();
-      file.set("state", "已提").update();
-      person.set("state", "已提").update();
-      renderText("OK");
+    if (((User) getSessionAttr("user")).get("did")!=file.getInt("did")){
+      removeSessionAttr("user");
+      redirect("/index");
+    }else {
+      Person person = Person.dao.findById(getPara("pid"));
+      if (Util.CheckNull(file.getStr("state")).equals("已提")) {
+        renderText("该档案已办理提档手续！");
+      } else if (Util.CheckNull(person.getStr("state")).equals("已提")) {
+        renderText("该人员已处于提档状态！");
+      } else {
+        Flow l = new Flow();
+        l.set("pid", getPara("pid").trim())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("fid", getPara("fid").trim())
+                .set("did", ((User) getSessionAttr("user")).get("did").toString())
+                .set("type", getPara("ltype").trim())
+                .set("direct", getPara("ldirect").trim())
+                .set("reason", getPara("lreason").trim())
+                .set("remark", getPara("lremark").trim())
+                .set("time", new Date())
+                .set("flow", "转出")
+                .save();
+        file.set("state", "已提").update();
+        person.set("state", "已提").update();
+        renderText("OK");
+      }
     }
   }
 
@@ -498,7 +508,7 @@ public class FileController extends Controller {
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void export() throws IOException {
-    String[] title={"档案编号","档案状态","姓名","证件号码","联系电话1","联系电话2","联系地址","性别","出生日期","档案年龄","信息整理","退休情况","人员备注","档案备注","存档单位"};
+    String[] title={"档案编号","档案状态","姓名","证件号码","联系电话1","联系电话2","联系地址","性别","出生日期","档案年龄","信息整理","退休情况","人员备注","档案材料","存档单位"};
     //创建Excel工作簿
     XSSFWorkbook workbook = new XSSFWorkbook();
     //创建一个工作表
@@ -670,26 +680,33 @@ public class FileController extends Controller {
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void printProve() {
-    File f = File.dao.findById(getPara("fid"));
-    Prove r =new Prove();
-    r.set("fid",getPara("fid"))
-            .set("uid",((User) getSessionAttr("user")).get("id").toString())
-            .set("type","存档证明")
-            .set("time", new Date())
-            .save();
 
-    Department d = Department.dao.findById(f.getInt("did"));
-    Person p =Person.dao.findById(f.getInt("pid"));
-    setAttr("pname",Util.CheckNull(p.getStr("name")));
-    setAttr("pnumber",Util.CheckNull(p.getStr("number")));
-    setAttr("dname",Util.CheckNull(d.getStr("name")));
-    SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
-    SimpleDateFormat MM = new SimpleDateFormat("MM");
-    SimpleDateFormat dd = new SimpleDateFormat("dd");
-    setAttr("yyyy",yyyy.format(new Date()));
-    setAttr("mm",MM.format(new Date()));
-    setAttr("dd",dd.format(new Date()));
-    render("/dist/printProve.html");
+    File f = File.dao.findById(getPara("fid"));
+
+    if (((User) getSessionAttr("user")).get("did")!=f.getInt("did")){
+      removeSessionAttr("user");
+      redirect("/index");
+    }else{
+      Prove r =new Prove();
+      r.set("fid",getPara("fid"))
+              .set("uid",((User) getSessionAttr("user")).get("id").toString())
+              .set("type","存档证明")
+              .set("time", new Date())
+              .save();
+
+      Department d = Department.dao.findById(f.getInt("did"));
+      Person p =Person.dao.findById(f.getInt("pid"));
+      setAttr("pname",Util.CheckNull(p.getStr("name")));
+      setAttr("pnumber",Util.CheckNull(p.getStr("number")));
+      setAttr("dname",Util.CheckNull(d.getStr("name")));
+      SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
+      SimpleDateFormat MM = new SimpleDateFormat("MM");
+      SimpleDateFormat dd = new SimpleDateFormat("dd");
+      setAttr("yyyy",yyyy.format(new Date()));
+      setAttr("mm",MM.format(new Date()));
+      setAttr("dd",dd.format(new Date()));
+      render("/dist/printProve.html");
+    }
   }
   /**
    * 打印政审证明
@@ -708,47 +725,52 @@ public class FileController extends Controller {
   @Before({Tx.class,LoginInterceptor.class})
   public void printPolity() {
     File f = File.dao.findById(getPara("fid"));
-    Polity r =new Polity();
-    r.set("fid",getPara("fid"))
-            .set("uid",((User) getSessionAttr("user")).get("id").toString())
-            .set("nation",Util.CheckNull(getPara("pnation")))
-            .set("learn",Util.CheckNull(getPara("plearn")))
-            .set("face",Util.CheckNull(getPara("pface")))
-            .set("work",Util.CheckNull(getPara("pwork")))
-            .set("leave",Util.CheckNull(getPara("pleave")))
-            .set("zl",Util.CheckNull(getPara("pzl")))
-            .set("wg",Util.CheckNull(getPara("pwg")))
-            .set("ls",Util.CheckNull(getPara("pls")))
-            .set("fl",Util.CheckNull(getPara("pfl")))
-            .set("remark",Util.CheckNull(getPara("premark")))
-            .set("time", new Date())
-            .save();
+    if (((User) getSessionAttr("user")).get("did")!=f.getInt("did")){
+      removeSessionAttr("user");
+      redirect("/index");
+    }else {
+      Polity r = new Polity();
+      r.set("fid", getPara("fid"))
+              .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+              .set("nation", Util.CheckNull(getPara("pnation")))
+              .set("learn", Util.CheckNull(getPara("plearn")))
+              .set("face", Util.CheckNull(getPara("pface")))
+              .set("work", Util.CheckNull(getPara("pwork")))
+              .set("leave", Util.CheckNull(getPara("pleave")))
+              .set("zl", Util.CheckNull(getPara("pzl")))
+              .set("wg", Util.CheckNull(getPara("pwg")))
+              .set("ls", Util.CheckNull(getPara("pls")))
+              .set("fl", Util.CheckNull(getPara("pfl")))
+              .set("remark", Util.CheckNull(getPara("premark")))
+              .set("time", new Date())
+              .save();
 
-    Department d = Department.dao.findById(f.getInt("did"));
-    Person p =Person.dao.findById(f.getInt("pid"));
-    setAttr("pname",Util.CheckNull(p.getStr("name")));
-    setAttr("pnumber",Util.CheckNull(p.getStr("number")));
-    setAttr("psex",Util.CheckNull(p.getStr("sex")));
-    setAttr("pnation",Util.CheckNull(getPara("pnation")));
-    setAttr("plearn",Util.CheckNull(getPara("plearn")));
-    setAttr("pface",Util.CheckNull(getPara("pface")));
-    setAttr("pleave",Util.CheckNull(getPara("pleave")));
-    setAttr("pwork",Util.CheckNull(getPara("pwork")));
-    setAttr("pzl",Util.CheckNull(getPara("pzl")));
-    setAttr("pwg",Util.CheckNull(getPara("pwg")));
-    setAttr("pls",Util.CheckNull(getPara("pls")));
-    setAttr("pfl",Util.CheckNull(getPara("pfl")));
-    setAttr("premark",Util.CheckNull(getPara("premark")));
-    setAttr("dname",Util.CheckNull(d.getStr("name")));
-    SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
-    SimpleDateFormat MM = new SimpleDateFormat("MM");
-    SimpleDateFormat dd = new SimpleDateFormat("dd");
-    setAttr("yyyy",yyyy.format(new Date()));
-    setAttr("mm",MM.format(new Date()));
-    setAttr("dd",dd.format(new Date()));
-    setAttr("pbirth",yyyy.format(p.get("birth"))+MM.format(p.get("birth"))+dd.format(p.get("birth")));
+      Department d = Department.dao.findById(f.getInt("did"));
+      Person p = Person.dao.findById(f.getInt("pid"));
+      setAttr("pname", Util.CheckNull(p.getStr("name")));
+      setAttr("pnumber", Util.CheckNull(p.getStr("number")));
+      setAttr("psex", Util.CheckNull(p.getStr("sex")));
+      setAttr("pnation", Util.CheckNull(getPara("pnation")));
+      setAttr("plearn", Util.CheckNull(getPara("plearn")));
+      setAttr("pface", Util.CheckNull(getPara("pface")));
+      setAttr("pleave", Util.CheckNull(getPara("pleave")));
+      setAttr("pwork", Util.CheckNull(getPara("pwork")));
+      setAttr("pzl", Util.CheckNull(getPara("pzl")));
+      setAttr("pwg", Util.CheckNull(getPara("pwg")));
+      setAttr("pls", Util.CheckNull(getPara("pls")));
+      setAttr("pfl", Util.CheckNull(getPara("pfl")));
+      setAttr("premark", Util.CheckNull(getPara("premark")));
+      setAttr("dname", Util.CheckNull(d.getStr("name")));
+      SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
+      SimpleDateFormat MM = new SimpleDateFormat("MM");
+      SimpleDateFormat dd = new SimpleDateFormat("dd");
+      setAttr("yyyy", yyyy.format(new Date()));
+      setAttr("mm", MM.format(new Date()));
+      setAttr("dd", dd.format(new Date()));
+      setAttr("pbirth", yyyy.format(p.get("birth")) + MM.format(p.get("birth")) + dd.format(p.get("birth")));
 
-    render("/dist/printPolity.html");
+      render("/dist/printPolity.html");
+    }
   }
   /**
    * 开提档函

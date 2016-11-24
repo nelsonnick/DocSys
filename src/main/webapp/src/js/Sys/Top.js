@@ -19,6 +19,9 @@ export default class Top extends React.Component {
     };
   }
   componentWillMount() {
+    console.log('%c前端技术栈：webpack+ReactJS+Ant Design+Bootstrap+echart', 'color:blue');
+    console.log('%c后端技术栈：Java,Jfinal', 'color:blue');
+    console.log('%c全栈开发者：王天硕------->QQ：595734521', 'color:red');
     $.ajax({
       'type': 'POST',
       'url': AjaxFunction.CurrentUser,

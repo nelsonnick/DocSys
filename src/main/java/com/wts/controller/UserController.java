@@ -7,6 +7,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wts.entity.model.*;
 import com.wts.interceptor.LoginInterceptor;
+import com.wts.interceptor.PowerInterceptor;
 import com.wts.util.IDNumber;
 import com.wts.util.Util;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -30,7 +31,7 @@ public class UserController extends Controller {
    * UserName
    * UserDept
    */
-  @Before(LoginInterceptor.class)
+  @Before({LoginInterceptor.class,PowerInterceptor.class})
   public void query() {
     Page<User> users=User.dao.paginate2(getParaToInt("PageNumber"),getParaToInt("PageSize"),getPara("UserName"),getPara("UserDept"));
     renderJson(users.getList());
@@ -40,7 +41,7 @@ public class UserController extends Controller {
    * UserName
    * UserDept
    */
-  @Before(LoginInterceptor.class)
+  @Before({LoginInterceptor.class,PowerInterceptor.class})
   public void count() {
     if (getPara("UserDept").equals("")) {
       String count = Db.queryLong("select count(*) from user where name like '%" + getPara("UserName") + "%' and state<>'删除' and state<>'系统' ").toString();
@@ -129,7 +130,7 @@ public class UserController extends Controller {
    * 获取户所属部门
    * did
    */
-  @Before(LoginInterceptor.class)
+  @Before({LoginInterceptor.class,PowerInterceptor.class})
   public void depts() {
     Department department = Department.dao.findById(getPara("did"));
     renderText(department.get("id").toString());
@@ -137,7 +138,7 @@ public class UserController extends Controller {
   /**
    * 新增用户
    */
-  @Before({Tx.class,LoginInterceptor.class})
+  @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void add() {
     List<User> user1 = User.dao.find(
             "select * from user where number=?", getPara("number"));
@@ -178,7 +179,7 @@ public class UserController extends Controller {
   /**
    * 修改用户
    */
-  @Before({Tx.class,LoginInterceptor.class})
+  @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void edit(){
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
@@ -225,7 +226,7 @@ public class UserController extends Controller {
   /**
    * 注销用户
    */
-  @Before({Tx.class,LoginInterceptor.class})
+  @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void abandon(){
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
@@ -243,7 +244,7 @@ public class UserController extends Controller {
   /**
    * 激活用户
    */
-  @Before({Tx.class,LoginInterceptor.class})
+  @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void active(){
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
@@ -261,7 +262,7 @@ public class UserController extends Controller {
   /**
    * 删除用户
    */
-  @Before({Tx.class,LoginInterceptor.class})
+  @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void delete(){
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
@@ -279,7 +280,7 @@ public class UserController extends Controller {
   /**
    * 重置密码
    */
-  @Before({Tx.class,LoginInterceptor.class})
+  @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void reset(){
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
@@ -299,7 +300,7 @@ public class UserController extends Controller {
    * UserName
    * UserDept
    */
-  @Before(LoginInterceptor.class)
+  @Before({LoginInterceptor.class,PowerInterceptor.class})
   public void download() {
     List<User> users;
     String username,userdept;
@@ -337,7 +338,7 @@ public class UserController extends Controller {
   /**
    * 导出
    */
-  @Before({Tx.class,LoginInterceptor.class})
+  @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void export() throws IOException {
     String[] title={"序号","姓名","证件号码","联系电话","登录名称","所属部门","状态"," 入职时间","备注"};
     //创建Excel工作簿
@@ -442,7 +443,7 @@ public class UserController extends Controller {
    * 修改密码
    * did
    */
-  @Before({Tx.class,LoginInterceptor.class})
+  @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void pass() {
     User u = (User) getSessionAttr("user");
     if (!u.getStr("pass").equals(encodeMD5String(getPara("passBefore")))) {

@@ -98,7 +98,7 @@ export default class DataTable extends React.Component {
               />
             );
             operate.push(<span className="ant-divider" />);
-            operate.push(<a className="btn btn-xs btn-link" href={`${AjaxFunction.PrintProve}?fid=${record.fid}`} >存档证明</a>);
+            operate.push(<a className="btn btn-xs btn-default" href={`${AjaxFunction.PrintProve}?fid=${record.fid}`} >存档证明</a>);
             operate.push(<span className="ant-divider" />);
             operate.push(
               <PolityLink

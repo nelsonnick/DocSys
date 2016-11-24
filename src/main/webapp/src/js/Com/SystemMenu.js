@@ -47,6 +47,7 @@ export default class SystemMenu extends React.Component {
             <Menu.Item key="File"><span><Icon type="bars" />档案管理</span></Menu.Item>
             <Menu.Item key="Flow"><span><Icon type="mail" />档案流转</span></Menu.Item>
             <Menu.Item key="Charts"><span><Icon type="area-chart" />统计分析</span></Menu.Item>
+            <Menu.Item key="Contact"><span><Icon type="customer-service" />部门联络</span></Menu.Item>
             <Menu.Item key="Pass"><span><Icon type="setting" />密码变更</span></Menu.Item>
           </Menu>
         </div>

@@ -9,6 +9,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wts.entity.model.Department;
 import com.wts.entity.model.Export;
 import com.wts.interceptor.LoginInterceptor;
+import com.wts.interceptor.PowerInterceptor;
 import com.wts.util.Util;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -160,7 +161,7 @@ public class DepartmentController extends Controller {
   /**
    * 新增部门
    */
-  @Before({Tx.class,LoginInterceptor.class})
+  @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void add() {
     List<Department> departments = Department.dao.find(
             "select * from department where name=?", getPara("name"));
@@ -203,7 +204,7 @@ public class DepartmentController extends Controller {
   /**
    * 注销部门
    */
-  @Before({Tx.class,LoginInterceptor.class})
+  @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void abandon(){
     Department department = Department.dao.findById(getPara("id"));
     if (department == null) {
@@ -221,7 +222,7 @@ public class DepartmentController extends Controller {
   /**
    * 激活部门
    */
-  @Before({Tx.class,LoginInterceptor.class})
+  @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void active(){
     Department department = Department.dao.findById(getPara("id"));
     if (department == null) {
@@ -239,7 +240,7 @@ public class DepartmentController extends Controller {
   /**
    * 删除部门
    */
-  @Before({Tx.class,LoginInterceptor.class})
+  @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void delete(){
     Department department = Department.dao.findById(getPara("id"));
     if (department == null) {
@@ -257,7 +258,7 @@ public class DepartmentController extends Controller {
   /**
    * 修改部门
    */
-  @Before({Tx.class,LoginInterceptor.class})
+  @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void edit(){
     Department department = Department.dao.findById(getPara("id"));
 

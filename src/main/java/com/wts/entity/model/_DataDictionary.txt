@@ -54,6 +54,7 @@ Table: extract
  number   | VARCHAR(255) | YES  |     |         |         
  location | VARCHAR(255) | YES  |     |         |         
  time     | DATETIME(19) | YES  |     |         |         
+ remark   | VARCHAR(999) | YES  |     |         |         
 ----------+--------------+------+-----+---------+---------
 
 Table: file

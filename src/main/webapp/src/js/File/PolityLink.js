@@ -62,7 +62,7 @@ export default class PolityLink extends React.Component {
     const { fileId, personName, personNumber, personSex, personBirth } = this.props;
     return (
       <span>
-        <a onClick={this.showModal} className="btn btn-link btn-xs" >政审证明</a>
+        <a onClick={this.showModal} className="btn btn-info btn-xs" >政审证明</a>
         <Modal
           maskClosable={false}
           title="打印政审材料"

@@ -5,6 +5,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wts.entity.model.*;
 import com.wts.interceptor.LoginInterceptor;
+import com.wts.interceptor.PowerInterceptor;
 import com.wts.util.IpKit;
 import com.wts.util.Util;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -119,7 +120,7 @@ public class MainController extends Controller {
     /**
      * 导出流动修改
      */
-    @Before({Tx.class,LoginInterceptor.class})
+    @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
     public void exportChange() throws IOException {
         String[] title={"序号","操作人员","档案编号","存档位置","流转类型","修改时间","转移原因（修改前）","转移原因（修改后）","档案流向（修改前）","档案流向（修改后）","转递方式（修改前）","转递方式（修改后）","流转备注（修改前）","流转备注（修改后）"};
         //创建Excel工作簿
@@ -261,9 +262,9 @@ public class MainController extends Controller {
     /**
      * 导出信息修改
      */
-    @Before({Tx.class,LoginInterceptor.class})
+    @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
     public void exportTrans() throws IOException {
-        String[] title={"序号","操作人员","存档位置","修改时间","人员姓名（修改前）","人员姓名（修改后）","证件号码（修改前）","证件号码（修改后）","档案编号（修改前）","档案编号（修改后）","联系电话1（修改前）","联系电话1（修改后）","联系电话2（修改前）","联系电话2（修改后）","联系地址（修改前）","联系地址（修改后）","档案年龄（修改前）","档案年龄（修改后）","信息整理（修改前）","信息整理（修改后）","退休情况（修改前）","退休情况（修改后）","人员备注（修改前）","人员备注（修改后）","档案备注（修改前）","档案备注（修改后）"};
+        String[] title={"序号","操作人员","存档位置","修改时间","人员姓名（修改前）","人员姓名（修改后）","证件号码（修改前）","证件号码（修改后）","档案编号（修改前）","档案编号（修改后）","联系电话1（修改前）","联系电话1（修改后）","联系电话2（修改前）","联系电话2（修改后）","联系地址（修改前）","联系地址（修改后）","档案年龄（修改前）","档案年龄（修改后）","信息整理（修改前）","信息整理（修改后）","退休情况（修改前）","退休情况（修改后）","人员备注（修改前）","人员备注（修改后）","档案材料（修改前）","档案材料（修改后）"};
         //创建Excel工作簿
         XSSFWorkbook workbook = new XSSFWorkbook();
         //创建一个工作表
@@ -486,7 +487,7 @@ public class MainController extends Controller {
     /**
      * 导出登录记录
      */
-    @Before({Tx.class,LoginInterceptor.class})
+    @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
     public void exportLogin() throws IOException {
         String[] title={"序号","时间","用户名","IP地址","状态"};
         //创建Excel工作簿
@@ -565,7 +566,7 @@ public class MainController extends Controller {
     /**
      * 导出查询记录
      */
-    @Before({Tx.class,LoginInterceptor.class})
+    @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
     public void exportLook() throws IOException {
         String[] title={"序号","操作人员","操作时间","查询类型","查询语句","查询页码","每页数量"};
         //创建Excel工作簿
@@ -659,7 +660,7 @@ public class MainController extends Controller {
     /**
      * 导出导出记录
      */
-    @Before({Tx.class,LoginInterceptor.class})
+    @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
     public void exportExport() throws IOException {
         String[] title={"序号","操作人员","操作时间","查询类型","查询语句"};
         //创建Excel工作簿
@@ -739,7 +740,7 @@ public class MainController extends Controller {
     /**
      * 导出档案流转打印记录
      */
-    @Before({Tx.class,LoginInterceptor.class})
+    @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
     public void exportPrint() throws IOException {
         String[] title={"序号","操作人员","操作时间","存档位置","档案编号","人员姓名","证件号码","流转时间","流转类型"};
         //创建Excel工作簿
@@ -847,7 +848,7 @@ public class MainController extends Controller {
     /**
      * 导出存档证明打印记录
      */
-    @Before({Tx.class,LoginInterceptor.class})
+    @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
     public void exportProve() throws IOException {
         String[] title={"序号","操作人员","操作时间","存档位置","档案编号","人员姓名","证件号码","证明类型"};
         //创建Excel工作簿
@@ -947,7 +948,7 @@ public class MainController extends Controller {
     /**
      * 导出政审证明打印记录
      */
-    @Before({Tx.class,LoginInterceptor.class})
+    @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
     public void exportPolity() throws IOException {
         String[] title={"序号","操作人员","操作时间","存档位置","档案编号","人员姓名","证件号码","民族","文化程度","政治面貌","原工作单位","离职时间","政历","文革","六四","法轮功","其他"};
         //创建Excel工作簿
@@ -1110,7 +1111,7 @@ public class MainController extends Controller {
     /**
      * 导出提档函打印记录
      */
-    @Before({Tx.class,LoginInterceptor.class})
+    @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
     public void exportExtract() throws IOException {
         String[] title={"序号","操作人员","操作时间","开具部门","人员姓名","证件号码","目标部门","备注"};
         //创建Excel工作簿
