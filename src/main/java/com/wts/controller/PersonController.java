@@ -52,12 +52,20 @@ public class PersonController extends Controller {
     } else {
       List<Person> persons = Person.dao.find(
               "select * from person where number=?", getPara("number"));
-      if (persons.size() > 1) {
+      if (persons.size() >= 2) {
         renderText("该证件号码已存在，请更换!");
       } else {
         renderText(IDNumber.checkIDNumber(getPara("number")));
       }
     }
+  }
+  /**
+   * 核查证件号码
+   * number
+   */
+  @Before(LoginInterceptor.class)
+  public void numberz() {
+    renderText(IDNumber.checkIDNumber(getPara("number")));
   }
   /**
    * 核查联系电话1

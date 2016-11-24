@@ -18,7 +18,7 @@ class PolityFrom extends React.Component {
   }
   render() {
     const { getFieldDecorator, getFieldError, isFieldValidating } = this.props.form;
-    const { fileId, personId, personName, personNumber, personSex } = this.props;
+    const { fileId, personName, personNumber, personSex } = this.props;
     const formItemLayout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 14 },
@@ -74,7 +74,7 @@ class PolityFrom extends React.Component {
               )}
             </FormItem>
             <FormItem
-              label="性别"
+              label="人员性别"
               {...formItemLayout}
               hasFeedback
               required
@@ -89,24 +89,76 @@ class PolityFrom extends React.Component {
               )}
             </FormItem>
             <FormItem
-              label="民族"
+              label="所属民族"
               {...formItemLayout}
-              hasFeedback
               required
-              help={isFieldValidating('personNation') ? '校验中...' : (getFieldError('personNation') || [])}
             >
-              {getFieldDecorator('personNation', { initialValue: '汉族',
-                rules: [
-                    { required: true, whitespace: true, message: '必填项' },
-                ],
-              })(
-                <Input placeholder="请输入市民的民族" />
+              {getFieldDecorator('personNation', { initialValue: '汉族' })(
+                <Select size="large" >
+                  <Option value="汉族">汉族</Option>
+                  <Option value="壮族">壮族</Option>
+                  <Option value="回族">回族</Option>
+                  <Option value="满族">满族</Option>
+                  <Option value="维吾尔族">维吾尔族</Option>
+                  <Option value="苗族">苗族</Option>
+                  <Option value="彝族">彝族</Option>
+                  <Option value="土家族">土家族</Option>
+                  <Option value="藏族">藏族</Option>
+                  <Option value="蒙古族">蒙古族</Option>
+                  <Option value="侗族">侗族</Option>
+                  <Option value="布依族">布依族</Option>
+                  <Option value="瑶族">瑶族</Option>
+                  <Option value="白族">白族</Option>
+                  <Option value="朝鲜族">朝鲜族</Option>
+                  <Option value="哈尼族">哈尼族</Option>
+                  <Option value="黎族">黎族</Option>
+                  <Option value="哈萨克族">哈萨克族</Option>
+                  <Option value="傣族">傣族</Option>
+                  <Option value="畲族">畲族</Option>
+                  <Option value="傈僳族">傈僳族</Option>
+                  <Option value="东乡族">东乡族</Option>
+                  <Option value="仡佬族">仡佬族</Option>
+                  <Option value="拉祜族">拉祜族</Option>
+                  <Option value="佤族">佤族</Option>
+                  <Option value="水族">水族</Option>
+                  <Option value="纳西族">纳西族</Option>
+                  <Option value="羌族">羌族</Option>
+                  <Option value="土族">土族</Option>
+                  <Option value="仫佬族">仫佬族</Option>
+                  <Option value="锡伯族">锡伯族</Option>
+                  <Option value="柯尔克孜族">柯尔克孜族</Option>
+                  <Option value="景颇族">景颇族</Option>
+                  <Option value="达斡尔族">达斡尔族</Option>
+                  <Option value="撒拉族">撒拉族</Option>
+                  <Option value="布朗族">布朗族</Option>
+                  <Option value="毛南族">毛南族</Option>
+                  <Option value="塔吉克族">塔吉克族</Option>
+                  <Option value="普米族">普米族</Option>
+                  <Option value="阿昌族">阿昌族</Option>
+                  <Option value="怒族">怒族</Option>
+                  <Option value="鄂温克族">鄂温克族</Option>
+                  <Option value="京族">京族</Option>
+                  <Option value="基诺族">基诺族</Option>
+                  <Option value="德昂族">德昂族</Option>
+                  <Option value="保安族">保安族</Option>
+                  <Option value="俄罗斯族">俄罗斯族</Option>
+                  <Option value="裕固族">裕固族</Option>
+                  <Option value="乌孜别克族">乌孜别克族</Option>
+                  <Option value="门巴族">门巴族</Option>
+                  <Option value="鄂伦春族">鄂伦春族</Option>
+                  <Option value="独龙族">独龙族</Option>
+                  <Option value="赫哲族">赫哲族</Option>
+                  <Option value="高山族">高山族</Option>
+                  <Option value="珞巴族">珞巴族</Option>
+                  <Option value="塔塔尔族">塔塔尔族</Option>
+                  <Option value="未识别民族">未识别民族</Option>
+                  <Option value="入籍外国人">入籍外国人</Option>
+                </Select>
               )}
             </FormItem>
             <FormItem
               label="文化程度"
               {...formItemLayout}
-              hasFeedback
               required
             >
               {getFieldDecorator('personLearn', { initialValue: '高中' })(
@@ -147,22 +199,6 @@ class PolityFrom extends React.Component {
                 </Select>
               )}
             </FormItem>
-          </Col>
-          <Col span={12}>
-            <FormItem
-              label="参加工作时间"
-              {...formItemLayout}
-              hasFeedback
-              required
-            >
-              {getFieldDecorator('personTime', { initialValue: '',
-                rules: [
-                  { required: true, whitespace: true, message: '必填项' },
-                ],
-              })(
-                <Input placeholder="请输入参加工作时间" />
-              )}
-            </FormItem>
             <FormItem
               label="原工作单位"
               {...formItemLayout}
@@ -177,8 +213,24 @@ class PolityFrom extends React.Component {
                 <Input placeholder="请输入原工作单位" />
               )}
             </FormItem>
+          </Col>
+          <Col span={12}>
             <FormItem
-              label="政历"
+              label="离职时间"
+              {...formItemLayout}
+              hasFeedback
+              required
+            >
+              {getFieldDecorator('personLeave', { initialValue: '',
+                rules: [
+                  { required: true, whitespace: true, message: '必填项' },
+                ],
+              })(
+                <Input placeholder="请输入解除劳动合同时间" />
+              )}
+            </FormItem>
+            <FormItem
+              label="政历问题"
               {...formItemLayout}
               hasFeedback
             >
@@ -187,21 +239,39 @@ class PolityFrom extends React.Component {
               )}
             </FormItem>
             <FormItem
-              label="文革、89"
+              label="文革表现"
               {...formItemLayout}
               hasFeedback
             >
-              {getFieldDecorator('personWG', { initialValue: '文革及89年政治风波表现良好' })(
+              {getFieldDecorator('personWG', { initialValue: '文革期间表现良好' })(
                 <Input />
               )}
             </FormItem>
             <FormItem
-              label="法轮功"
+              label="“六四”表现"
               {...formItemLayout}
               hasFeedback
             >
-              {getFieldDecorator('personFL', { initialValue: '坚决发对“法轮功”邪教' })(
+              {getFieldDecorator('personLS', { initialValue: '89年政治风波表现良好' })(
                 <Input />
+              )}
+            </FormItem>
+            <FormItem
+              label="法轮功态度"
+              {...formItemLayout}
+              hasFeedback
+            >
+              {getFieldDecorator('personFL', { initialValue: '未修炼并坚决发对“法轮功”邪教' })(
+                <Input />
+              )}
+            </FormItem>
+            <FormItem
+              label="附加说明"
+              {...formItemLayout}
+              hasFeedback
+            >
+              {getFieldDecorator('personRemark', { initialValue: '' })(
+                <Input type="textarea" rows="3" placeholder="其他需要填写的信息" />
               )}
             </FormItem>
             <FormItem
@@ -209,14 +279,6 @@ class PolityFrom extends React.Component {
               {...formItemLayout}
             >
               {getFieldDecorator('fileId', { initialValue: fileId })(
-                <Input type="hidden" />
-              )}
-            </FormItem>
-            <FormItem
-              label=""
-              {...formItemLayout}
-            >
-              {getFieldDecorator('personId', { initialValue: personId })(
                 <Input type="hidden" />
               )}
             </FormItem>
@@ -231,7 +293,6 @@ export default PolityFrom;
 PolityFrom.propTypes = {
   form: React.PropTypes.object,
   fileId: React.PropTypes.string,
-  personId: React.PropTypes.string,
   personName: React.PropTypes.string,
   personNumber: React.PropTypes.string,
   personSex: React.PropTypes.string,

@@ -670,13 +670,14 @@ public class FileController extends Controller {
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void printProve() {
+    File f = File.dao.findById(getPara("fid"));
     Prove r =new Prove();
     r.set("fid",getPara("fid"))
             .set("uid",((User) getSessionAttr("user")).get("id").toString())
             .set("type","存档证明")
             .set("time", new Date())
             .save();
-    File f = File.dao.findById(getPara("fid"));
+
     Department d = Department.dao.findById(f.getInt("did"));
     Person p =Person.dao.findById(f.getInt("pid"));
     setAttr("pname",Util.CheckNull(p.getStr("name")));
@@ -702,16 +703,27 @@ public class FileController extends Controller {
    * pzl
    * pwg
    * pfl
+   * premark
    */
   @Before({Tx.class,LoginInterceptor.class})
   public void printPolity() {
-    Prove r =new Prove();
+    File f = File.dao.findById(getPara("fid"));
+    Polity r =new Polity();
     r.set("fid",getPara("fid"))
             .set("uid",((User) getSessionAttr("user")).get("id").toString())
-            .set("type","政审证明")
+            .set("nation",Util.CheckNull(getPara("pnation")))
+            .set("learn",Util.CheckNull(getPara("plearn")))
+            .set("face",Util.CheckNull(getPara("pface")))
+            .set("work",Util.CheckNull(getPara("pwork")))
+            .set("leave",Util.CheckNull(getPara("pleave")))
+            .set("zl",Util.CheckNull(getPara("pzl")))
+            .set("wg",Util.CheckNull(getPara("pwg")))
+            .set("ls",Util.CheckNull(getPara("pls")))
+            .set("fl",Util.CheckNull(getPara("pfl")))
+            .set("remark",Util.CheckNull(getPara("premark")))
             .set("time", new Date())
             .save();
-    File f = File.dao.findById(getPara("fid"));
+
     Department d = Department.dao.findById(f.getInt("did"));
     Person p =Person.dao.findById(f.getInt("pid"));
     setAttr("pname",Util.CheckNull(p.getStr("name")));
@@ -720,11 +732,13 @@ public class FileController extends Controller {
     setAttr("pnation",Util.CheckNull(getPara("pnation")));
     setAttr("plearn",Util.CheckNull(getPara("plearn")));
     setAttr("pface",Util.CheckNull(getPara("pface")));
-    setAttr("ptime",Util.CheckNull(getPara("ptime")));
+    setAttr("pleave",Util.CheckNull(getPara("pleave")));
     setAttr("pwork",Util.CheckNull(getPara("pwork")));
     setAttr("pzl",Util.CheckNull(getPara("pzl")));
     setAttr("pwg",Util.CheckNull(getPara("pwg")));
+    setAttr("pls",Util.CheckNull(getPara("pls")));
     setAttr("pfl",Util.CheckNull(getPara("pfl")));
+    setAttr("premark",Util.CheckNull(getPara("premark")));
     setAttr("dname",Util.CheckNull(d.getStr("name")));
     SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
     SimpleDateFormat MM = new SimpleDateFormat("MM");
@@ -732,13 +746,48 @@ public class FileController extends Controller {
     setAttr("yyyy",yyyy.format(new Date()));
     setAttr("mm",MM.format(new Date()));
     setAttr("dd",dd.format(new Date()));
-
-    setAttr("byyyy",yyyy.format(p.getBirth()));
-    setAttr("bmm",MM.format(p.getBirth()));
-    setAttr("bdd",dd.format(p.getBirth()));
+    setAttr("pbirth",yyyy.format(p.get("birth"))+MM.format(p.get("birth"))+dd.format(p.get("birth")));
 
     render("/dist/printPolity.html");
   }
+  /**
+   * 开提档函
+   * pname
+   * pnumber
+   * location
+   * remark
+   */
+  @Before({Tx.class,LoginInterceptor.class})
+  public void printExtract() {
+    Department d = Department.dao.findById(((User) getSessionAttr("user")).get("did").toString());
+    Extract e =new Extract();
+    e.set("did",((User) getSessionAttr("user")).get("did").toString())
+            .set("uid",((User) getSessionAttr("user")).get("id").toString())
+            .set("name",Util.CheckNull(getPara("pname")))
+            .set("number",Util.CheckNull(getPara("pnumber")))
+            .set("location",Util.CheckNull(getPara("location")))
+            .set("remark",Util.CheckNull(getPara("remark")))
+            .set("time", new Date())
+            .save();
+
+    setAttr("pname",Util.CheckNull(getPara("pname")));
+    setAttr("pnumber",Util.CheckNull(getPara("pnumber")));
+    setAttr("dname",Util.CheckNull(d.getStr("name")));
+    setAttr("dphone",Util.CheckNull(d.getStr("phone")));
+    setAttr("daddress",Util.CheckNull(d.getStr("address")));
+    setAttr("dcode",Util.CheckNull(d.getStr("code")));
+    setAttr("location",Util.CheckNull(getPara("location")));
+
+    SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
+    SimpleDateFormat MM = new SimpleDateFormat("MM");
+    SimpleDateFormat dd = new SimpleDateFormat("dd");
+    setAttr("yyyy",yyyy.format(new Date()));
+    setAttr("mm",MM.format(new Date()));
+    setAttr("dd",dd.format(new Date()));
+
+    render("/dist/printExtract.html");
+  }
+
 }
 
 

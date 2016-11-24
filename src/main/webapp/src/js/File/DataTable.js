@@ -3,6 +3,7 @@ import { Table, message } from 'antd';
 import EditLink from './EditLink.js';
 import FlowLink from './FlowLink.js';
 import BackLink from './BackLink.js';
+import PolityLink from './PolityLink.js';
 import * as AjaxFunction from '../Util/AjaxFunction.js';
 
 export default class DataTable extends React.Component {
@@ -98,6 +99,17 @@ export default class DataTable extends React.Component {
             );
             operate.push(<span className="ant-divider" />);
             operate.push(<a className="btn btn-xs btn-link" href={`${AjaxFunction.PrintProve}?fid=${record.fid}`} >存档证明</a>);
+            operate.push(<span className="ant-divider" />);
+            operate.push(
+              <PolityLink
+                fileId={record.fid}
+                personName={record.pname}
+                personNumber={record.pnumber}
+                personState={record.pstate}
+                personSex={record.psex}
+                personBirth={record.pbirth}
+              />
+            );
           } else {
             operate.push(<span className="ant-divider" />);
           }

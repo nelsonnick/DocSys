@@ -737,7 +737,7 @@ public class MainController extends Controller {
     }
 
     /**
-     * 导出打印记录
+     * 导出档案流转打印记录
      */
     @Before({Tx.class,LoginInterceptor.class})
     public void exportPrint() throws IOException {
@@ -761,7 +761,7 @@ public class MainController extends Controller {
         Export e =new Export();
         e.set("uid",((User) getSessionAttr("user")).get("id").toString())
                 .set("time", new Date())
-                .set("type","打印记录导出")
+                .set("type","档案流转打印记录导出")
                 .set("sql",sql)
                 .save();
 
@@ -843,6 +843,375 @@ public class MainController extends Controller {
         workbook.close();
         renderNull() ;
     }
+
+    /**
+     * 导出存档证明打印记录
+     */
+    @Before({Tx.class,LoginInterceptor.class})
+    public void exportProve() throws IOException {
+        String[] title={"序号","操作人员","操作时间","存档位置","档案编号","人员姓名","证件号码","证明类型"};
+        //创建Excel工作簿
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        //创建一个工作表
+        XSSFSheet sheet = workbook.createSheet();
+        //创建第一行
+        XSSFRow row =sheet.createRow(0);
+        XSSFCell cell=null;
+        //插入表头数据
+        for(int i=0;i<title.length;i++){
+            cell=row.createCell(i);
+            cell.setCellValue(title[i]);
+        }
+        List<Prove> p;
+
+        String sql="select prove.*,user.name as uname,department.name as dname,file.number as fnumber,person.name as pname,person.number as pnumber from prove,user,department,file,person where prove.uid=user.id and file.did=department.id and prove.fid=file.id and file.pid=person.id ";
+
+        Export e =new Export();
+        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
+                .set("time", new Date())
+                .set("type","存档证明打印记录导出")
+                .set("sql",sql)
+                .save();
+
+        p=Prove.dao.find(sql);
+        for (int i = 0; i < p.size(); i++) {
+            XSSFRow nextRow = sheet.createRow(i+1);
+
+            XSSFCell cell2 = nextRow.createCell(0);
+            if (p.get(i).get("id") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("id").toString());
+            }
+
+            cell2 = nextRow.createCell(1);
+            if (p.get(i).get("uname") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("uname").toString());
+            }
+
+            cell2 = nextRow.createCell(2);
+            if (p.get(i).get("time") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("time").toString());
+            }
+
+            cell2 = nextRow.createCell(3);
+            if (p.get(i).get("dname") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("dname").toString());
+            }
+
+            cell2 = nextRow.createCell(4);
+            if (p.get(i).get("fnumber") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("fnumber").toString());
+            }
+
+            cell2 = nextRow.createCell(5);
+            if (p.get(i).get("pname") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("pname").toString());
+            }
+
+            cell2 = nextRow.createCell(6);
+            if (p.get(i).get("pnumber") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("pnumber").toString());
+            }
+
+            cell2 = nextRow.createCell(7);
+            if (p.get(i).get("type") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("type").toString());
+            }
+        }
+        HttpServletResponse response = getResponse();
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment;filename=PrintProve.xlsx");
+        OutputStream out = response.getOutputStream();
+        workbook.write(out);
+        out.flush();
+        out.close();
+        workbook.close();
+        renderNull() ;
+    }
+
+    /**
+     * 导出政审证明打印记录
+     */
+    @Before({Tx.class,LoginInterceptor.class})
+    public void exportPolity() throws IOException {
+        String[] title={"序号","操作人员","操作时间","存档位置","档案编号","人员姓名","证件号码","民族","文化程度","政治面貌","原工作单位","离职时间","政历","文革","六四","法轮功","其他"};
+        //创建Excel工作簿
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        //创建一个工作表
+        XSSFSheet sheet = workbook.createSheet();
+        //创建第一行
+        XSSFRow row =sheet.createRow(0);
+        XSSFCell cell=null;
+        //插入表头数据
+        for(int i=0;i<title.length;i++){
+            cell=row.createCell(i);
+            cell.setCellValue(title[i]);
+        }
+        List<Polity> p;
+
+        String sql="select polity.*,user.name as uname,department.name as dname,file.number as fnumber,person.name as pname,person.number as pnumber from polity,user,department,file,person where polity.uid=user.id and file.did=department.id and polity.fid=file.id and file.pid=person.id ";
+
+        Export e =new Export();
+        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
+                .set("time", new Date())
+                .set("type","政审证明打印记录导出")
+                .set("sql",sql)
+                .save();
+
+        p=Polity.dao.find(sql);
+        for (int i = 0; i < p.size(); i++) {
+            XSSFRow nextRow = sheet.createRow(i+1);
+
+            XSSFCell cell2 = nextRow.createCell(0);
+            if (p.get(i).get("id") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("id").toString());
+            }
+
+            cell2 = nextRow.createCell(1);
+            if (p.get(i).get("uname") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("uname").toString());
+            }
+
+            cell2 = nextRow.createCell(2);
+            if (p.get(i).get("time") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("time").toString());
+            }
+
+            cell2 = nextRow.createCell(3);
+            if (p.get(i).get("dname") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("dname").toString());
+            }
+
+            cell2 = nextRow.createCell(4);
+            if (p.get(i).get("fnumber") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("fnumber").toString());
+            }
+
+            cell2 = nextRow.createCell(5);
+            if (p.get(i).get("pname") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("pname").toString());
+            }
+
+            cell2 = nextRow.createCell(6);
+            if (p.get(i).get("pnumber") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("pnumber").toString());
+            }
+
+            cell2 = nextRow.createCell(7);
+            if (p.get(i).get("nation") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("nation").toString());
+            }
+
+            cell2 = nextRow.createCell(8);
+            if (p.get(i).get("learn") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("learn").toString());
+            }
+
+            cell2 = nextRow.createCell(9);
+            if (p.get(i).get("face") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("face").toString());
+            }
+
+            cell2 = nextRow.createCell(10);
+            if (p.get(i).get("work") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("work").toString());
+            }
+
+            cell2 = nextRow.createCell(11);
+            if (p.get(i).get("leave") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("leave").toString());
+            }
+
+            cell2 = nextRow.createCell(12);
+            if (p.get(i).get("zl") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("zl").toString());
+            }
+
+            cell2 = nextRow.createCell(13);
+            if (p.get(i).get("wg") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("wg").toString());
+            }
+
+            cell2 = nextRow.createCell(14);
+            if (p.get(i).get("ls") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("ls").toString());
+            }
+
+            cell2 = nextRow.createCell(15);
+            if (p.get(i).get("fl") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("fl").toString());
+            }
+
+            cell2 = nextRow.createCell(16);
+            if (p.get(i).get("remark") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("remark").toString());
+            }
+        }
+        HttpServletResponse response = getResponse();
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment;filename=PrintPolity.xlsx");
+        OutputStream out = response.getOutputStream();
+        workbook.write(out);
+        out.flush();
+        out.close();
+        workbook.close();
+        renderNull() ;
+    }
+
+    /**
+     * 导出提档函打印记录
+     */
+    @Before({Tx.class,LoginInterceptor.class})
+    public void exportExtract() throws IOException {
+        String[] title={"序号","操作人员","操作时间","开具部门","人员姓名","证件号码","目标部门","备注"};
+        //创建Excel工作簿
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        //创建一个工作表
+        XSSFSheet sheet = workbook.createSheet();
+        //创建第一行
+        XSSFRow row =sheet.createRow(0);
+        XSSFCell cell=null;
+        //插入表头数据
+        for(int i=0;i<title.length;i++){
+            cell=row.createCell(i);
+            cell.setCellValue(title[i]);
+        }
+        List<Extract> p;
+
+        String sql="select extract.*,user.name as uname,department.name as dname from extract,user,department where extract.uid=user.id and extract.did=department.id ";
+
+        Export e =new Export();
+        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
+                .set("time", new Date())
+                .set("type","提档函打印记录导出")
+                .set("sql",sql)
+                .save();
+
+        p=Extract.dao.find(sql);
+        for (int i = 0; i < p.size(); i++) {
+            XSSFRow nextRow = sheet.createRow(i+1);
+
+            XSSFCell cell2 = nextRow.createCell(0);
+            if (p.get(i).get("id") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("id").toString());
+            }
+
+            cell2 = nextRow.createCell(1);
+            if (p.get(i).get("uname") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("uname").toString());
+            }
+
+            cell2 = nextRow.createCell(2);
+            if (p.get(i).get("time") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("time").toString());
+            }
+
+            cell2 = nextRow.createCell(3);
+            if (p.get(i).get("dname") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("dname").toString());
+            }
+
+            cell2 = nextRow.createCell(4);
+            if (p.get(i).get("name") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("name").toString());
+            }
+
+            cell2 = nextRow.createCell(5);
+            if (p.get(i).get("number") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("number").toString());
+            }
+
+            cell2 = nextRow.createCell(6);
+            if (p.get(i).get("location") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("location").toString());
+            }
+
+            cell2 = nextRow.createCell(7);
+            if (p.get(i).get("remark") == null) {
+                cell2.setCellValue("");
+            } else {
+                cell2.setCellValue(p.get(i).get("remark").toString());
+            }
+
+        }
+        HttpServletResponse response = getResponse();
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment;filename=PrintExtract.xlsx");
+        OutputStream out = response.getOutputStream();
+        workbook.write(out);
+        out.flush();
+        out.close();
+        workbook.close();
+        renderNull() ;
+    }
+
+
+
+
+
 }
 
 

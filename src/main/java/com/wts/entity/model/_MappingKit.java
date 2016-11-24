@@ -19,11 +19,13 @@ public class _MappingKit {
 		arp.addMapping("change", "id", Change.class);
 		arp.addMapping("department", "id", Department.class);
 		arp.addMapping("export", "id", Export.class);
+		arp.addMapping("extract", "id", Extract.class);
 		arp.addMapping("file", "id", File.class);
 		arp.addMapping("flow", "id", Flow.class);
 		arp.addMapping("login", "id", Login.class);
 		arp.addMapping("look", "id", Look.class);
 		arp.addMapping("person", "id", Person.class);
+		arp.addMapping("polity", "id", Polity.class);
 		arp.addMapping("print", "id", Print.class);
 		arp.addMapping("prove", "id", Prove.class);
 		arp.addMapping("trans", "id", Trans.class);

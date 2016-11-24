@@ -3,6 +3,7 @@ import { Row, Col, notification } from 'antd';
 import DataTable from './DataTable.js';
 import DataSearch from './DataSearch.js';
 import DataPagination from './DataPagination.js';
+import ExtractButton from './ExtractButton.js';
 import * as AjaxFunction from '../Util/AjaxFunction.js';
 import $ from 'jquery';
 import QueueAnim from 'rc-queue-anim';
@@ -499,7 +500,8 @@ export default class File extends React.Component {
       <QueueAnim>
         <div key="a">
           <Row type="flex" justify="start">
-            <Col span={24}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} deptList={this.state.DeptList} personName={this.state.PersonName} personNumber={this.state.PersonNumber} fileNumber={this.state.FileNumber} fileDept={this.state.FileDept} deptCount={this.state.DeptCount} getDownload={this.getDownload} /></Col>
+            <Col span={2}><ExtractButton />>&nbsp;&nbsp;</Col>
+            <Col span={22}><DataSearch setQuery={this.getQuery} resetPage={this.resetPage} deptList={this.state.DeptList} personName={this.state.PersonName} personNumber={this.state.PersonNumber} fileNumber={this.state.FileNumber} fileDept={this.state.FileDept} deptCount={this.state.DeptCount} getDownload={this.getDownload} /></Col>
             <a id="a" className="aa" />
           </Row>
           <Row>

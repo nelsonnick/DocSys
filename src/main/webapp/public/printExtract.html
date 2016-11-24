@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>提档函</title>
+    <link rel="stylesheet" href="${contextPath}/src/css/bootstrap-3.3.0/css/bootstrap.min.css">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#print").click(function() {
+                $(".my_show").jqprint();
+            });
+        });
+    </script>
+    <style media="print">
+        .Noprint {
+            display: none;
+        }
+        .PageNext {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+<div class="Noprint" style="position:absolute; top: 0cm; left:0cm;">
+    <p>
+        <object id="WebBrowser" classid="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2" height="0" width="0"></object>
+        <button type="button"  class="btn btn-success"  onclick="window.print()">直接打印</button>
+        <button type="button"  class="btn btn-default"  onclick="history.go(-1)">返回首页</button>
+        <br />
+    </p>
+</div>
+    <div class="my_show">
+        <div style="position:absolute; top: 3cm; left:7cm;"><span><h1>提&nbsp;&nbsp;档&nbsp;&nbsp;函&nbsp;&nbsp;（&nbsp;&nbsp;存&nbsp;&nbsp;根&nbsp;&nbsp;）</h1></span></div>
+
+        <div style="position:absolute; top: 6cm; left:2cm;"><span><h4>${(location)!''}：</h4></span></div>
+
+        <div style="position:absolute; top: 6cm; left:2cm;"><span><h4>经研究，同意代管${(pname)!''}&nbsp;&nbsp;（身份证号码：${(pnumber)!''}）同志的档案</h4></span></div>
+        <div style="position:absolute; top: 8cm; left:2cm;"><span><h4>经办人（签名）：</h4></span></div>
+        <div style="position:absolute; top: 20cm; left:10cm;"><span><h4>${(dname)!''}（盖章）</h4></span></div>
+        <div style="position:absolute; top: 22cm; left:10cm;"><span><h4>${(yyyy)!''}年${(mm)!''}月${(dd)!''}日</h4></span></div>
+
+        <div style="position:absolute; top: 8.4cm; left:1cm;">------------------------------------------------------------------------------------------------------------------------------------------------------</div>
+
+        <div style="position:absolute; top: 3cm; left:7cm;"><span><h1>提&nbsp;&nbsp;档&nbsp;&nbsp;函（&nbsp;&nbsp;下&nbsp;&nbsp;联&nbsp;&nbsp;）</h1></span></div>
+
+
+        <div style="position:absolute; top: 6cm; left:2cm;"><span><h4>${(location)!''}：</h4></span></div>
+
+        <div style="position:absolute; top: 6cm; left:2cm;"><span><h4>经研究，同意代管${(pname)!''}&nbsp;&nbsp;（身份证号码：${(pnumber)!''}）同志的档案</h4></span></div>
+        <div style="position:absolute; top: 8cm; left:2cm;"><span><h4>请于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日前按照规定办理转移手续</h4></span></div>
+        <div style="position:absolute; top: 6cm; left:2cm;"><span><h4>联系地址：${(daddress)!''}：</h4></span></div>
+        <div style="position:absolute; top: 6cm; left:2cm;"><span><h4>联系电话：${(dphone)!''}：</h4></span></div>
+        <div style="position:absolute; top: 6cm; left:2cm;"><span><h4>邮政编码：${(dcode)!''}：</h4></span></div>
+        <div style="position:absolute; top: 20cm; left:10cm;"><span><h4>${(dname)!''}（盖章）</h4></span></div>
+        <div style="position:absolute; top: 22cm; left:10cm;"><span><h4>${(yyyy)!''}年${(mm)!''}月${(dd)!''}日</h4></span></div>
+
+
+    </div>
+</body>
+</html>

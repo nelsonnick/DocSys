@@ -8,12 +8,12 @@ Table: change
  did          | INT(10)      | YES  |     |         |         
  lid          | INT(10)      | YES  |     |         |         
  time         | DATE(10)     | YES  |     |         |         
- reasonBefore | VARCHAR(255) | YES  |     |         |         
- reasonAfter  | VARCHAR(255) | YES  |     |         |         
- directBefore | VARCHAR(255) | YES  |     |         |         
- directAfter  | VARCHAR(255) | YES  |     |         |         
- remarkBefore | VARCHAR(255) | YES  |     |         |         
- remarkAfter  | VARCHAR(255) | YES  |     |         |         
+ reasonBefore | VARCHAR(999) | YES  |     |         |         
+ reasonAfter  | VARCHAR(999) | YES  |     |         |         
+ directBefore | VARCHAR(999) | YES  |     |         |         
+ directAfter  | VARCHAR(999) | YES  |     |         |         
+ remarkBefore | VARCHAR(999) | YES  |     |         |         
+ remarkAfter  | VARCHAR(999) | YES  |     |         |         
  typeBefore   | VARCHAR(255) | YES  |     |         |         
  typeAfter    | VARCHAR(255) | YES  |     |         |         
 --------------+--------------+------+-----+---------+---------
@@ -28,7 +28,7 @@ Table: department
  phone   | VARCHAR(255) | YES  |     |         |         
  address | VARCHAR(255) | YES  |     |         |         
  state   | VARCHAR(255) | YES  |     |         |         
- other   | VARCHAR(255) | YES  |     |         |         
+ other   | VARCHAR(999) | YES  |     |         |         
  code    | VARCHAR(255) | YES  |     |         |         
 ---------+--------------+------+-----+---------+---------
 
@@ -43,6 +43,19 @@ Table: export
  sql   | VARCHAR(999) | YES  |     |         |         
 -------+--------------+------+-----+---------+---------
 
+Table: extract
+----------+--------------+------+-----+---------+---------
+ Field    | Type         | Null | Key | Default | Remarks 
+----------+--------------+------+-----+---------+---------
+ id       | INT(10)      | NO   | PRI |         |         
+ uid      | INT(10)      | YES  |     |         |         
+ did      | INT(10)      | YES  |     |         |         
+ name     | VARCHAR(255) | YES  |     |         |         
+ number   | VARCHAR(255) | YES  |     |         |         
+ location | VARCHAR(255) | YES  |     |         |         
+ time     | DATETIME(19) | YES  |     |         |         
+----------+--------------+------+-----+---------+---------
+
 Table: file
 --------+--------------+------+-----+---------+---------
  Field  | Type         | Null | Key | Default | Remarks 
@@ -52,7 +65,7 @@ Table: file
  did    | INT(10)      | YES  |     |         |         
  number | VARCHAR(255) | YES  |     |         |         
  state  | VARCHAR(255) | YES  |     |         |         
- remark | VARCHAR(255) | YES  |     |         |         
+ remark | VARCHAR(999) | YES  |     |         |         
 --------+--------------+------+-----+---------+---------
 
 Table: flow
@@ -65,9 +78,9 @@ Table: flow
  fid    | INT(10)      | YES  |     |         |         
  pid    | INT(10)      | YES  |     |         |         
  time   | DATETIME(19) | YES  |     |         |         
- remark | VARCHAR(255) | YES  |     |         |         
- direct | VARCHAR(255) | YES  |     |         |         
- reason | VARCHAR(255) | YES  |     |         |         
+ remark | VARCHAR(999) | YES  |     |         |         
+ direct | VARCHAR(999) | YES  |     |         |         
+ reason | VARCHAR(999) | YES  |     |         |         
  flow   | VARCHAR(255) | YES  |     |         |         
  type   | VARCHAR(255) | YES  |     |         |         
 --------+--------------+------+-----+---------+---------
@@ -109,12 +122,32 @@ Table: person
  address | VARCHAR(255) | YES  |     |         |         
  sex     | VARCHAR(255) | YES  |     |         |         
  birth   | DATETIME(19) | YES  |     |         |         
- remark  | VARCHAR(255) | YES  |     |         |         
+ remark  | VARCHAR(999) | YES  |     |         |         
  fileAge | DATETIME(19) | YES  |     |         |         
  retire  | VARCHAR(255) | YES  |     |         |         
  info    | VARCHAR(255) | YES  |     |         |         
  state   | VARCHAR(255) | YES  |     |         |         
 ---------+--------------+------+-----+---------+---------
+
+Table: polity
+--------+--------------+------+-----+---------+---------
+ Field  | Type         | Null | Key | Default | Remarks 
+--------+--------------+------+-----+---------+---------
+ id     | INT(10)      | NO   | PRI |         |         
+ uid    | INT(10)      | YES  |     |         |         
+ fid    | INT(10)      | YES  |     |         |         
+ time   | DATETIME(19) | YES  |     |         |         
+ nation | VARCHAR(255) | YES  |     |         |         
+ learn  | VARCHAR(255) | YES  |     |         |         
+ leave  | VARCHAR(255) | YES  |     |         |         
+ face   | VARCHAR(255) | YES  |     |         |         
+ work   | VARCHAR(999) | YES  |     |         |         
+ zl     | VARCHAR(999) | YES  |     |         |         
+ wg     | VARCHAR(999) | YES  |     |         |         
+ ls     | VARCHAR(999) | YES  |     |         |         
+ fl     | VARCHAR(999) | YES  |     |         |         
+ remark | VARCHAR(999) | YES  |     |         |         
+--------+--------------+------+-----+---------+---------
 
 Table: print
 -------+--------------+------+-----+---------+---------
@@ -133,9 +166,8 @@ Table: prove
  id    | INT(10)      | NO   | PRI |         |         
  uid   | INT(10)      | YES  |     |         |         
  fid   | INT(10)      | YES  |     |         |         
- did   | INT(10)      | YES  |     |         |         
- type  | VARCHAR(255) | YES  |     |         |         
  time  | DATETIME(19) | YES  |     |         |         
+ type  | VARCHAR(255) | YES  |     |         |         
 -------+--------------+------+-----+---------+---------
 
 Table: trans
@@ -164,12 +196,12 @@ Table: trans
  fileAgeAfter  | DATETIME(19) | YES  |     |         |         
  infoBefore    | VARCHAR(255) | YES  |     |         |         
  infoAfter     | VARCHAR(255) | YES  |     |         |         
- premarkBefore | VARCHAR(255) | YES  |     |         |         
- premarkAfter  | VARCHAR(255) | YES  |     |         |         
+ premarkBefore | VARCHAR(999) | YES  |     |         |         
+ premarkAfter  | VARCHAR(999) | YES  |     |         |         
  retireBefore  | VARCHAR(255) | YES  |     |         |         
  retireAfter   | VARCHAR(255) | YES  |     |         |         
- fremarkBefore | VARCHAR(255) | YES  |     |         |         
- fremarkAfter  | VARCHAR(255) | YES  |     |         |         
+ fremarkBefore | VARCHAR(999) | YES  |     |         |         
+ fremarkAfter  | VARCHAR(999) | YES  |     |         |         
 ---------------+--------------+------+-----+---------+---------
 
 Table: user
@@ -183,7 +215,7 @@ Table: user
  login  | VARCHAR(255) | YES  |     |         |         
  pass   | VARCHAR(255) | YES  |     |         |         
  did    | INT(10)      | YES  |     |         |         
- other  | VARCHAR(255) | YES  |     |         |         
+ other  | VARCHAR(999) | YES  |     |         |         
  state  | VARCHAR(255) | YES  |     |         |         
  time   | DATETIME(19) | YES  |     |         |         
 --------+--------------+------+-----+---------+---------

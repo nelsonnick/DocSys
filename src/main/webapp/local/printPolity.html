@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>政审证明</title>
+    <link rel="stylesheet" href="../src/css/bootstrap-3.3.0/css/bootstrap.min.css">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#print").click(function() {
+                $(".my_show").jqprint();
+            });
+        });
+    </script>
+    <style media="print">
+        .Noprint {
+            display: none;
+        }
+        .PageNext {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+<div class="Noprint" style="position:absolute; top: 0cm; left:0cm;">
+    <p>
+        <object id="WebBrowser" classid="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2" height="0" width="0"></object>
+        <button type="button"  class="btn btn-success"  onclick="window.print()">直接打印</button>
+        <button type="button"  class="btn btn-default"  onclick="history.go(-1)">返回首页</button>
+        <br />
+    </p>
+</div>
+    <div class="my_show">
+        <div style="position:absolute; top: 1.5cm; left:6cm;"><span><h1>灵活就业人员政审证明材料</h1></span></div>
+        <div style="position:absolute; top: 4cm; left:1cm;">存档单位（盖章）：${(dname)!''}</div>
+        <div style="position:absolute; top: 4cm; left:12cm;">开具日期：${(yyyy)!''}年${(mm)!''}月${(dd)!''}日</div>
+
+        <div style="position:absolute; top: 4.8cm; left:1cm;">
+            <table border="1" width="800" height="800" cellspacing="0" cellpadding="0">
+                <tr style="height:80px;">
+                    <td width="80" style="text-align:center">姓&nbsp;&nbsp;名</td>
+                    <td width="160" style="text-align:center">${(pname)!''}</td>
+                    <td width="80" style="text-align:center">性&nbsp;&nbsp;别</td>
+                    <td width="160" style="text-align:center">${(psex)!''}</td>
+                    <td width="80" style="text-align:center">证件号码</td>
+                    <td width="160" style="text-align:center">${(pnumber)!''}</td>
+                </tr>
+                <tr style="height:80px;">
+                    <td style="text-align:center">出生日期</td>
+                    <td style="text-align:center">${(pbirth)!''}</td>
+                    <td style="text-align:center">民族</td>
+                    <td style="text-align:center">${(pnation)!''}</td>
+                    <td style="text-align:center">政治面貌</td>
+                    <td style="text-align:center">${(pface)!''}</td>
+                </tr>
+                <tr style="height:80px;">
+                    <td style="text-align:center">文化程度</td>
+                    <td style="text-align:center">${(plearn)!''}</td>
+                    <td style="text-align:center">解除劳动合同时间</td>
+                    <td style="text-align:center">${(pleave)!''}</td>
+                    <td style="text-align:center">原工作单位</td>
+                    <td style="text-align:center">${(pwork)!''}</td>
+                </tr>
+                <tr style="height:100px;">
+                    <td style="text-align:center">有无政历问题</td>
+                    <td style="text-align:center" colspan=5>${(pzl)!''}</td>
+                </tr>
+                <tr style="height:100px;">
+                    <td style="text-align:center">文革期间表现</td>
+                    <td style="text-align:center" colspan=5>${(pwg)!''}</td>
+                </tr>
+                <tr style="height:100px;">
+                    <td style="text-align:center">“六四”事件表现</td>
+                    <td style="text-align:center" colspan=5>${(pls)!''}</td>
+                </tr>
+                <tr style="height:100px;">
+                    <td style="text-align:center">法轮功态度</td>
+                    <td style="text-align:center" colspan=5>${(pfl)!''}</td>
+                </tr>
+                <tr style="height:100px;">
+                    <td style="text-align:center">附加说明</td>
+                    <td style="text-align:center" colspan=5>${(premark)!''}</td>
+                </tr>
+                <tr style="height:100px;">
+                    <td style="text-align:center" colspan=6><h4>该同志现在我处存放个人档案，以上材料根据本人档案记载，仅供参考。</h4></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

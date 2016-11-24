@@ -1,6 +1,6 @@
-import { Modal, Button, notification } from 'antd';
+import { Modal, Button, notification, Row } from 'antd';
 import React from 'react';
-import PolityForm from './PolityForm';
+import ExtractForm from './ExtractForm';
 import * as AjaxFunction from '../Util/AjaxFunction.js';
 
 const openNotificationWithIcon = (type, msg, desc) => {
@@ -10,7 +10,7 @@ const openNotificationWithIcon = (type, msg, desc) => {
   });
 };
 
-export default class PolityLink extends React.Component {
+export default class ExtractButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,7 +21,6 @@ export default class PolityLink extends React.Component {
     this.handleCancel = this.handleCancel.bind(this);
     this.handleReset = this.handleReset.bind(this);
   }
-
   showModal() {
     this.setState(
       {
@@ -34,38 +33,37 @@ export default class PolityLink extends React.Component {
     this.setState({
       confirmLoading: true,
     });
-    this.refs.PolityForm.validateFields((errors, values) => {
+    this.refs.ExtractForm.validateFields((errors, values) => {
       if (!!errors) {
-        openNotificationWithIcon('error', '录入错误', '录入的信息中有错误，请核实后再打印');
+        openNotificationWithIcon('error', '录入错误', '录入的信息中有错误，请核实后再更新');
         this.setState({
           confirmLoading: false,
         });
         return;
       }
-
-      window.location.href = `${AjaxFunction.PrintPolity}?fid=${values.fileId}&pnation=${values.personNation}&plearn=${values.personLearn}&pface=${values.personFace}&pleave=${values.personLeave}&pwork=${values.personWork}&pzl=${values.personZL}&pwg=${values.personWG}&pls=${values.personLS}&pfl=${values.personFL}&premark=${values.personRemark}`;
+      window.location.href = `${AjaxFunction.PrintExtract}?pname=${values.pname}&pnumber=${values.pnumber}&location=${values.location}&remark=${values.remark}`;
     });
   }
 
   handleCancel() {
-    this.refs.PolityForm.resetFields();
+    this.refs.ExtractForm.resetFields();
     this.setState({
       visible: false,
     });
   }
 
   handleReset() {
-    this.refs.PolityForm.resetFields();
+    this.refs.ExtractForm.resetFields();
   }
 
+
   render() {
-    const { fileId, personName, personNumber, personSex, personBirth } = this.props;
     return (
-      <span>
-        <a onClick={this.showModal} className="btn btn-link btn-xs" >政审证明</a>
+      <Row type="flex" justify="start">
+        <Button type="primary" size="large" onClick={this.showModal} icon="plus-circle-o">开提档函</Button>
         <Modal
           maskClosable={false}
-          title="打印政审材料"
+          title="开提档函"
           style={{ top: 20 }}
           width={600}
           visible={this.state.visible}
@@ -78,23 +76,13 @@ export default class PolityLink extends React.Component {
             <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleOk} icon="enter">打 印</Button>,
           ]}
         >
-          <PolityForm
-            ref="PolityForm"
-            fileId={fileId.toString()}
-            personName={personName}
-            personNumber={personNumber}
-            personSex={personSex}
-            personBirth={personBirth}
+          <ExtractForm
+            ref="ExtractForm"
           />
         </Modal>
-      </span>
+      </Row>
     );
   }
 }
-PolityLink.propTypes = {
-  fileId: React.PropTypes.string,
-  personName: React.PropTypes.string,
-  personNumber: React.PropTypes.string,
-  personSex: React.PropTypes.string,
-  personBirth: React.PropTypes.string,
+ExtractButton.propTypes = {
 };
