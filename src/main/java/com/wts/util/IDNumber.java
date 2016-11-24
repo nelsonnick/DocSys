@@ -10,14 +10,16 @@ public class IDNumber {
 
   public static String checkIDNumber(String IDNumber) {
     if (IDNumber.matches("\\d{17}[0-9,X]")) {
-      if (checkOut(IDNumber)) {
-        return "OK";
+      if (checkBirth(IDNumber)) {
+        if (checkOut(IDNumber)) {
+          return "OK";
+        }
+        return "验证码错误";
       }
-      return "验证码错误";
+      return "出生日期错误";
     }
     return "位数错误或字符错误";
   }
-
   public static String checkIDNumberDetail(String IDNumber) {
     if (IDNumber.matches("\\d{17}[0-9,X]")) {
       if (checkArea(IDNumber)) {
@@ -33,7 +35,6 @@ public class IDNumber {
     }
     return "位数错误或字符错误";
   }
-
   private static boolean checkArea(String IDNumber) {
     Map<String, String> areaCode = new HashMap<String, String>();
     areaCode.put("0000", "无");
@@ -453,22 +454,20 @@ public class IDNumber {
     areaCode.put("9200", "外籍");
     return areaCode.containsKey(IDNumber.substring(0, 4));
   }
-
   private static boolean checkBirth(String IDNumber) {
     String Birth = IDNumber.substring(6, 10) + "-"
             + IDNumber.substring(10, 12) + "-" + IDNumber.substring(12, 14);
     SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
     try {
       Date BirthDate = formatDate.parse(Birth);
-      Date DateBefore = formatDate.parse("1900-1-1");
-      Date DateAfter = formatDate.parse("2099-12-31");
+      Date DateBefore = formatDate.parse("1800-1-1");
+      Date DateAfter = formatDate.parse("2199-12-31");
       return BirthDate.after(DateBefore) && BirthDate.before(DateAfter);
     } catch (ParseException e1) {
       e1.printStackTrace();
     }
     return false;
   }
-
   private static boolean checkOut(String IDNumber) {
     int i = (Integer.parseInt(IDNumber.substring(0, 1)) * 7
             + Integer.parseInt(IDNumber.substring(1, 2)) * 9
@@ -499,10 +498,14 @@ public class IDNumber {
             || (i == 9 && IDNumber.substring(17, 18).equals("3"))
             || (i == 10 && IDNumber.substring(17, 18).equals("2"));
   }
-
   public static boolean availableIDNumber(String IDNumber) {
     if (IDNumber.matches("\\d{17}[0-9,X]")) {
-      return checkOut(IDNumber);
+      if (checkBirth(IDNumber)) {
+					if (checkOut(IDNumber)) {
+						return true;
+					}
+					return false;
+				}
     }
     return false;
   }
@@ -532,7 +535,6 @@ public class IDNumber {
     }
     return 2;// 女
   }
-
   public static String getMF(String IDNumber) {
     if (IDNumber.substring(16, 17).equals("1")
             || IDNumber.substring(16, 17).equals("3")
@@ -612,7 +614,6 @@ public class IDNumber {
       }
     }
   }
-
   public static Date getBirthDate(String IDNumber) {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     try {
@@ -636,4 +637,7 @@ public class IDNumber {
     return null;
   }
 
+  public static void main(String[] args) {
+    System.out.println(getBirthDate("000000000000000000"));
+  }
 }

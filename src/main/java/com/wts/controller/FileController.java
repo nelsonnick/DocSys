@@ -137,7 +137,7 @@ public class FileController extends Controller {
             "select * from person where number=?", getPara("pnumber"));
     if (files.size() != 0) {
       renderText("该档案编号数据库中已存在，请核实!");
-    } else if (persons.size() != 0 && !getPara("number").equals("000000000000000000")) {
+    } else if (persons.size() != 0 && !getPara("pnumber").equals("000000000000000000")) {
       renderText("该证件号码数据库中已存在，请核实!");
     } else if (!getPara("pname").matches("[\u4e00-\u9fa5]+")) {
       renderText("人员姓名必须为汉字!");
@@ -147,7 +147,7 @@ public class FileController extends Controller {
       renderText("联系电话1必须为11位数字!");
     } else if ((!getPara("pphone2").trim().equals("")) && (!getPara("pphone2").matches("\\d{11}"))){
       renderText("联系电话2必须为11位数字或不填写!");
-    } else if (!IDNumber.availableIDNumber(getPara("pnumber"))){
+    } else if (!IDNumber.availableIDNumber(getPara("pnumber")) && !getPara("pnumber").equals("000000000000000000")){
       renderText("证件号码错误，请核实！");
     } else if (getPara("paddress").length()<2) {
       renderText("联系地址应该在两个字符以上！");
