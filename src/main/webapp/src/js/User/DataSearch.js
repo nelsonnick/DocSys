@@ -48,18 +48,20 @@ class DataSearch extends React.Component {
                 onSelect={this.onChangeDept}
                 showSearch
                 allowClear
-                style={{ width: 150 }}
+                style={{ width: 200 }}
                 placeholder="请输入所属部门"
+                notFoundContent=""
+                optionFilterProp="children"
               >
                 {children}
               </Select>
             )}
           </FormItem>
-          <Button htmlType="submit" icon="search">查找</Button>
+          <Button size="large" htmlType="submit" icon="search">查找</Button>
           <span>&nbsp;&nbsp;&nbsp;</span>
-          <Button type="ghost" onClick={this.handleReset} icon="reload">重置</Button>
+          <Button size="large" type="ghost" onClick={this.handleReset} icon="reload">重置</Button>
           <span>&nbsp;&nbsp;&nbsp;</span>
-          <Button type="dashed" onClick={this.download} icon="download">导出</Button>
+          <Button size="large" type="dashed" onClick={this.download} icon="download">导出</Button>
         </Form>
       </Row>
     );

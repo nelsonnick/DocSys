@@ -170,7 +170,7 @@ export default class DataTable extends React.Component {
         </Popconfirm>);
         operate.push(<span className="ant-divider" />);
         operate.push(<Popconfirm title={`确定要重置用户<${record.name}>的密码吗？`} okText="重置" onConfirm={this.resetPass.bind(this, record.id)} onCancel={this.cancel}>
-          <a className="btn btn-link btn-xs">密码重置</a>
+          <a className="btn btn-info btn-xs">密码重置</a>
         </Popconfirm>);
         operate.push(<span className="ant-divider" />);
         return (

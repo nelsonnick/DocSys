@@ -138,6 +138,7 @@ export default class AddButton extends React.Component {
         <Modal
           maskClosable={false}
           title="新增用户"
+          style={{ top: 20 }}
           visible={this.state.visible}
           onOk={this.handleOk}
           confirmLoading={this.state.confirmLoading}

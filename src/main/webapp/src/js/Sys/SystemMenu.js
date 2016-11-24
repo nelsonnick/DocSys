@@ -46,6 +46,7 @@ export default class SystemMenu extends React.Component {
           >
             <Menu.Item key="Department"><span><Icon type="laptop" />部门管理</span></Menu.Item>
             <Menu.Item key="User"><span><Icon type="user" />用户管理</span></Menu.Item>
+            <Menu.Item key="Anal"><span><Icon type="bar-chart" />业务分析</span></Menu.Item>
             <Menu.Item key="Export"><span><Icon type="download" />操作导出</span></Menu.Item>
           </Menu>
         </div>

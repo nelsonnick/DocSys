@@ -460,4 +460,36 @@ public class UserController extends Controller {
       }
     }
   }
+  /**
+   * 部门用户
+   */
+  @Before({LoginInterceptor.class,PowerInterceptor.class})
+  public void cascader() {
+    String children = " children: [";
+    String cascadeString="";
+    String cascadeString1;
+    String cascadeString2;
+    String cascadeString3="";
+    List<Department> departments = Department.dao.find(
+            "select * from department");
+    if (departments.size() == 0) {
+      cascadeString = "";
+    } else {
+      for (int i = 0; i < departments.size(); i++) {
+        cascadeString1 = "{ value: '" + departments.get(i).get("id").toString() + "', label: '" + departments.get(i).get("name").toString() + "', ";
+        List<User> users = User.dao.find("select * from user where did=?", departments.get(i).get("id"));
+        if (users.size() == 0) {
+          cascadeString2 = "";
+        } else {
+          for (int j = 0; j < users.size(); j++) {
+            cascadeString3 = cascadeString3 + "{ value: '" + users.get(j).get("id").toString() + "', label: '" + users.get(j).get("name").toString() + "', },";
+          }
+          cascadeString2 = children + cascadeString3 + "], ";
+          cascadeString3 = "";
+        }
+        cascadeString = cascadeString + cascadeString1 + cascadeString2 + "}, ";
+      }
+    }
+    renderText("["+cascadeString.substring(0,cascadeString.length()-2)+"]");
+  }
 }

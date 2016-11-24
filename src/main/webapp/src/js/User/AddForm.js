@@ -222,8 +222,11 @@ class AddFrom extends React.Component {
             ],
           })(
             <Select
-              style={{ width: 150 }}
               placeholder="请选择所属部门"
+              showSearch
+              allowClear
+              notFoundContent=""
+              optionFilterProp="children"
             >
               {children}
             </Select>
@@ -235,7 +238,7 @@ class AddFrom extends React.Component {
           required
         >
           {getFieldDecorator('userState', { initialValue: '激活' })(
-            <Select size="large" >
+            <Select >
               <Option value="激活">激活</Option>
               <Option value="注销">注销</Option>
             </Select>

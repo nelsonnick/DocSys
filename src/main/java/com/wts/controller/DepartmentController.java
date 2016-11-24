@@ -261,54 +261,52 @@ public class DepartmentController extends Controller {
   @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void edit(){
     Department department = Department.dao.findById(getPara("id"));
-
     if (department == null) {
       renderText("要修改的部门不存在，请刷新页面后再试！");
-    } else {
-      if (Util.CheckNull(department.getStr("name")).equals(getPara("name"))
+    } else if (Util.CheckNull(department.getStr("name")).equals(getPara("name"))
               && Util.CheckNull(department.getStr("phone")).equals(getPara("phone"))
               && Util.CheckNull(department.getStr("address")).equals(getPara("address"))
               && Util.CheckNull(department.getStr("code")).equals(getPara("code"))
               && Util.CheckNull(department.getStr("other")).equals(getPara("other"))
               && Util.CheckNull(department.getStr("number")).equals(getPara("number"))
               ) {
-        renderText("未找到修改内容，请核实后再修改！");
-      } else if (!Util.CheckNull(department.getStr("name")).equals(getPara("name"))
-              && Department.dao.find("select * from department where name=?", getPara("name")).size() > 0
-              ){
-        renderText("该部门名称已存在，请重新修改！");
-      }else if (!getPara("name").matches("[\u4e00-\u9fa5]+")) {
-        renderText("部门名称必须为汉字!");
-      } else if (getPara("name").length() < 3) {
-        renderText("部门名称必须超过3个汉字!");
-      } else if (!getPara("phone").matches("\\d{8}")) {
-        renderText("部门电话必须为8位数字!");
-      } else if (!getPara("code").matches("\\d{6}")) {
-        renderText("邮政编码必须为6位数字!");
-      } else if (getPara("address").length() < 3) {
-        renderText("部门地址必须超过3个字符!");
-      } else if (getPara("number").matches("[\u4e00-\u9fa5]+")) {
-        renderText("部门编号必须为数字或字母的组合!");
-      } else if (getPara("number").length() != 3) {
-        renderText("部门编号必须为3个字符!");
-      } else if (!Util.CheckNull(department.getStr("number")).equals(getPara("number"))
-              && Department.dao.find("select * from department where number=?", getPara("number")).size() > 0) {
-        renderText("该部门编号数据库中已存在，请使用其他编号!");
-      } else {
-        if (department
-                .set("name",getPara("name").trim())
-                .set("phone",getPara("phone").trim())
-                .set("address",getPara("address").trim())
-                .set("code",getPara("code").trim())
-                .set("other",Util.CheckNull(getPara("other").trim()))
-                .set("number",getPara("number").trim())
-                .update()) {
-          renderText("OK");
-        } else{
-          renderText("发生未知错误，请检查数据库！");
-        }
+      renderText("未找到修改内容，请核实后再修改！");
+    } else if (!Util.CheckNull(department.getStr("name")).equals(getPara("name"))
+            && Department.dao.find("select * from department where name=?", getPara("name")).size() > 0
+            ){
+      renderText("该部门名称已存在，请重新修改！");
+    }else if (!getPara("name").matches("[\u4e00-\u9fa5]+")) {
+      renderText("部门名称必须为汉字!");
+    } else if (getPara("name").length() < 3) {
+      renderText("部门名称必须超过3个汉字!");
+    } else if (!getPara("phone").matches("\\d{8}")) {
+      renderText("部门电话必须为8位数字!");
+    } else if (!getPara("code").matches("\\d{6}")) {
+      renderText("邮政编码必须为6位数字!");
+    } else if (getPara("address").length() < 3) {
+      renderText("部门地址必须超过3个字符!");
+    } else if (getPara("number").matches("[\u4e00-\u9fa5]+")) {
+      renderText("部门编号必须为数字或字母的组合!");
+    } else if (getPara("number").length() != 3) {
+      renderText("部门编号必须为3个字符!");
+    } else if (!Util.CheckNull(department.getStr("number")).equals(getPara("number"))
+            && Department.dao.find("select * from department where number=?", getPara("number")).size() > 0) {
+      renderText("该部门编号数据库中已存在，请使用其他编号!");
+    } else {
+      if (department
+              .set("name",getPara("name").trim())
+              .set("phone",getPara("phone").trim())
+              .set("address",getPara("address").trim())
+              .set("code",getPara("code").trim())
+              .set("other",Util.CheckNull(getPara("other").trim()))
+              .set("number",getPara("number").trim())
+              .update()) {
+        renderText("OK");
+      } else{
+        renderText("发生未知错误，请检查数据库！");
       }
     }
+
   }
   /**
    * 检查导出

@@ -13,7 +13,7 @@ const openNotificationWithIcon = (type, msg, desc) => {
   });
 };
 
-export default class User extends React.Component {
+export default class Chart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

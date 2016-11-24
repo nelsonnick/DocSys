@@ -201,8 +201,11 @@ class EditFrom extends React.Component {
             ],
           })(
             <Select
-              style={{ width: 150 }}
               placeholder="请选择所属部门"
+              showSearch
+              allowClear
+              notFoundContent=""
+              optionFilterProp="children"
             >
               {children}
             </Select>

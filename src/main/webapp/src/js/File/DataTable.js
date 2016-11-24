@@ -1,18 +1,46 @@
 import React from 'react';
-import { Table, message } from 'antd';
+import { Table, message, Popconfirm, notification } from 'antd';
 import EditLink from './EditLink.js';
 import FlowLink from './FlowLink.js';
 import BackLink from './BackLink.js';
 import PolityLink from './PolityLink.js';
+import $ from 'jquery';
 import * as AjaxFunction from '../Util/AjaxFunction.js';
 
+const openNotificationWithIcon = (type, msg, desc) => {
+  notification[type]({
+    message: msg,
+    description: desc,
+  });
+};
 export default class DataTable extends React.Component {
   constructor(props) {
     super(props);
+    this.returns = this.returns.bind(this);
     this.cancel = this.cancel.bind(this);
     this.afterEdit = this.afterEdit.bind(this);
   }
-
+  returns(Fid) {
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.FileReturns,
+      'dataType': 'text',
+      'data': {
+        'fid': Fid,
+      },
+      'success': (data) => {
+        if (data.toString() === 'OK') {
+          this.props.afterState();
+          openNotificationWithIcon('success', '重存成功', '重存成功，请进行后续操作');
+        } else {
+          openNotificationWithIcon('error', '重存失败', data.toString());
+        }
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法完成修改操作，请检查网络情况');
+      },
+    });
+  }
   afterEdit() {
     this.props.afterState();
   }
@@ -110,6 +138,11 @@ export default class DataTable extends React.Component {
                 personBirth={record.pbirth}
               />
             );
+          } else if (record.pstate.toString() === '已提' && record.fstate.toString() === '已提') {
+            operate.push(<Popconfirm title={`确定要重存<${record.pname}>的<${record.fnumber}>档案？`} okText="重存" onConfirm={this.returns.bind(this, record.fid)} onCancel={this.cancel}>
+              <a className="btn btn-xs btn-primary" >原档重存</a>
+            </Popconfirm>);
+            operate.push(<span className="ant-divider" />);
           } else {
             operate.push(<span className="ant-divider" />);
           }

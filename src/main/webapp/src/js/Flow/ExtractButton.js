@@ -60,7 +60,7 @@ export default class ExtractButton extends React.Component {
   render() {
     return (
       <Row type="flex" justify="start">
-        <Button type="primary" size="large" onClick={this.showModal} icon="plus-circle-o">开提档函</Button>
+        <Button size="large" type="primary" onClick={this.showModal} icon="plus-circle-o">开提档函</Button>
         <Modal
           maskClosable={false}
           title="开提档函"

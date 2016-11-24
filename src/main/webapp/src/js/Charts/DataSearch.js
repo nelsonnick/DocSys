@@ -21,6 +21,8 @@ class DataSearch extends React.Component {
         allowClear
         style={{ width: 200 }}
         placeholder="请选择部门"
+        notFoundContent=""
+        optionFilterProp="children"
       >
         {children}
       </Select>

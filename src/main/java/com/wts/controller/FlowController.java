@@ -115,40 +115,38 @@ public class FlowController extends Controller {
     } else {
       if (flow == null) {
         renderText("要修改的记录不存在，请刷新页面后再试！");
-      } else {
-        if (Util.CheckNull(flow.getStr("remark")).equals(getPara("lremark").trim())
+      } else if (Util.CheckNull(flow.getStr("remark")).equals(getPara("lremark").trim())
                 && Util.CheckNull(flow.getStr("reason")).equals(getPara("lreason").trim())
                 && Util.CheckNull(flow.getStr("type")).equals(getPara("ltype").trim())
                 && Util.CheckNull(flow.getStr("direct")).equals(getPara("ldirect").trim())
                 ) {
-          renderText("未找到修改内容，请核实后再修改！");
-        } else if (getPara("ldirect").trim().length() < 2) {
-          renderText("档案流向必须在两个字符以上!");
-        } else if (getPara("lreason").trim().length() < 2) {
-          renderText("流转原因必须在两个字符以上!");
-        } else {
-          Change c = new Change();
-          c.set("lid", getPara("lid").trim())
-                  .set("uid", ((User) getSessionAttr("user")).get("id").toString())
-                  .set("fid", Util.CheckNull(flow.get("fid").toString()).trim())
-                  .set("did", ((User) getSessionAttr("user")).get("did").toString())
-                  .set("time", new Date())
-                  .set("reasonAfter", Util.CheckNull(getPara("lreason")).trim())
-                  .set("remarkAfter", Util.CheckNull(getPara("lremark")).trim())
-                  .set("directAfter", Util.CheckNull(getPara("ldirect")).trim())
-                  .set("typeAfter", Util.CheckNull(getPara("ltype")).trim())
-                  .set("reasonBefore", Util.CheckNull(flow.getStr("reason")).trim())
-                  .set("remarkBefore", Util.CheckNull(flow.getStr("remark")).trim())
-                  .set("directBefore", Util.CheckNull(flow.getStr("direct")).trim())
-                  .set("typeBefore", Util.CheckNull(flow.getStr("type")).trim())
-                  .save();
-          flow.set("reason", Util.CheckNull(getPara("lreason")).trim())
-                  .set("remark", Util.CheckNull(getPara("lremark").trim()))
-                  .set("type", Util.CheckNull(getPara("ltype")).trim())
-                  .set("direct", Util.CheckNull(getPara("ldirect")).trim())
-                  .update();
-          renderText("OK");
-        }
+        renderText("未找到修改内容，请核实后再修改！");
+      } else if (getPara("ldirect").trim().length() < 2) {
+        renderText("档案流向必须在两个字符以上!");
+      } else if (getPara("lreason").trim().length() < 2) {
+        renderText("流转原因必须在两个字符以上!");
+      } else {
+        Change c = new Change();
+        c.set("lid", getPara("lid").trim())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("fid", Util.CheckNull(flow.get("fid").toString()).trim())
+                .set("did", ((User) getSessionAttr("user")).get("did").toString())
+                .set("time", new Date())
+                .set("reasonAfter", Util.CheckNull(getPara("lreason")).trim())
+                .set("remarkAfter", Util.CheckNull(getPara("lremark")).trim())
+                .set("directAfter", Util.CheckNull(getPara("ldirect")).trim())
+                .set("typeAfter", Util.CheckNull(getPara("ltype")).trim())
+                .set("reasonBefore", Util.CheckNull(flow.getStr("reason")).trim())
+                .set("remarkBefore", Util.CheckNull(flow.getStr("remark")).trim())
+                .set("directBefore", Util.CheckNull(flow.getStr("direct")).trim())
+                .set("typeBefore", Util.CheckNull(flow.getStr("type")).trim())
+                .save();
+        flow.set("reason", Util.CheckNull(getPara("lreason")).trim())
+                .set("remark", Util.CheckNull(getPara("lremark").trim()))
+                .set("type", Util.CheckNull(getPara("ltype")).trim())
+                .set("direct", Util.CheckNull(getPara("ldirect")).trim())
+                .update();
+        renderText("OK");
       }
     }
   }
@@ -410,34 +408,39 @@ public class FlowController extends Controller {
   public void printOut() {
 
     Flow l = Flow.dao.findById(getPara("lid"));
-    User u = User.dao.findById(l.getInt("uid"));
-    File f = File.dao.findById(l.getInt("fid"));
-    if (((User) getSessionAttr("user")).get("did") != f.getInt("did")) {
+    if (l==null){
       removeSessionAttr("user");
       redirect("/index");
-    } else {
-      Print r = new Print();
-      r.set("lid", getPara("lid"))
-              .set("uid", ((User) getSessionAttr("user")).get("id").toString())
-              .set("time", new Date())
-              .save();
-      Department d = Department.dao.findById(l.getInt("did"));
-      Person p = Person.dao.findById(l.getInt("pid"));
-      setAttr("fnumber", Util.CheckNull(f.getStr("number")));
-      setAttr("uname", Util.CheckNull(u.getStr("name")));
-      setAttr("pname", Util.CheckNull(p.getStr("name")));
-      setAttr("dname", Util.CheckNull(d.getStr("name")));
-      setAttr("dphone", Util.CheckNull(d.getStr("phone")));
-      setAttr("dcode", Util.CheckNull(d.getStr("code")));
-      setAttr("ldirect", Util.CheckNull(l.getStr("direct")));
-      setAttr("daddress", Util.CheckNull(d.getStr("address")));
-      SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
-      SimpleDateFormat MM = new SimpleDateFormat("MM");
-      SimpleDateFormat dd = new SimpleDateFormat("dd");
-      setAttr("yyyy", yyyy.format(l.get("time")));
-      setAttr("mm", MM.format(l.get("time")));
-      setAttr("dd", dd.format(l.get("time")));
-      render("/dist/printOut.html");
+    }else{
+      User u = User.dao.findById(l.getInt("uid"));
+      File f = File.dao.findById(l.getInt("fid"));
+      if (((User) getSessionAttr("user")).get("did") != f.getInt("did")) {
+        removeSessionAttr("user");
+        redirect("/index");
+      } else {
+        Print r = new Print();
+        r.set("lid", getPara("lid"))
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("time", new Date())
+                .save();
+        Department d = Department.dao.findById(l.getInt("did"));
+        Person p = Person.dao.findById(l.getInt("pid"));
+        setAttr("fnumber", Util.CheckNull(f.getStr("number")));
+        setAttr("uname", Util.CheckNull(u.getStr("name")));
+        setAttr("pname", Util.CheckNull(p.getStr("name")));
+        setAttr("dname", Util.CheckNull(d.getStr("name")));
+        setAttr("dphone", Util.CheckNull(d.getStr("phone")));
+        setAttr("dcode", Util.CheckNull(d.getStr("code")));
+        setAttr("ldirect", Util.CheckNull(l.getStr("direct")));
+        setAttr("daddress", Util.CheckNull(d.getStr("address")));
+        SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
+        SimpleDateFormat MM = new SimpleDateFormat("MM");
+        SimpleDateFormat dd = new SimpleDateFormat("dd");
+        setAttr("yyyy", yyyy.format(l.get("time")));
+        setAttr("mm", MM.format(l.get("time")));
+        setAttr("dd", dd.format(l.get("time")));
+        render("/dist/printOut.html");
+      }
     }
   }
   /**
@@ -447,41 +450,46 @@ public class FlowController extends Controller {
   @Before({Tx.class,LoginInterceptor.class})
   public void printIn() {
     Flow l = Flow.dao.findById(getPara("lid"));
-    User u =User.dao.findById(l.getInt("uid"));
-    File f = File.dao.findById(l.getInt("fid"));
-    if (((User) getSessionAttr("user")).get("did")!=f.getInt("did")){
+    if (l == null) {
       removeSessionAttr("user");
       redirect("/index");
-    }else{
-      Print r =new Print();
-      r.set("lid",getPara("lid"))
-              .set("uid",((User) getSessionAttr("user")).get("id").toString())
-              .set("time", new Date())
-              .save();
-      Department d = Department.dao.findById(l.getInt("did"));
-      Person p =Person.dao.findById(l.getInt("pid"));
-      SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
-      SimpleDateFormat MM = new SimpleDateFormat("MM");
-      SimpleDateFormat dd = new SimpleDateFormat("dd");
-      setAttr("fnumber",Util.CheckNull(f.getStr("number")));
-      setAttr("uname",Util.CheckNull(u.getStr("name")));
-      setAttr("pname",Util.CheckNull(p.getStr("name")));
-      setAttr("dname",Util.CheckNull(d.getStr("name")));
-      setAttr("pnumber",Util.CheckNull(p.getStr("number")));
-      setAttr("pphone1",Util.CheckNull(p.getStr("phone1")));
-      setAttr("pphone2",Util.CheckNull(p.getStr("phone2")));
-      setAttr("paddress",Util.CheckNull(p.getStr("address")));
-      setAttr("pretire",Util.CheckNull(p.getStr("retire")));
-      setAttr("pinfo",Util.CheckNull(p.getStr("info")));
-      setAttr("pbirth",yyyy.format(p.get("birth"))+MM.format(p.get("birth"))+dd.format(p.get("birth")));
-      setAttr("psex",Util.CheckNull(p.getStr("sex")));
-      setAttr("fileAge",yyyy.format(p.get("fileAge"))+MM.format(p.get("fileAge"))+dd.format(p.get("fileAge")));
-      setAttr("premark",Util.CheckNull(p.getStr("remark")));
-      setAttr("fremark",Util.CheckNull(f.getStr("remark")));
-      setAttr("yyyy",yyyy.format(l.get("time")));
-      setAttr("mm",MM.format(l.get("time")));
-      setAttr("dd",dd.format(l.get("time")));
-      render("/dist/printIn.html");
+    } else {
+      User u = User.dao.findById(l.getInt("uid"));
+      File f = File.dao.findById(l.getInt("fid"));
+      if (((User) getSessionAttr("user")).get("did") != f.getInt("did")) {
+        removeSessionAttr("user");
+        redirect("/index");
+      } else {
+        Print r = new Print();
+        r.set("lid", getPara("lid"))
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("time", new Date())
+                .save();
+        Department d = Department.dao.findById(l.getInt("did"));
+        Person p = Person.dao.findById(l.getInt("pid"));
+        SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
+        SimpleDateFormat MM = new SimpleDateFormat("MM");
+        SimpleDateFormat dd = new SimpleDateFormat("dd");
+        setAttr("fnumber", Util.CheckNull(f.getStr("number")));
+        setAttr("uname", Util.CheckNull(u.getStr("name")));
+        setAttr("pname", Util.CheckNull(p.getStr("name")));
+        setAttr("dname", Util.CheckNull(d.getStr("name")));
+        setAttr("pnumber", Util.CheckNull(p.getStr("number")));
+        setAttr("pphone1", Util.CheckNull(p.getStr("phone1")));
+        setAttr("pphone2", Util.CheckNull(p.getStr("phone2")));
+        setAttr("paddress", Util.CheckNull(p.getStr("address")));
+        setAttr("pretire", Util.CheckNull(p.getStr("retire")));
+        setAttr("pinfo", Util.CheckNull(p.getStr("info")));
+        setAttr("pbirth", yyyy.format(p.get("birth")) + MM.format(p.get("birth")) + dd.format(p.get("birth")));
+        setAttr("psex", Util.CheckNull(p.getStr("sex")));
+        setAttr("fileAge", yyyy.format(p.get("fileAge")) + MM.format(p.get("fileAge")) + dd.format(p.get("fileAge")));
+        setAttr("premark", Util.CheckNull(p.getStr("remark")));
+        setAttr("fremark", Util.CheckNull(f.getStr("remark")));
+        setAttr("yyyy", yyyy.format(l.get("time")));
+        setAttr("mm", MM.format(l.get("time")));
+        setAttr("dd", dd.format(l.get("time")));
+        render("/dist/printIn.html");
+      }
     }
   }
 

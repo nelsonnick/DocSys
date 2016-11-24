@@ -68,11 +68,11 @@ export default class Top extends React.Component {
     return (
       <div>
         <Row type="flex" justify="space-between" align="bottom">
-          <Col span={12}><LogoName name="档案管理系统" /></Col>
-          <Col span={4}><Alert message={`当前用户： ${this.state.CurrentUser}`} type="success" showIcon /></Col>
-          <Col span={4}><Alert message={`当前部门： ${this.state.CurrentDepartment}`} type="info" showIcon /></Col>
+          <Col span={10}><LogoName name="档案管理系统" /></Col>
+          <Col span={5}><Alert message={`当前用户： ${this.state.CurrentUser}`} type="success" showIcon /></Col>
+          <Col span={6}><Alert message={`当前部门： ${this.state.CurrentDepartment}`} type="info" showIcon /></Col>
           <Col span={2}><a id="b"><Alert message="退出" type="error" showIcon /></a></Col>
-          <Col span={2}>&nbsp;</Col>
+          <Col span={1}>&nbsp;</Col>
         </Row>
       </div>
     );

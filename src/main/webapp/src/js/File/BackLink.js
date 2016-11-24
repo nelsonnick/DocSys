@@ -76,16 +76,16 @@ export default class BackLink extends React.Component {
             });
             this.props.afterEdit();
             this.refs.BackForm.resetFields();
-            openNotificationWithIcon('success', '修改成功', '修改成功，请进行后续操作');
+            openNotificationWithIcon('success', '存档成功', '存档成功，请进行后续操作');
           } else {
-            openNotificationWithIcon('error', '修改失败', data.toString());
+            openNotificationWithIcon('error', '存档失败', data.toString());
             this.setState({
               confirmLoading: false,
             });
           }
         },
         'error': () => {
-          openNotificationWithIcon('error', '请求错误', '无法完成修改操作，请检查网络情况');
+          openNotificationWithIcon('error', '请求错误', '无法完成存档操作，请检查网络情况');
           this.setState({
             confirmLoading: false,
           });
@@ -109,10 +109,10 @@ export default class BackLink extends React.Component {
     const { personId, personName, personNumber, personPhone1, personPhone2, personAddress, fileAge, personRemark } = this.props;
     return (
       <span>
-        <a onClick={this.showModal} className="btn btn-success btn-xs" >重存</a>
+        <a onClick={this.showModal} className="btn btn-success btn-xs" >再次存档</a>
         <Modal
           maskClosable={false}
-          title="重新存档"
+          title="再次存档"
           style={{ top: 20 }}
           width={600}
           visible={this.state.visible}

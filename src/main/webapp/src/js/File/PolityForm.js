@@ -94,7 +94,7 @@ class PolityFrom extends React.Component {
               required
             >
               {getFieldDecorator('personNation', { initialValue: '汉族' })(
-                <Select size="large" >
+                <Select>
                   <Option value="汉族">汉族</Option>
                   <Option value="壮族">壮族</Option>
                   <Option value="回族">回族</Option>
@@ -162,7 +162,7 @@ class PolityFrom extends React.Component {
               required
             >
               {getFieldDecorator('personLearn', { initialValue: '高中' })(
-                <Select size="large" >
+                <Select>
                   <Option value="文盲">文盲</Option>
                   <Option value="半文盲">半文盲</Option>
                   <Option value="小学">小学</Option>
@@ -182,7 +182,7 @@ class PolityFrom extends React.Component {
               required
             >
               {getFieldDecorator('personFace', { initialValue: '群众' })(
-                <Select size="large" >
+                <Select>
                   <Option value="中共党员">中共党员</Option>
                   <Option value="中共预备党员">中共预备党员</Option>
                   <Option value="共青团员">共青团员</Option>

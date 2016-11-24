@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Form, Input, Button, Select } from 'antd';
 const FormItem = Form.Item;
+const ButtonGroup = Button.Group;
 class DataSearch extends React.Component {
   constructor(props) {
     super(props);
@@ -63,8 +64,10 @@ class DataSearch extends React.Component {
                 onSelect={this.onChangeDept}
                 showSearch
                 allowClear
-                style={{ width: 150 }}
+                style={{ width: 200 }}
                 placeholder="请输入所属部门"
+                notFoundContent=""
+                optionFilterProp="children"
               >
                 {children}
               </Select>
@@ -76,19 +79,22 @@ class DataSearch extends React.Component {
                 onSelect={this.onChangeFlow}
                 showSearch
                 allowClear
-                style={{ width: 150 }}
+                style={{ width: 120 }}
                 placeholder="请输入档案流向"
+                notFoundContent=""
+                optionFilterProp="children"
               >
                 <Option value="转入">转入</Option>
                 <Option value="转出">转出</Option>
+                <Option value="重存">重存</Option>
               </Select>
             )}
           </FormItem>
-          <Button htmlType="submit" icon="search">查找</Button>
-          <span>&nbsp;&nbsp;&nbsp;</span>
-          <Button type="ghost" onClick={this.handleReset} icon="reload">重置</Button>
-          <span>&nbsp;&nbsp;&nbsp;</span>
-          <Button type="dashed" onClick={this.download} icon="download">导出</Button>
+          <ButtonGroup size="large">
+            <Button htmlType="submit" icon="search">查找</Button>
+            <Button type="ghost" onClick={this.handleReset} icon="reload">重置</Button>
+            <Button type="dashed" onClick={this.download} icon="download">导出</Button>
+          </ButtonGroup>
         </Form>
       </Row>
     );

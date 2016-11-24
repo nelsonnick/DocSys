@@ -40,7 +40,7 @@ export default class Export extends React.Component {
         <Row type="flex" justify="center" align="middle" gutter={16}>
           <Col span={8}><a href={AjaxFunction.ExportProve}><Button type="primary" size="large" icon="cloud-download">存档证明打印记录</Button></a></Col>
           <Col span={8}><a href={AjaxFunction.ExportPolity}><Button type="primary" size="large" icon="cloud-download">政审材料打印记录</Button></a></Col>
-          <Col span={8}>&nbsp;</Col>
+          <Col span={8}><a href={AjaxFunction.ExportExtract}><Button type="primary" size="large" icon="cloud-download">提档函打印记录</Button></a></Col>
         </Row>
       </div>
     );

@@ -39,6 +39,7 @@ export const CurrentUser = `${h}/getCurrentUser`;                // 当前人员
 export const CurrentDepartment = `${h}/getCurrentDepartment`;    // 所属部门     --参数：无
 export const CurrentDid = `${h}/getCurrentDid`;                  // 所属部门     --参数：无
 export const UserExport = `${h}/user/export`;                    // 导出用户     --参数：id
+export const UserCascader = `${h}/user/cascader`;                // 部门用户     --参数：无
 
 export const FileNew = `${h}/file/newNumber`;                    // 最新编号     --参数：无
 export const FileAdd = `${h}/file/add`;                          // 新增档案     --参数：一大堆。。。。。
@@ -46,7 +47,8 @@ export const FileNumber = `${h}/file/number`;                    // 检测编号
 export const FileNumbers = `${h}/file/numbers`;                  // 检测编号     --参数：number
 export const FileEdit = `${h}/file/edit`;                        // 修改档案     --参数：一大堆。。。。。
 export const FileFlow = `${h}/file/flow`;                        // 档案流出     --参数：一大堆。。。。。
-export const FileBack = `${h}/file/back`;                        // 档案重存     --参数：一大堆。。。。。
+export const FileBack = `${h}/file/back`;                        // 再次存档     --参数：一大堆。。。。。
+export const FileReturns = `${h}/file/returns`;                    // 原档重存     --参数：一大堆。。。。。
 export const FileCount = `${h}/file/count`;                      // 数据总数     --参数：PageNumber,PageSize,FileNumber,FileDept,PersonName,PersonNumber,FileState
 export const FileQuery = `${h}/file/query`;                      // 数据查询     --参数：PageNumber,PageSize,FileNumber,FileDept,PersonName,PersonNumber,FileState
 export const FileDownload = `${h}/file/download`;                // 检查导出     --参数：

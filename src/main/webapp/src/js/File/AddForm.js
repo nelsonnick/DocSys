@@ -343,7 +343,7 @@ class AddFrom extends React.Component {
               required
             >
               {getFieldDecorator('personInfo', { initialValue: '已完成' })(
-                <Select size="large" >
+                <Select>
                   <Option value="已完成">已完成</Option>
                   <Option value="未完成">未完成</Option>
                 </Select>
@@ -355,7 +355,7 @@ class AddFrom extends React.Component {
               required
             >
               {getFieldDecorator('personRetire', { initialValue: '正常退休' })(
-                <Select size="large" >
+                <Select>
                   <Option value="正常退休">正常退休</Option>
                   <Option value="提前退休">提前退休</Option>
                   <Option value="延后退休">延后退休</Option>
@@ -410,7 +410,7 @@ class AddFrom extends React.Component {
               required
             >
               {getFieldDecorator('flowType', { initialValue: '个人' })(
-                <Select size="large" >
+                <Select>
                   <Option value="个人">个人</Option>
                   <Option value="专人">专人</Option>
                   <Option value="邮寄">邮寄</Option>

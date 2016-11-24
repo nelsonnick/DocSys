@@ -202,7 +202,7 @@ class BackFrom extends React.Component {
               required
             >
               {getFieldDecorator('flowType', { initialValue: '个人' })(
-                <Select size="large" >
+                <Select>
                   <Option value="个人">个人</Option>
                   <Option value="专人">专人</Option>
                   <Option value="邮寄">邮寄</Option>

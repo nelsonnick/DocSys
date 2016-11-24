@@ -97,10 +97,11 @@ export default class AddButton extends React.Component {
   render() {
     return (
       <Row type="flex" justify="start">
-        <Button type="primary" size="large" onClick={this.showModal} icon="plus-circle-o">新增部门</Button>
+        <Button size="large" type="primary" onClick={this.showModal} icon="plus-circle-o">新增部门</Button>
         <Modal
           maskClosable={false}
           title="新增部门"
+          style={{ top: 20 }}
           visible={this.state.visible}
           onOk={this.handleOk}
           confirmLoading={this.state.confirmLoading}

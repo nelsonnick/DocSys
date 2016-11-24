@@ -216,19 +216,23 @@ public class FileController extends Controller {
     // String a = "^(?:(?!0000)[0-9]{4}(?:(?:0[1-9]|1[0-2])(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$";
     String a = "^([\\d]{4}(((0[13578]|1[02])((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|11)((0[1-9])|([12][1-9])|30))|(02((0[1-9])|(1[0-9])|(2[1-8])))))|((((([02468][048])|([13579][26]))00)|([0-9]{2}(([02468][048])|([13579][26]))))(((0[13578]|1[02])((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|11)((0[1-9])|([12][1-9])|30))|(02((0[1-9])|(1[0-9])|(2[1-9])))))";
     File file = File.dao.findById(getPara("fid"));
-    if (((User) getSessionAttr("user")).get("did")!=file.getInt("did")){
-      removeSessionAttr("user");
-      redirect("/index");
-    }else{
-      Person person = Person.dao.findById(getPara("pid"));
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-      String fileAge = sdf.format(person.get("fileAge"));
-      if (file == null) {
-        renderText("要修改的档案不存在，请刷新页面后再试！");
-      } else if (Person.dao.findById(getPara("pid")) == null) {
-        renderText("要修改的人员不存在，请刷新页面后再试！");
+    if (file == null) {
+      renderText("要修改的档案不存在，请刷新页面后再试！");
+    } else {
+      if (((User) getSessionAttr("user")).get("did") != file.getInt("did")) {
+        removeSessionAttr("user");
+        redirect("/index");
       } else {
-        if (Util.CheckNull(file.getStr("remark")).equals(getPara("fremark").trim())
+        Person person = Person.dao.findById(getPara("pid"));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String fileAge = sdf.format(person.get("fileAge"));
+        if (person == null) {
+          renderText("要修改的人员不存在，请刷新页面后再试！");
+        } else if (!file.getStr("state").equals("在档")) {
+          renderText("该档案处非在档状态，请刷新页面后再试！");
+        } else if (!person.getStr("state").equals("在档")) {
+          renderText("该人员处非在档状态，请刷新页面后再试！");
+        } else if (Util.CheckNull(file.getStr("remark")).equals(getPara("fremark").trim())
                 && Util.CheckNull(file.getStr("number")).equals(getPara("fnumber").trim())
                 && Util.CheckNull(person.getStr("name")).equals(getPara("pname").trim())
                 && Util.CheckNull(person.getStr("number")).equals(getPara("pnumber").trim())
@@ -324,37 +328,41 @@ public class FileController extends Controller {
   @Before({Tx.class, LoginInterceptor.class})
   public void flow() {
     File file = File.dao.findById(getPara("fid"));
-    if (((User) getSessionAttr("user")).get("did")!=file.getInt("did")){
-      removeSessionAttr("user");
-      redirect("/index");
-    }else {
-      Person person = Person.dao.findById(getPara("pid"));
-      if (Util.CheckNull(file.getStr("state")).equals("已提")) {
-        renderText("该档案已办理提档手续！");
-      } else if (Util.CheckNull(person.getStr("state")).equals("已提")) {
-        renderText("该人员已处于提档状态！");
+    if (file == null) {
+      renderText("要流转的档案不存在，请刷新页面后再试！");
+    } else {
+      if (((User) getSessionAttr("user")).get("did") != file.getInt("did")) {
+        removeSessionAttr("user");
+        redirect("/index");
       } else {
-        Flow l = new Flow();
-        l.set("pid", getPara("pid").trim())
-                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
-                .set("fid", getPara("fid").trim())
-                .set("did", ((User) getSessionAttr("user")).get("did").toString())
-                .set("type", getPara("ltype").trim())
-                .set("direct", getPara("ldirect").trim())
-                .set("reason", getPara("lreason").trim())
-                .set("remark", getPara("lremark").trim())
-                .set("time", new Date())
-                .set("flow", "转出")
-                .save();
-        file.set("state", "已提").update();
-        person.set("state", "已提").update();
-        renderText("OK");
+        Person person = Person.dao.findById(getPara("pid"));
+        if (!Util.CheckNull(file.getStr("state")).equals("在档")) {
+          renderText("该档案已办理提档手续！");
+        } else if (!Util.CheckNull(person.getStr("state")).equals("在档")) {
+          renderText("该人员已处于提档状态！");
+        } else {
+          Flow l = new Flow();
+          l.set("pid", getPara("pid").trim())
+                  .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                  .set("fid", getPara("fid").trim())
+                  .set("did", ((User) getSessionAttr("user")).get("did").toString())
+                  .set("type", getPara("ltype").trim())
+                  .set("direct", getPara("ldirect").trim())
+                  .set("reason", getPara("lreason").trim())
+                  .set("remark", getPara("lremark").trim())
+                  .set("time", new Date())
+                  .set("flow", "转出")
+                  .save();
+          file.set("state", "已提").update();
+          person.set("state", "已提").update();
+          renderText("OK");
+        }
       }
     }
   }
 
   /**
-   * 重存档案
+   * 再次存档
    * fnumber
    * pid
    * fremark
@@ -368,36 +376,82 @@ public class FileController extends Controller {
     List<File> files = File.dao.find(
             "select * from file where number=?", getPara("fnumber"));
     Person person = Person.dao.findById(getPara("pid"));
-    if (files.size() != 0) {
-      renderText("该档案编号数据库中已存在，请核实!");
-    } else if (getPara("lreason").trim().length()==0) {
-      renderText("存档原因必须填写!");
-    } else if (getPara("ldirect").trim().length()==0) {
-      renderText("档案来源必须填写!");
-    } else if (!Util.CheckNull(person.getStr("state")).equals("已提")) {
-      renderText("该人员有在存档案，请核实!");
+    if (person == null) {
+      renderText("要再次存档的人员不存在，请刷新页面后再试！");
     } else {
-      person.set("state", "在档").update();
-      File f = new File();
-      f.set("number", getPara("fnumber").trim())
-              .set("state", "在档")
-              .set("remark", getPara("fremark").trim())
-              .set("did", ((User) getSessionAttr("user")).get("did").toString())
-              .set("pid",getPara("pid"))
-              .save();
-      Flow l = new Flow();
-      l.set("remark", getPara("lremark").trim())
-              .set("type", getPara("ltype").trim())
-              .set("direct", getPara("ldirect").trim())
-              .set("reason", getPara("lreason").trim())
-              .set("did", ((User) getSessionAttr("user")).get("did").toString())
-              .set("uid", ((User) getSessionAttr("user")).get("id").toString())
-              .set("time", new Date())
-              .set("fid",f.get("id").toString())
-              .set("pid",getPara("pid"))
-              .set("flow","转入")
-              .save();
-      renderText("OK");
+      if (files.size() != 0) {
+        renderText("该档案编号数据库中已存在，请核实!");
+      } else if (getPara("lreason").trim().length() == 0) {
+        renderText("存档原因必须填写!");
+      } else if (getPara("ldirect").trim().length() == 0) {
+        renderText("档案来源必须填写!");
+      } else if (!Util.CheckNull(person.getStr("state")).equals("已提")) {
+        renderText("该人员有在存档案，请核实!");
+      } else {
+        person.set("state", "在档").update();
+        File f = new File();
+        f.set("number", getPara("fnumber").trim())
+                .set("state", "在档")
+                .set("remark", getPara("fremark").trim())
+                .set("did", ((User) getSessionAttr("user")).get("did").toString())
+                .set("pid", getPara("pid"))
+                .save();
+        Flow l = new Flow();
+        l.set("remark", getPara("lremark").trim())
+                .set("type", getPara("ltype").trim())
+                .set("direct", getPara("ldirect").trim())
+                .set("reason", getPara("lreason").trim())
+                .set("did", ((User) getSessionAttr("user")).get("did").toString())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("time", new Date())
+                .set("fid", f.get("id").toString())
+                .set("pid", getPara("pid"))
+                .set("flow", "转入")
+                .save();
+        renderText("OK");
+      }
+    }
+  }
+  /**
+   * 原档重存
+   * fid
+   */
+  @Before({Tx.class,LoginInterceptor.class})
+  public void returns() {
+    File file = File.dao.findById(getPara("fid"));
+    if (file == null) {
+      renderText("要存的档案不存在，请刷新页面后再试！");
+    } else {
+      if (((User) getSessionAttr("user")).get("did") != file.getInt("did")) {
+        removeSessionAttr("user");
+        redirect("/index");
+      } else {
+        Person person = Person.dao.findById(file.get("pid"));
+        Department d = Department.dao.findById(file.get("did"));
+        if (!file.getStr("state").trim().equals("已提")) {
+          renderText("该档案已处于在档状态!");
+        } else if (person==null) {
+          renderText("该人员不存在!");
+        } else if (!person.getStr("state").trim().equals("已提")) {
+          renderText("该人员已处于在档状态!");
+        }  else {
+          person.set("state", "在档").update();
+          file.set("state", "在档").update();
+          Flow l = new Flow();
+          l.set("remark", "原档重存")
+                  .set("type", "其他")
+                  .set("direct", d.get("name").toString())
+                  .set("reason", "原档重存")
+                  .set("did", ((User) getSessionAttr("user")).get("did").toString())
+                  .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                  .set("time", new Date())
+                  .set("fid", file.get("id").toString())
+                  .set("pid", person.get("id").toString())
+                  .set("flow", "重存")
+                  .save();
+          renderText("OK");
+        }
+      }
     }
   }
 

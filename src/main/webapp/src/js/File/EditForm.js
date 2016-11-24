@@ -352,7 +352,7 @@ class EditFrom extends React.Component {
               required
             >
               {getFieldDecorator('personInfo', { initialValue: personInfo })(
-                <Select size="large" >
+                <Select>
                   <Option value="已完成">已完成</Option>
                   <Option value="未完成">未完成</Option>
                 </Select>
@@ -366,7 +366,7 @@ class EditFrom extends React.Component {
               required
             >
               {getFieldDecorator('personRetire', { initialValue: personRetire })(
-                <Select size="large" >
+                <Select>
                   <Option value="正常退休">正常退休</Option>
                   <Option value="提前退休">提前退休</Option>
                   <Option value="延后退休">延后退休</Option>
