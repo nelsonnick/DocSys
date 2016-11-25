@@ -28,13 +28,14 @@ export default class Blank extends React.Component {
           <Col span="8">
             <Card title="业务变更" >
               经反复考虑，将档案的流动过程归纳为进、出两部分(借档和提档均视为出)。<br />
-              档案编号将自动生成。如果特殊需要，可自行修改。
+              推荐采用自动生成的档案编号。
             </Card>
           </Col>
           <Col span="8">
             <Card title="编号规则" >
               3位部门编号+8位日期编号+3位顺序号。<br />
               每个部门每日收取的最大档案数量为999。<br />
+              如果特殊需要，可自行修改。
             </Card>
           </Col>
           <Col span="8">
@@ -46,6 +47,9 @@ export default class Blank extends React.Component {
           </Col>
         </Row>
         <Row>
+          <Col>&nbsp;</Col>
+        </Row>
+        <Row>
           <Col span="8">
             <Card title="录入校验" >
               录入过程中的校验结果，请认真阅读相关提示。<br />
@@ -54,7 +58,7 @@ export default class Blank extends React.Component {
           </Col>
           <Col span="8">
             <Card title="数据说明" >
-              后台数据库分离了人员信息和档案信息：一个人可能在多个部门存过档案，但有且只有一份档案处于在存状态。<br />
+              后台数据库中，人员与档案为1对多的关系。<br />
               当修改某人的基本信息后，其名下所有档案中的相关信息也会随之变化，同步刷新。
             </Card>
           </Col>

@@ -44,10 +44,10 @@ public class UserController extends Controller {
   @Before({LoginInterceptor.class,PowerInterceptor.class})
   public void count() {
     if (getPara("UserDept").equals("")) {
-      String count = Db.queryLong("select count(*) from user where name like '%" + getPara("UserName") + "%' and state<>'删除' and state<>'系统' ").toString();
+      String count = Db.queryLong("select count(*) from user where name like '%" + getPara("UserName") + "%' and state<>'删除'").toString();
       renderText(count);
     } else {
-      String count = Db.queryLong("select count(*) from user where name like '%" + getPara("UserName") + "%' and did = " + getPara("UserDept") + " and state<>'删除' and state<>'系统' ").toString();
+      String count = Db.queryLong("select count(*) from user where name like '%" + getPara("UserName") + "%' and did = " + getPara("UserDept") + " and state<>'删除'").toString();
       renderText(count);
     }
   }
@@ -72,7 +72,11 @@ public class UserController extends Controller {
    */
   @Before(LoginInterceptor.class)
   public void number() {
-    renderText(IDNumber.checkIDNumber(getPara("number")));
+    if (getPara("number").equals("000000000000000000")) {
+      renderText("OK");
+    } else{
+      renderText(IDNumber.checkIDNumber(getPara("number")));
+    }
   }
   /**
    * 核查用户联系电话
@@ -285,7 +289,7 @@ public class UserController extends Controller {
     User user = User.dao.findById(getPara("id"));
     if (user == null) {
       renderText("要重置的用户不存在，请刷新页面后再试！");
-    }else if(!IDNumber.availableIDNumber(Util.CheckNull(user.getStr("number")))){
+    }else if(!IDNumber.availableIDNumber(Util.CheckNull(user.getStr("number"))) && !user.getStr("number").equals("000000000000000000")){
       renderText("要重置的用户证件号码有误，请修改证件号码后再试！");
     } else {
       if (user.set("pass", encodeMD5String(user.get("number").toString().substring(user.get("number").toString().length()-8,user.get("number").toString().length()).trim())).update()){

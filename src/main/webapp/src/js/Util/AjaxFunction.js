@@ -92,6 +92,8 @@ export const MaleInAll = `${h}/count/maleInAll`;                 // 存档男性
 export const MaleOutAll = `${h}/count/maleOutAll`;               // 提档男性总数 --参数：无
 export const FemaleInAll = `${h}/count/femaleInAll`;             // 存档女性总数 --参数：无
 export const FemaleOutAll = `${h}/count/femaleOutAll`;           // 提档女性总数 --参数：无
+export const CountAll = `${h}/count/countAll`;                   // 全部记录统计 --参数：无
+export const CountAlls = `${h}/count/countAlls`;                   // 全部记录统计 --参数：无
 
 export const Logout = `${h}/logout`;                             // 退出系统     --参数：
 export const ExportChange = `${h}/exportChange`;                 // 下载     --参数：无

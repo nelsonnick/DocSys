@@ -241,6 +241,7 @@ class AddFrom extends React.Component {
             <Select >
               <Option value="激活">激活</Option>
               <Option value="注销">注销</Option>
+              <Option value="系统">系统</Option>
             </Select>
           )}
         </FormItem>

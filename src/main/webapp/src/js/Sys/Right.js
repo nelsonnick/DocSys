@@ -4,6 +4,7 @@ import Department from '../Department/Main.js';
 import User from '../User/Main.js';
 import Anal from '../Anal/Main.js';
 import Export from '../Export/Main.js';
+import Pass from '../Pass/Main.js';
 export default class Right extends React.Component {
   render() {
     let tableCase;
@@ -19,6 +20,9 @@ export default class Right extends React.Component {
         break;
       case 'Export':
         tableCase = <Export />;
+        break;
+      case 'Pass':
+        tableCase = <Pass />;
         break;
       default:
         tableCase = <Blank />;
