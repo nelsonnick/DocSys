@@ -11,6 +11,31 @@ const openNotificationWithIcon = (type, msg, desc) => {
     description: desc,
   });
 };
+
+const optionz = [{
+  value: 'zhejiang',
+  label: 'Zhejiang',
+  children: [{
+    value: 'hangzhou',
+    label: 'Hangzhou',
+    children: [{
+      value: 'xihu',
+      label: 'West Lake',
+    }],
+  }],
+}, {
+  value: 'jiangsu',
+  label: 'Jiangsu',
+  children: [{
+    value: 'nanjing',
+    label: 'Nanjing',
+    children: [{
+      value: 'zhonghuamen',
+      label: 'Zhong Hua Men',
+    }],
+  }],
+}];
+
 export default class Anal extends React.Component {
   constructor(props) {
     super(props);
@@ -44,7 +69,7 @@ export default class Anal extends React.Component {
       <QueueAnim>
         <div key="a">
           <Row type="flex" justify="start">
-            <Col span={24}>请选择人员：<DataSearch onChange={this.onChange} options={this.state.options} /></Col>
+            <Col span={24}>请选择人员：<DataSearch onChange={this.onChange} options={optionz} /></Col>
           </Row>
           <Row>
             <span style={{ 'font-size': '5px' }}>&nbsp;&nbsp;&nbsp;</span>

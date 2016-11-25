@@ -8,7 +8,6 @@ class DataSearch extends React.Component {
   }
 
   OnChange(value) {
-
     this.props.onChange(value);
   }
 

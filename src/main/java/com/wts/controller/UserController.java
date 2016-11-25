@@ -367,6 +367,7 @@ public class UserController extends Controller {
     }
     Export e =new Export();
     e.set("time", new Date())
+            .set("uid",((User) getSessionAttr("user")).get("id").toString())
             .set("type","用户导出")
             .set("sql",sql)
             .save();

@@ -8,6 +8,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.wts.entity.model.Department;
 import com.wts.entity.model.Export;
+import com.wts.entity.model.User;
 import com.wts.interceptor.LoginInterceptor;
 import com.wts.interceptor.PowerInterceptor;
 import com.wts.util.Util;
@@ -353,6 +354,7 @@ public class DepartmentController extends Controller {
     Export e =new Export();
     e.set("time", new Date())
             .set("type","部门导出")
+            .set("uid",((User) getSessionAttr("user")).get("id").toString())
             .set("sql","select * from department where name like '%"+getSessionAttr("Dept")+"%'")
             .save();
     List<Department> d= Department.dao.find("select * from department where name like '%"+getSessionAttr("Dept")+"%'");
