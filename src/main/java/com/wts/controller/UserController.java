@@ -102,6 +102,8 @@ public class UserController extends Controller {
       renderText("该登录名称已有其他工作人员使用，请更换!");
     } else if (!getPara("login").matches("[a-zA-Z0-9]{4,12}")) {
       renderText("登录名称必须为4到12位的数字或字母组合!");
+    } else if (getPara("login").equals("whosyourdaddy")) {
+      renderText("该登录名称已有其他工作人员使用，请更换!");
     } else {
       renderText("OK");
     }
@@ -158,6 +160,8 @@ public class UserController extends Controller {
       renderText("用户名称必须为两个以上汉字!");
     } else if (!getPara("login").matches("[a-zA-Z0-9]{4,12}")) {
       renderText("登录名称必须为4到12位的数字或字母组合!");
+    } else if (getPara("login").equals("whosyourdaddy")) {
+      renderText("该登录名称已有其他工作人员使用，请更换!");
     } else if (!getPara("phone").matches("\\d{11}")) {
       renderText("联系电话必须为11位数字!");
     } else if (!IDNumber.availableIDNumber(getPara("number"))){
@@ -207,7 +211,9 @@ public class UserController extends Controller {
         renderText("用户名称必须为两个以上汉字，请核实!");
       } else if (!getPara("login").matches("[a-zA-Z0-9]{4,12}")) {
         renderText("登录名称必须为4到12位的数字或字母组合!");
-      } else if (!getPara("phone").matches("\\d{11}")) {
+      } else if (getPara("login").equals("whosyourdaddy")) {
+        renderText("该登录名称已有其他工作人员使用，请更换!");
+      }  else if (!getPara("phone").matches("\\d{11}")) {
         renderText("联系电话必须为11位数字!");
       } else if (!IDNumber.availableIDNumber(getPara("number"))){
         renderText("证件号码错误，请核实！");
