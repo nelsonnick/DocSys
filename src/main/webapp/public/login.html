@@ -22,36 +22,36 @@
 <div id="wrapper">
     <div id="content">
         <div id="header">
-            <h1><span style="font-size:30px;color:#2DB7F5">File Manage System</span></h1>
+            <h1><span style="font-size:32px;color:#2DB7F5;font-family:'微软雅黑'">灵活就业人员档案管理</span></h1>
         </div>
         <div id="darkbanner" class="banner320">
-            <h2>Login</h2>
+            <h2>温暖人社&nbsp;&nbsp;&nbsp;&nbsp;情牵你我</h2>
         </div>
         <div id="darkbannerwrap">
         </div>
-        <form name="form1" method="post" action="${contextPath}/login">
+        <form name="form1" method="post" action="/login">
             <fieldset class="form">
                 <p>
-                    <label for="user_name">LoginName：</label>
+                    <label style="font-size:13px;font-family:'华文楷体'">登录名称：</label>
                     <input name="login" id="user_name" type="text" value="" placeholder="请输入登录名称"/>
                 </p>
                 <p>
-                    <label for="user_password">Password：</label>
+                    <label style="font-size:13px;font-family:'华文楷体'">登录密码：</label>
                     <input name="password" id="user_password" type="password" placeholder="请输入登录密码"/>
                 </p>
                 <p>
-                    <label for="user_name">CheckCode：</label>
+                    <label style="font-size:13px;font-family:'华文楷体'">验证码：</label>
                     <input type="text" placeholder="请输入下方验证码" name="verifyCode" id="verifyCode">
                 </p>
                 <p>
-                    <label for="user_password">OnClick：</label>
-                    <img src="${contextPath}/img" onclick="changeVerifyCode()" id="yzmImg" style="cursor: pointer;">
+                    <label style="font-size:13px;font-family:'华文楷体'">点图切换：</label>
+                    <img src="/img" onclick="changeVerifyCode()" id="yzmImg" style="cursor: pointer;">
                 </p>
                 <button type="submit" class="positive" name="Submit">
-                    Go Next
+                    开始
                 </button>
                 <ul id="forgottenpassword">
-                    <li class="boldtext">|</li>
+                    <li class="boldtext"></li>
                     <li><div style="color: red;">${(error)!''}</div></li>
                 </ul>
             </fieldset>
@@ -60,7 +60,6 @@
 </div>
 
 <div id="wrapperbottom_branding">
-    <div id="wrapperbottom_branding_text"><a href="#" style='text-decoration:none'>Made
-        By WANGTIANSHUO</a>.
+    <div id="wrapperbottom_branding_text"><a href="#" style='text-decoration:none'>&copy;2016-11-10 15:27:00 Wang</a>
     </div>
 </div>

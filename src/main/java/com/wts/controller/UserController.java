@@ -452,12 +452,18 @@ public class UserController extends Controller {
   }
   /**
    * 修改密码
-   * did
+   * passBefore
+   * passAfter1
+   * passAfter2
    */
-  @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
+  @Before({Tx.class,LoginInterceptor.class})
   public void pass() {
-    User u = (User) getSessionAttr("user");
-    if (!u.getStr("pass").equals(encodeMD5String(getPara("passBefore")))) {
+    User u = User.dao.findById(((User) getSessionAttr("user")).get("id"));
+    if (((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+      renderText("超级管理员是无法修改密码的！");
+    } else if (getPara("passBefore").trim().equals("")) {
+      renderText("请输入的原密码！");
+    } else if (!u.getStr("pass").equals(encodeMD5String(getPara("passBefore")))) {
       renderText("输入的原密码错误！");
     } else if (!getPara("passAfter1").equals(getPara("passAfter2"))) {
       renderText("两次输入的新密码不一致！");

