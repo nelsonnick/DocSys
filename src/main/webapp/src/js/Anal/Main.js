@@ -1,5 +1,6 @@
 import React from 'react';
-import { Row, Col, notification, Table } from 'antd';
+import { Row, Col, notification } from 'antd';
+import DataTable from './DataTable.js';
 import DataSearch from './DataSearch.js';
 import * as AjaxFunction from '../Util/AjaxFunction.js';
 import $ from 'jquery';
@@ -219,17 +220,7 @@ export default class Chart extends React.Component {
             <span style={{ 'font-size': '5px' }}>&nbsp;&nbsp;&nbsp;</span>
           </Row>
           <Row>
-            <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.3)' }}>
-              <Table
-                useFixedHeader="true"
-                rowKey="prove_count"
-                columns={this.state.Column}
-                dataSource={this.state.DataTable}
-                loading={this.state.Loading}
-                pagination={false}
-                bordered
-              />
-            </div>
+            <DataTable tableData={this.state.DataTable} loading={this.state.Loading} columns={this.state.Column} />
           </Row>
         </div>
       </QueueAnim>

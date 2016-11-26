@@ -157,7 +157,7 @@ public class CountController extends Controller {
                     + "(select count(*) from `print` where uid = " + users.get(i).get("id").toString() + ") as print_count ,"
                     + "(select count(*) from `prove` where uid = " + users.get(i).get("id").toString() + ") as prove_count ,"
                     + "(select count(*) from `trans` where uid = " + users.get(i).get("id").toString() + ") as trans_count ,"
-                    + "name from user where name = '"+users.get(i).get("name")+"' group by name";
+                    + "name,id from user where name = '"+users.get(i).get("name")+"' group by name";
             r.addAll(Db.find(sql));
         }
         renderJson(r);

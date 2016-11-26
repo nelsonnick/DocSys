@@ -144,7 +144,7 @@ export default class DataTable extends React.Component {
             </Popconfirm>);
             operate.push(<span className="ant-divider" />);
           } else {
-            operate.push(<span className="ant-divider" />);
+            operate.push();
           }
         } else {
           if (record.pstate.toString() === '已提' && record.fstate.toString() === '已提') {
@@ -168,8 +168,9 @@ export default class DataTable extends React.Component {
                 afterEdit={this.afterEdit}
               />
             );
-          } else {
             operate.push(<span className="ant-divider" />);
+          } else {
+            operate.push();
           }
         }
         return (

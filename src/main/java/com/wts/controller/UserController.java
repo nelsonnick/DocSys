@@ -164,7 +164,7 @@ public class UserController extends Controller {
       renderText("该登录名称已有其他工作人员使用，请更换!");
     } else if (!getPara("phone").matches("\\d{11}")) {
       renderText("联系电话必须为11位数字!");
-    } else if (!IDNumber.availableIDNumber(getPara("number"))){
+    } else if (!IDNumber.availableIDNumber(getPara("number"))&&!(getPara("number").equals("000000000000000000"))){
       renderText("证件号码错误，请核实！");
     }else {
       User user = new User();
@@ -215,7 +215,7 @@ public class UserController extends Controller {
         renderText("该登录名称已有其他工作人员使用，请更换!");
       }  else if (!getPara("phone").matches("\\d{11}")) {
         renderText("联系电话必须为11位数字!");
-      } else if (!IDNumber.availableIDNumber(getPara("number"))){
+      } else if (!IDNumber.availableIDNumber(getPara("number"))&&!(getPara("number").equals("000000000000000000"))){
         renderText("证件号码错误，请核实！");
       } else {
         if (user

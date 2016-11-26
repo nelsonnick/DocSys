@@ -163,7 +163,7 @@ export default class DataTable extends React.Component {
           </Popconfirm>);
           operate.push(<span className="ant-divider" />);
         } else {
-          operate.push(<span className="ant-divider" />);
+          operate.push();
         }
         operate.push(<Popconfirm title={`确定要删除用户<${record.name}>？`} okText="删除" onConfirm={this.delete.bind(this, record.id)} onCancel={this.cancel}>
           <a className="btn btn-danger btn-xs">删除</a>
