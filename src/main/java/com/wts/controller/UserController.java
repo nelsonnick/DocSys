@@ -56,7 +56,7 @@ public class UserController extends Controller {
    * 核查用户真实姓名
    * name
    */
-  @Before(LoginInterceptor.class)
+  @Before({LoginInterceptor.class,PowerInterceptor.class})
   public void name() {
     if (!getPara("name").matches("[\u4e00-\u9fa5]+")) {
       renderText("真实姓名必须为汉字!");
@@ -67,22 +67,46 @@ public class UserController extends Controller {
     }
   }
   /**
-   * 核查用户证件号码
+   * 核查证件号码
    * number
    */
-  @Before(LoginInterceptor.class)
+  @Before({LoginInterceptor.class,PowerInterceptor.class})
   public void number() {
     if (getPara("number").equals("000000000000000000")) {
       renderText("OK");
-    } else{
-      renderText(IDNumber.checkIDNumber(getPara("number")));
+    } else {
+      List<User> users = User.dao.find(
+              "select * from user where number=?", getPara("number"));
+      if (users.size() != 0) {
+        renderText("该证件号码已存在，请更换!");
+      } else {
+        renderText(IDNumber.checkIDNumber(getPara("number")));
+      }
+    }
+  }
+  /**
+   * 核查证件号码（修改）
+   * number
+   */
+  @Before({LoginInterceptor.class,PowerInterceptor.class})
+  public void numbers() {
+    if (getPara("number").equals("000000000000000000")) {
+      renderText("OK");
+    } else {
+      List<User> users = User.dao.find(
+              "select * from user where number=?", getPara("number"));
+      if (users.size() >= 2) {
+        renderText("该证件号码已存在，请更换!");
+      } else {
+        renderText(IDNumber.checkIDNumber(getPara("number")));
+      }
     }
   }
   /**
    * 核查用户联系电话
    * phone
    */
-  @Before(LoginInterceptor.class)
+  @Before({LoginInterceptor.class,PowerInterceptor.class})
   public void phone() {
     if (!getPara("phone").matches("\\d{11}")) {
       renderText("联系电话必须为11位数字!");
@@ -94,7 +118,7 @@ public class UserController extends Controller {
    * 核查用户登录名称
    * login
    */
-  @Before(LoginInterceptor.class)
+  @Before({LoginInterceptor.class,PowerInterceptor.class})
   public void login() {
     List<User> user = User.dao.find(
             "select * from user where login=?", getPara("login"));
@@ -112,7 +136,7 @@ public class UserController extends Controller {
    * 核查用户登录名称
    * logins
    */
-  @Before(LoginInterceptor.class)
+  @Before({LoginInterceptor.class,PowerInterceptor.class})
   public void logins() {
     if (!getPara("login").matches("[a-zA-Z0-9]{4,12}")) {
       renderText("登录名称必须为4到12位的数字或字母组合!");
@@ -124,7 +148,7 @@ public class UserController extends Controller {
    * 核查用户所属部门
    * name
    */
-  @Before(LoginInterceptor.class)
+  @Before({LoginInterceptor.class,PowerInterceptor.class})
   public void dept() {
     if (getPara("dept").equals("")) {
       renderText("所属部门尚未选择!");

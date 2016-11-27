@@ -24,7 +24,7 @@ public class PersonController extends Controller {
     }
   }
   /**
-   * 核查证件号码
+   * 核查证件号码（新增）
    * number
    */
   @Before(LoginInterceptor.class)
@@ -42,7 +42,7 @@ public class PersonController extends Controller {
     }
   }
   /**
-   * 核查证件号码
+   * 核查证件号码（修改）
    * number
    */
   @Before(LoginInterceptor.class)
@@ -60,7 +60,7 @@ public class PersonController extends Controller {
     }
   }
   /**
-   * 核查证件号码
+   * 核查证件号码(提档函)
    * number
    */
   @Before(LoginInterceptor.class)

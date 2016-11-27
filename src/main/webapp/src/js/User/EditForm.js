@@ -42,7 +42,7 @@ class EditFrom extends React.Component {
     } else {
       $.ajax({
         'type': 'POST',
-        'url': AjaxFunction.UserNumber,
+        'url': AjaxFunction.UserNumbers,
         'dataType': 'text',
         'data': { 'number': value },
         'success': (data) => {

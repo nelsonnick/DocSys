@@ -22,6 +22,7 @@ export const UserCount = `${h}/user/count`;                      // 数据总数
 export const UserQuery = `${h}/user/query`;                      // 数据查询     --参数：queryName
 export const UserName = `${h}/user/name`;                        // 检测名称     --参数：name
 export const UserNumber = `${h}/user/number`;                    // 检测证件     --参数：number
+export const UserNumbers = `${h}/user/numbers`;                    // 检测证件     --参数：number
 export const UserPhone = `${h}/user/phone`;                      // 检测电话     --参数：number
 export const UserLogin = `${h}/user/login`;                      // 检测名称     --参数：login
 export const UserLogins = `${h}/user/logins`;                    // 检测名称     --参数：logins
