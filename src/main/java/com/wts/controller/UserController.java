@@ -157,6 +157,32 @@ public class UserController extends Controller {
     }
   }
   /**
+   * 检查密码
+   * pass
+   */
+  @Before(LoginInterceptor.class)
+  public void passOld() {
+    if (((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")){
+      renderText("超级管理员无法更改默认密码");
+    } else if (!((User) getSessionAttr("user")).getStr("pass").equals(encodeMD5String(getPara("pass").trim()))){
+      renderText("与当前用户的密码不一致");
+    }else{
+      renderText("OK");
+    }
+  }
+  /**
+   * 检查密码
+   * pass
+   */
+  @Before(LoginInterceptor.class)
+  public void passNew() {
+    if (!getPara("pass").trim().matches("[a-zA-Z0-9]{6,12}")) {
+      renderText("新密码必须为6到12位的数字或字母组合!");
+    } else {
+      renderText("OK");
+    }
+  }
+  /**
    * 获取户所属部门
    * did
    */

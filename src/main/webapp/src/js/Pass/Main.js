@@ -14,6 +14,52 @@ class Pass extends React.Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
+    this.userPassOCheck = this.userPassOCheck.bind(this);
+    this.userPassNCheck = this.userPassNCheck.bind(this);
+  }
+  userPassOCheck(rule, value, callback) {
+    if (!value) {
+      callback();
+    } else {
+      $.ajax({
+        'type': 'POST',
+        'url': AjaxFunction.UserPassOld,
+        'dataType': 'text',
+        'data': { 'pass': value },
+        'success': (data) => {
+          if (data.toString() === 'OK') {
+            callback();
+          } else {
+            callback(new Error(data.toString()));
+          }
+        },
+        'error': () => {
+          callback(new Error('无法执行后台验证，请重试'));
+        },
+      });
+    }
+  }
+  userPassNCheck(rule, value, callback) {
+    if (!value) {
+      callback();
+    } else {
+      $.ajax({
+        'type': 'POST',
+        'url': AjaxFunction.UserPassNew,
+        'dataType': 'text',
+        'data': { 'pass': value },
+        'success': (data) => {
+          if (data.toString() === 'OK') {
+            callback();
+          } else {
+            callback(new Error(data.toString()));
+          }
+        },
+        'error': () => {
+          callback(new Error('无法执行后台验证，请重试'));
+        },
+      });
+    }
   }
   handleSubmit() {
     $.ajax({
@@ -70,6 +116,7 @@ class Pass extends React.Component {
           {getFieldDecorator('passBefore', {
             rules: [
               { required: true, whitespace: true, message: '必填项' },
+              { validator: this.userPassOCheck },
             ],
           })(
             <Input placeholder="请输入您的原始密码" type="password" />
@@ -84,6 +131,7 @@ class Pass extends React.Component {
           {getFieldDecorator('passAfter1', {
             rules: [
               { required: true, whitespace: true, message: '必填项' },
+              { validator: this.userPassNCheck },
             ],
           })(
             <Input placeholder="请输入您的新密码" type="password" />
@@ -98,6 +146,7 @@ class Pass extends React.Component {
           {getFieldDecorator('passAfter2', {
             rules: [
               { required: true, whitespace: true, message: '必填项' },
+              { validator: this.userPassNCheck },
             ],
           })(
             <Input placeholder="请再次输入您的新密码" type="password" />

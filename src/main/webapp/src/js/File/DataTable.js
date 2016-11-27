@@ -143,6 +143,27 @@ export default class DataTable extends React.Component {
               <a className="btn btn-xs btn-primary" >原档重存</a>
             </Popconfirm>);
             operate.push(<span className="ant-divider" />);
+            operate.push(
+              <BackLink
+                fileId={record.fid}
+                fileNumber={record.fnumber}
+                fileState={record.fstate}
+                fileRemark={record.fremark}
+                personId={record.pid}
+                personName={record.pname}
+                personNumber={record.pnumber}
+                personState={record.pstate}
+                personPhone1={record.pphone1}
+                personPhone2={record.pphone2}
+                personAddress={record.paddress}
+                fileAge={record.fileAge}
+                personRemark={record.premark}
+                departmentId={window.CurrentDid}
+                departmentName={window.CurrentDepartment}
+                afterEdit={this.afterEdit}
+              />
+            );
+            operate.push(<span className="ant-divider" />);
           } else {
             operate.push();
           }

@@ -291,7 +291,7 @@ export default class Chart extends React.Component {
       }, legend: {
         orient: 'vertical',
         left: 'left',
-        data: ['档案存放', '档案提取', '修改人员信息', '修改档案信息'],
+        data: ['档案存放', '档案提取', '修改人员信息', '修改流转信息'],
       }, series: [
         {
           name: '业务分析',

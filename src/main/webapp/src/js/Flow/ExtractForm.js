@@ -58,7 +58,7 @@ class ExtractFrom extends React.Component {
   render() {
     const { getFieldDecorator, getFieldError, isFieldValidating } = this.props.form;
     const formItemLayout = {
-      labelCol: { span: 8 },
+      labelCol: { span: 6 },
       wrapperCol: { span: 14 },
     };
     return (
