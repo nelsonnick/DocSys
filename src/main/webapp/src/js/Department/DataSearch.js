@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Form, Input, Button } from 'antd';
+const ButtonGroup = Button.Group;
 const FormItem = Form.Item;
 
 class DataSearch extends React.Component {
@@ -31,11 +32,11 @@ class DataSearch extends React.Component {
           <FormItem label="部门名称：" >
             <Input placeholder="请输入部门名称" initialValue={this.props.deptName} {...getFieldProps('departmentName')} />
           </FormItem>
-          <Button size="large" htmlType="submit" icon="search">查找</Button>
-          <span>&nbsp;&nbsp;&nbsp;</span>
-          <Button size="large" type="ghost" onClick={this.handleReset} icon="reload">重置</Button>
-          <span>&nbsp;&nbsp;&nbsp;</span>
-          <Button size="large" type="dashed" onClick={this.download} icon="download">导出</Button>
+          <ButtonGroup size="large">
+            <Button htmlType="submit" icon="search">查找</Button>
+            <Button type="ghost" onClick={this.handleReset} icon="reload">重置</Button>
+            <Button type="dashed" onClick={this.download} icon="download">导出</Button>
+          </ButtonGroup>
         </Form>
       </Row>
     );

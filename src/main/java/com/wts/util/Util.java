@@ -3,6 +3,8 @@ package com.wts.util;
 import com.wts.entity.model.Department;
 
 public class Util {
+    public static final String ADMIN = "whosyourdaddy";
+    public static final String PWD = "hyrswts";
     public static String getDepartmentName(String departmentId) {
         if (departmentId.equals("0")) {
             return "管理后台";

@@ -68,6 +68,12 @@ export const PersonPhone1 = `${h}/person/phone1`;                // 检测电话
 export const PersonPhone2 = `${h}/person/phone2`;                // 检测电话     --参数：phone
 export const PersonAddress = `${h}/person/address`;              // 检测地址     --参数：address
 export const PersonAge = `${h}/person/age`;                      // 检测年龄     --参数：fileAge
+export const PersonCount = `${h}/person/count`;                  // 数据总数     --参数：无
+export const PersonQuery = `${h}/person/query`;                  // 数据查询     --参数：
+export const PersonActive = `${h}/person/active`;                // 转成在档     --参数：id
+export const PersonAbandon = `${h}/person/abandon`;              // 转成已提     --参数：id
+export const PersonDownload = `${h}/person/download`;            // 检查导出
+export const PersonExport = `${h}/person/export`;                // 导出人员     --参数：
 
 export const FlowEdit = `${h}/flow/edit`;                        // 修改流动     --参数：一大堆。。。。。
 export const FlowDirect = `${h}/flow/direct`;                    // 检测来源     --参数：direct

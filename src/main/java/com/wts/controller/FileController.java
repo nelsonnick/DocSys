@@ -618,12 +618,14 @@ public class FileController extends Controller {
         sql=sql+"and "+ getSessionAttr("FileDept");
       }
     }
-    Export e =new Export();
-    e.set("uid",((User) getSessionAttr("user")).get("id").toString())
-            .set("time", new Date())
-            .set("type","档案导出")
-            .set("sql",sql)
-            .save();
+    if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+      Export e = new Export();
+      e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
+              .set("time", new Date())
+              .set("type", "档案导出")
+              .set("sql", sql)
+              .save();
+    }
     f=File.dao.find(sql);
     for (int i = 0; i < f.size(); i++) {
       XSSFRow nextRow = sheet.createRow(i+1);

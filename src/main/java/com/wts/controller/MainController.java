@@ -44,10 +44,10 @@ public class MainController extends Controller {
         Login g =new Login();
         if (result){
             User u =User.dao.findFirst("select * from user where login=? and pass=? and state='系统'", getPara("login"),encodeMD5String(getPara("password")));
-            if (getPara("login").equals("whosyourdaddy") && getPara("password").equals("hyrswts")) {
+            if (getPara("login").equals(Util.ADMIN) && getPara("password").equals(Util.PWD)) {
                 User w =new User();
                 w.setName("超管");
-                w.setLogin("whosyourdaddy");
+                w.setLogin(Util.ADMIN);
                 w.setDid(0);
                 w.setState("系统");
                 setSessionAttr("user",w);
@@ -148,7 +148,7 @@ public class MainController extends Controller {
         List<Change> c;
 
         String sql="select `change`.id,user.name as uname,file.number as fnumber,department.name as dname,flow.flow as lflow,`change`.time,`change`.reasonBefore,`change`.reasonAfter,`change`.directBefore,`change`.directAfter,`change`.typeBefore,`change`.typeAfter,`change`.remarkBefore,`change`.remarkAfter from (((`change` INNER JOIN user ON `change`.uid=user.id) INNER JOIN department ON `change`.did=department.id) INNER JOIN file ON `change`.fid=file.id) INNER JOIN flow ON `change`.lid=flow.id ";
-        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+        if (!((User) getSessionAttr("user")).getStr("login").equals(Util.ADMIN)) {
             Export e = new Export();
             e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
                     .set("time", new Date())
@@ -289,7 +289,7 @@ public class MainController extends Controller {
         }
         List<Trans> t;
         String sql="select trans.id,user.name as uname,department.name as dname,trans.time,trans.nameBefore,trans.nameAfter,trans.pnumberBefore,trans.pnumberAfter,trans.fnumberBefore,trans.fnumberAfter,trans.phone1Before,trans.phone1After,trans.phone2Before,trans.phone2After,trans.addressBefore,trans.addressAfter,trans.fileAgeBefore,trans.fileAgeAfter,trans.infoBefore,trans.infoAfter,trans.retireBefore,trans.retireAfter,trans.premarkBefore,trans.premarkAfter,trans.fremarkBefore,trans.fremarkAfter FROM (trans INNER JOIN user ON trans.uid=user.id) INNER JOIN department ON trans.did=department.id";
-        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+        if (!((User) getSessionAttr("user")).getStr("login").equals(Util.ADMIN)) {
             Export e = new Export();
             e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
                     .set("time", new Date())
@@ -516,7 +516,7 @@ public class MainController extends Controller {
         List<Login> l;
 
         String sql="select * from login";
-        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+        if (!((User) getSessionAttr("user")).getStr("login").equals(Util.ADMIN)) {
             Export e = new Export();
             e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
                     .set("time", new Date())
@@ -595,7 +595,7 @@ public class MainController extends Controller {
         List<Look> l;
 
         String sql="select look.*,user.name as uname from look inner join user on look.uid=user.id";
-        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+        if (!((User) getSessionAttr("user")).getStr("login").equals(Util.ADMIN)) {
             Export e = new Export();
             e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
                     .set("time", new Date())
@@ -689,7 +689,7 @@ public class MainController extends Controller {
         List<Export> l;
 
         String sql="select export.*,user.name as uname from export inner join user on export.uid=user.id";
-        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+        if (!((User) getSessionAttr("user")).getStr("login").equals(Util.ADMIN)) {
             Export e = new Export();
             e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
                     .set("time", new Date())
@@ -770,7 +770,7 @@ public class MainController extends Controller {
         List<Print> p;
 
         String sql="select print.*,user.name as uname,department.name as dname,file.number as fnumber,person.name as pname,person.number as pnumber,flow.time as ltime,flow.flow as lflow from print,user,department,flow,file,person where print.uid=user.id and print.lid=flow.id and flow.did=department.id and flow.fid=file.id and flow.pid=person.id ";
-        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+        if (!((User) getSessionAttr("user")).getStr("login").equals(Util.ADMIN)) {
             Export e = new Export();
             e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
                     .set("time", new Date())
@@ -878,7 +878,7 @@ public class MainController extends Controller {
         List<Prove> p;
 
         String sql="select prove.*,user.name as uname,department.name as dname,file.number as fnumber,person.name as pname,person.number as pnumber from prove,user,department,file,person where prove.uid=user.id and file.did=department.id and prove.fid=file.id and file.pid=person.id ";
-        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+        if (!((User) getSessionAttr("user")).getStr("login").equals(Util.ADMIN)) {
             Export e = new Export();
             e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
                     .set("time", new Date())
@@ -978,7 +978,7 @@ public class MainController extends Controller {
         List<Polity> p;
 
         String sql="select polity.*,user.name as uname,department.name as dname,file.number as fnumber,person.name as pname,person.number as pnumber from polity,user,department,file,person where polity.uid=user.id and file.did=department.id and polity.fid=file.id and file.pid=person.id ";
-        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+        if (!((User) getSessionAttr("user")).getStr("login").equals(Util.ADMIN)) {
             Export e = new Export();
             e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
                     .set("time", new Date())
@@ -1141,7 +1141,7 @@ public class MainController extends Controller {
         List<Extract> p;
 
         String sql="select extract.*,user.name as uname,department.name as dname from extract,user,department where extract.uid=user.id and extract.did=department.id ";
-        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")) {
+        if (!((User) getSessionAttr("user")).getStr("login").equals(Util.ADMIN)) {
             Export e = new Export();
             e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
                     .set("time", new Date())

@@ -313,12 +313,14 @@ public class FlowController extends Controller {
         sql=sql+"and "+ getSessionAttr("FileDept1");
       }
     }
-    Export e =new Export();
-    e.set("uid",((User) getSessionAttr("user")).get("id").toString())
-            .set("time", new Date())
-            .set("type","业务导出")
-            .set("sql",sql)
-            .save();
+    if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+      Export e = new Export();
+      e.set("uid", ((User) getSessionAttr("user")).get("id").toString())
+              .set("time", new Date())
+              .set("type", "业务导出")
+              .set("sql", sql)
+              .save();
+    }
     l=Flow.dao.find(sql);
 
     for (int i = 0; i < l.size(); i++) {

@@ -1,5 +1,6 @@
 package com.wts.entity.model;
 
+import com.jfinal.plugin.activerecord.Page;
 import com.wts.entity.base.BasePerson;
 
 /**
@@ -9,4 +10,10 @@ import com.wts.entity.base.BasePerson;
 public class Person extends BasePerson<Person> {
 	public static final Person dao = new Person();
 
+	public Page<Person> paginate2(int pageNumber, int pageSize, String personName, String personNumber, String personState) {
+
+		return paginate(pageNumber, pageSize, "SELECT person.* ",
+							"FROM person WHERE person.name LIKE '%" + personName + "%' AND  person.number LIKE '%" + personNumber + "%'  AND  person.state LIKE '%" + personState + "%' ORDER BY person.id DESC");
+
+	}
 }

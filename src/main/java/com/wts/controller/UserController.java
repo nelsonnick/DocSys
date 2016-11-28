@@ -425,12 +425,14 @@ public class UserController extends Controller {
       sql="select user.*,department.name as dname from user inner join department on user.did=department.id where user.name like '%"+getSessionAttr("UserName")+"%' and user.did = "+getSessionAttr("UserDept");
 
     }
-    Export e =new Export();
-    e.set("time", new Date())
-            .set("uid",((User) getSessionAttr("user")).get("id").toString())
-            .set("type","用户导出")
-            .set("sql",sql)
-            .save();
+    if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+      Export e = new Export();
+      e.set("time", new Date())
+              .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+              .set("type", "用户导出")
+              .set("sql", sql)
+              .save();
+    }
     u = User.dao.find(sql);
     for (int i = 0; i < u.size(); i++) {
       XSSFRow nextRow = sheet.createRow(i+1);

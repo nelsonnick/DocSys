@@ -313,7 +313,7 @@ public class DepartmentController extends Controller {
    * 检查导出
    * DeptName
    */
-  @Before(LoginInterceptor.class)
+  @Before({Tx.class,LoginInterceptor.class})
   public void download() {
     List<Department> departments;
     if (getPara("DeptName").equals("") || getPara("DeptName")==null){
@@ -351,12 +351,14 @@ public class DepartmentController extends Controller {
       cell=row.createCell(i);
       cell.setCellValue(title[i]);
     }
-    Export e =new Export();
-    e.set("time", new Date())
-            .set("type","部门导出")
-            .set("uid",((User) getSessionAttr("user")).get("id").toString())
-            .set("sql","select * from department where name like '%"+getSessionAttr("Dept")+"%'")
-            .save();
+    if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+      Export e = new Export();
+      e.set("time", new Date())
+              .set("type", "部门导出")
+              .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+              .set("sql", "select * from department where name like '%" + getSessionAttr("Dept") + "%'")
+              .save();
+    }
     List<Department> d= Department.dao.find("select * from department where name like '%"+getSessionAttr("Dept")+"%'");
     for (int i = 0; i < d.size(); i++) {
       XSSFRow nextRow = sheet.createRow(i+1);
