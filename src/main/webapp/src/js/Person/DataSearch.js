@@ -10,7 +10,6 @@ class DataSearch extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
-    this.onChangeDept = this.onChangeDept.bind(this);
     this.onChangeState = this.onChangeState.bind(this);
     this.download = this.download.bind(this);
   }
