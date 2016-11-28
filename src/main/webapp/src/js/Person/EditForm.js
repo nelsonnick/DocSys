@@ -160,7 +160,7 @@ class EditFrom extends React.Component {
     const { getFieldDecorator, getFieldError, isFieldValidating } = this.props.form;
     const { personId, personName, personNumber, personPhone1, personPhone2, personAddress, personRemark, personInfo, personRetire } = this.props;
     const formItemLayout = {
-      labelCol: { span: 8 },
+      labelCol: { span: 6 },
       wrapperCol: { span: 14 },
     };
     return (
