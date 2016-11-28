@@ -11,9 +11,8 @@ public class Person extends BasePerson<Person> {
 	public static final Person dao = new Person();
 
 	public Page<Person> paginate2(int pageNumber, int pageSize, String personName, String personNumber, String personState) {
-
-		return paginate(pageNumber, pageSize, "SELECT person.* ",
-							"FROM person WHERE person.name LIKE '%" + personName + "%' AND  person.number LIKE '%" + personNumber + "%'  AND  person.state LIKE '%" + personState + "%' ORDER BY person.id DESC");
+		return paginate(pageNumber, pageSize, "SELECT * ",
+							"FROM person WHERE name LIKE '%" + personName + "%' AND number LIKE '%" + personNumber + "%'  AND state LIKE '%" + personState + "%' ORDER BY id DESC");
 
 	}
 }

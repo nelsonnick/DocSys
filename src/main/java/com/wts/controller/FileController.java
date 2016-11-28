@@ -306,6 +306,8 @@ public class FileController extends Controller {
                   .set("retire", getPara("pretire").trim())
                   .set("remark", Util.CheckNull(getPara("premark").trim()))
                   .set("fileAge", IDNumber.getFileDate(getPara("fileAge").trim()))
+                  .set("sex", IDNumber.get(getPara("pnumber").trim()))
+                  .set("birth", IDNumber.getBirthDate(getPara("pnumber").trim()))
                   .update();
           file.set("remark", Util.CheckNull(getPara("fremark").trim()))
                   .set("number", getPara("fnumber").trim())

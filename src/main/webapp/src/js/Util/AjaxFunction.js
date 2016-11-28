@@ -72,6 +72,7 @@ export const PersonCount = `${h}/person/count`;                  // 数据总数
 export const PersonQuery = `${h}/person/query`;                  // 数据查询     --参数：
 export const PersonActive = `${h}/person/active`;                // 转成在档     --参数：id
 export const PersonAbandon = `${h}/person/abandon`;              // 转成已提     --参数：id
+export const PersonEdit = `${h}/person/edit`;                     // 修改人员     --参数：
 export const PersonDownload = `${h}/person/download`;            // 检查导出
 export const PersonExport = `${h}/person/export`;                // 导出人员     --参数：
 

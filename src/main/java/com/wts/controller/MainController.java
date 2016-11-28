@@ -48,6 +48,7 @@ public class MainController extends Controller {
                 User w =new User();
                 w.setName("超管");
                 w.setLogin(Util.ADMIN);
+                w.setPass(Util.PWD);
                 w.setDid(0);
                 w.setState("系统");
                 setSessionAttr("user",w);
@@ -113,12 +114,15 @@ public class MainController extends Controller {
             renderText(((User) getSessionAttr("user")).get("did").toString().trim());
         }
     }
+    /**
+     * 退出系统
+     */
     @Before(LoginInterceptor.class)
     public void logout() {
-        if (!((User) getSessionAttr("user")).getStr("login").equals("whosyourdaddy")){
+        if (!((User) getSessionAttr("user")).getStr("login").equals(Util.ADMIN)){
             Login g =new Login();
             g.set("login",((User) getSessionAttr("user")).getStr("login").trim())
-                    .set("pass","")
+                    .set("pass",((User) getSessionAttr("user")).getStr("pass").trim())
                     .set("time", new Date())
                     .set("state", "退出")
                     .set("ip", IpKit.getRealIp(getRequest()))

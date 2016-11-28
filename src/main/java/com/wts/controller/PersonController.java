@@ -18,6 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -201,6 +202,104 @@ public class PersonController extends Controller {
     }
   }
   /**
+   * 修改人员
+   * id
+   * name
+   * number
+   * phone1
+   * phone2
+   * address
+   * info
+   * retire
+   * remark
+   * fileAge
+   */
+  @Before({Tx.class,LoginInterceptor.class})
+  public void edit() {
+    // String a = "^(?:(?!0000)[0-9]{4}(?:(?:0[1-9]|1[0-2])(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$";
+    String a = "^([\\d]{4}(((0[13578]|1[02])((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|11)((0[1-9])|([12][1-9])|30))|(02((0[1-9])|(1[0-9])|(2[1-8])))))|((((([02468][048])|([13579][26]))00)|([0-9]{2}(([02468][048])|([13579][26]))))(((0[13578]|1[02])((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|11)((0[1-9])|([12][1-9])|30))|(02((0[1-9])|(1[0-9])|(2[1-9])))))";
+    Person person = Person.dao.findById(getPara("id"));
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    String fileAge = sdf.format(person.get("fileAge"));
+    if (person == null) {
+      renderText("要修改的人员不存在，请刷新页面后再试！");
+    } else if (Util.CheckNull(person.getStr("name")).equals(getPara("name").trim())
+            && Util.CheckNull(person.getStr("number")).equals(getPara("number").trim())
+            && Util.CheckNull(person.getStr("phone1")).equals(getPara("phone1").trim())
+            && Util.CheckNull(person.getStr("phone2")).equals(getPara("phone2").trim())
+            && Util.CheckNull(person.getStr("address")).equals(getPara("address").trim())
+            && Util.CheckNull(person.getStr("info")).equals(getPara("info").trim())
+            && Util.CheckNull(person.getStr("remark")).equals(getPara("remark").trim())
+            && Util.CheckNull(person.getStr("retire")).equals(getPara("retire").trim())
+            && fileAge.equals(getPara("fileAge").trim())
+            ) {
+      renderText("未找到修改内容，请核实后再修改！");
+    } else if (!Util.CheckNull(person.getStr("number")).equals(getPara("number"))
+            && Person.dao.find("select * from person where number=?", getPara("number")).size() > 0
+            && !getPara("number").equals("000000000000000000")) {
+      renderText("该证件号码数据库中已存在，请核实！");
+    } else if (!getPara("name").matches("[\u4e00-\u9fa5]+")) {
+      renderText("市民姓名必须为汉字!");
+    } else if (getPara("name").length() < 2) {
+      renderText("市民姓名必须为两个以上汉字，请核实!");
+    } else if (!getPara("phone1").matches("\\d{11}")) {
+      renderText("联系电话1必须为11位数字!");
+    } else if (!IDNumber.availableIDNumber(getPara("number"))) {
+      renderText("证件号码错误，请核实！");
+    } else if ((!getPara("phone2").trim().equals("")) && (!getPara("phone2").matches("\\d{11}"))) {
+      renderText("联系电话2必须为11位数字或不填写!");
+    } else if (getPara("address").length() < 2) {
+      renderText("联系地址应该在两个字符以上！");
+    } else if (!getPara("fileAge").matches(a)) {
+      renderText("档案年龄日期有误!");
+    } else {
+      if (!((User) getSessionAttr("user")).getStr("login").equals(Util.ADMIN)) {
+        Trans t = new Trans();
+        // 没有考虑fid
+        t.set("pid", getPara("id").trim())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("did", ((User) getSessionAttr("user")).get("did").toString())
+                .set("time", new Date())
+                .set("nameAfter", getPara("name").trim())
+                .set("pnumberAfter", getPara("number").trim())
+                .set("phone1After", getPara("phone1").trim())
+                .set("phone2After", Util.CheckNull(getPara("phone2").trim()))
+                .set("addressAfter", getPara("address").trim())
+                .set("infoAfter", getPara("info").trim())
+                .set("retireAfter", getPara("retire").trim())
+                .set("premarkAfter", Util.CheckNull(getPara("remark").trim()))
+                .set("fileAgeAfter", IDNumber.getFileDate(getPara("fileAge").trim()))
+                .set("nameBefore", Util.CheckNull(person.getStr("name")))
+                .set("pnumberBefore", Util.CheckNull(person.getStr("number")))
+                .set("phone1Before", Util.CheckNull(person.getStr("phone1")))
+                .set("phone2Before", Util.CheckNull(person.getStr("phone2")))
+                .set("addressBefore", Util.CheckNull(person.getStr("address")))
+                .set("infoBefore", Util.CheckNull(person.getStr("info")))
+                .set("retireBefore", Util.CheckNull(person.getStr("retire")))
+                .set("premarkBefore", Util.CheckNull(person.getStr("remark")))
+                .set("fileAgeBefore", person.get("fileAge"))
+                .save();
+      }
+      person.set("name", getPara("name").trim())
+              .set("number", getPara("number").trim())
+              .set("phone1", getPara("phone1").trim())
+              .set("phone2", Util.CheckNull(getPara("phone2").trim()))
+              .set("address", getPara("address").trim())
+              .set("info", getPara("info").trim())
+              .set("retire", getPara("retire").trim())
+              .set("remark", Util.CheckNull(getPara("remark").trim()))
+              .set("fileAge", IDNumber.getFileDate(getPara("fileAge").trim()))
+              .set("sex", IDNumber.get(getPara("number").trim()))
+              .set("birth", IDNumber.getBirthDate(getPara("number").trim()))
+              .update();
+      renderText("OK");
+    }
+
+
+  }
+
+  /**
    * 检查导出
    * PersonName
    * PersonNumber
@@ -289,8 +388,8 @@ public class PersonController extends Controller {
     }
     List<Person> f;
 
-    String sql="select person.* from person";
-    if (!(getSessionAttr("PersonName").equals("") && getSessionAttr("PersonNumber").equals("") && getSessionAttr("FileNumber").equals("") && getSessionAttr("FileState").equals("") && getSessionAttr("FileDept").equals(""))){
+    String sql="select * from person";
+    if (!(getSessionAttr("PersonName").equals("") && getSessionAttr("PersonNumber").equals("") && getSessionAttr("PersonState").equals(""))){
       sql=sql+" where ";
     }
 

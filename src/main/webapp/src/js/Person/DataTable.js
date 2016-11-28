@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Popconfirm, message, notification } from 'antd';
+import EditLink from './EditLink.js';
 import $ from 'jquery';
 import * as AjaxFunction from '../Util/AjaxFunction.js';
 
@@ -120,6 +121,23 @@ export default class DataTable extends React.Component {
       width: 150,
       render: (text, record) => {
         const operate = [];
+        operate.push(
+          <EditLink
+            personId={record.id}
+            personName={record.name}
+            personNumber={record.number}
+            personState={record.state}
+            personPhone1={record.phone1}
+            personPhone2={record.phone2}
+            personAddress={record.address}
+            personInfo={record.info}
+            personRetire={record.retire}
+            fileAge={record.fileAge}
+            personRemark={record.remark}
+            afterEdit={this.afterEdit}
+          />
+        );
+        operate.push(<span className="ant-divider" />);
         if (record.state.toString() === '在档') {
           operate.push(<Popconfirm title={`确定要将人员<${record.name}>转为已提状态？`} okText="转已提" onConfirm={this.abandon.bind(this, record.id)} onCancel={this.cancel}>
             <a className="btn btn-warning btn-xs">转已提</a>
