@@ -30,6 +30,9 @@ public class _MappingKit {
 		arp.addMapping("prove", "id", Prove.class);
 		arp.addMapping("trans", "id", Trans.class);
 		arp.addMapping("user", "id", User.class);
+		arp.addMapping("variantd", "id", Variantd.class);
+		arp.addMapping("variantp", "id", Variantp.class);
+		arp.addMapping("variantu", "id", Variantu.class);
 	}
 }
 

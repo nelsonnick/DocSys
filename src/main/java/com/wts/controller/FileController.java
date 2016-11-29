@@ -191,6 +191,13 @@ public class FileController extends Controller {
               .set("fid",f.get("id").toString())
               .set("flow","转入")
               .save();
+      if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+        Variantp variantp = new Variantp();
+        variantp.set("time", new Date())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("pid", p.get("id").toString())
+                .set("type", "新增人员").save();
+      }
       renderText("OK");
     }
   }
@@ -312,6 +319,13 @@ public class FileController extends Controller {
           file.set("remark", Util.CheckNull(getPara("fremark").trim()))
                   .set("number", getPara("fnumber").trim())
                   .update();
+          if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+            Variantp variantp = new Variantp();
+            variantp.set("time", new Date())
+                    .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                    .set("pid", getPara("pid"))
+                    .set("type", "修改人员").save();
+          }
           renderText("OK");
         }
       }
@@ -357,6 +371,13 @@ public class FileController extends Controller {
                   .save();
           file.set("state", "已提").update();
           person.set("state", "已提").update();
+          if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+            Variantp variantp = new Variantp();
+            variantp.set("time", new Date())
+                    .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                    .set("pid", person.get("id").toString())
+                    .set("type", "人员转已提").save();
+          }
           renderText("OK");
         }
       }
@@ -410,6 +431,13 @@ public class FileController extends Controller {
                 .set("pid", getPara("pid"))
                 .set("flow", "转入")
                 .save();
+        if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+          Variantp variantp = new Variantp();
+          variantp.set("time", new Date())
+                  .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                  .set("pid", getPara("pid"))
+                  .set("type", "人员转在档").save();
+        }
         renderText("OK");
       }
     }
@@ -451,6 +479,13 @@ public class FileController extends Controller {
                   .set("pid", person.get("id").toString())
                   .set("flow", "重存")
                   .save();
+          if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+            Variantp variantp = new Variantp();
+            variantp.set("time", new Date())
+                    .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                    .set("pid", person.get("id").toString())
+                    .set("type", "人员转在档").save();
+          }
           renderText("OK");
         }
       }

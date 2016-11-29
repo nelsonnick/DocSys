@@ -219,19 +219,22 @@ public class UserController extends Controller {
     }else {
       User user = new User();
       user.set("name", getPara("name").trim())
-              .set("time", new Date())
               .set("number", getPara("number").trim())
               .set("phone", getPara("phone").trim())
               .set("login", getPara("login").trim())
               .set("did", getPara("did").trim())
               .set("state", getPara("state").trim())
               .set("pass", encodeMD5String(getPara("number").substring(getPara("number").length()-8,getPara("number").length()).trim()))
-              .set("other", getPara("other").trim());
-      if (user.save()) {
-        renderText("OK");
-      } else {
-        renderText("发生未知错误，请检查数据库！");
+              .set("other", getPara("other").trim())
+              .save();
+      if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+        Variantu variantu = new Variantu();
+        variantu.set("time", new Date())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("uids", user.get("id").toString())
+                .set("type", "新增用户").save();
       }
+      renderText("OK");
     }
   }
   /**
@@ -268,18 +271,21 @@ public class UserController extends Controller {
       } else if (!IDNumber.availableIDNumber(getPara("number"))&&!(getPara("number").equals("000000000000000000"))){
         renderText("证件号码错误，请核实！");
       } else {
-        if (user
-                .set("name",getPara("name").trim())
+        user.set("name",getPara("name").trim())
                 .set("number",getPara("number").trim())
                 .set("phone",getPara("phone").trim())
                 .set("login",getPara("login").trim())
                 .set("did",getPara("did").trim())
                 .set("other",Util.CheckNull(getPara("other").trim()))
-                .update()) {
-          renderText("OK");
-        } else{
-          renderText("发生未知错误，请检查数据库！");
+                .update();
+        if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+          Variantu variantu = new Variantu();
+          variantu.set("time", new Date())
+                  .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                  .set("uids", user.get("id").toString())
+                  .set("type", "修改").save();
         }
+        renderText("OK");
       }
     }
   }
@@ -294,11 +300,15 @@ public class UserController extends Controller {
     }else if (Util.CheckNull(user.getStr("state")).equals("注销")){
       renderText("该用户已注销！");
     }else{
-      if (User.dao.findById(getPara("id")).set("state", "注销").update()){
-        renderText("OK");
-      } else {
-        renderText("发生未知错误，请检查数据库！");
+      User.dao.findById(getPara("id")).set("state", "注销").update();
+      if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+        Variantu variantu = new Variantu();
+        variantu.set("time", new Date())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("uids", getPara("id"))
+                .set("type", "注销用户").save();
       }
+      renderText("OK");
     }
   }
   /**
@@ -312,11 +322,15 @@ public class UserController extends Controller {
     }else if (Util.CheckNull(user.getStr("state")).equals("激活")){
       renderText("该用户已激活！");
     }else{
-      if (user.set("state", "激活").update()){
-        renderText("OK");
-      } else {
-        renderText("发生未知错误，请检查数据库！");
+      user.set("state", "激活").update();
+      if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+        Variantu variantu = new Variantu();
+        variantu.set("time", new Date())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("uids", getPara("id"))
+                .set("type", "激活用户").save();
       }
+      renderText("OK");
     }
   }
   /**
@@ -330,11 +344,16 @@ public class UserController extends Controller {
     }else if (Util.CheckNull(user.getStr("state")).equals("删除")){
       renderText("该用户已删除！");
     }else{
-      if (user.set("state", "删除").update()){
-        renderText("OK");
-      } else {
-        renderText("发生未知错误，请检查数据库！");
+      user.set("state", "删除").update();
+      if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+        Variantu variantu = new Variantu();
+        variantu.set("time", new Date())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("uids", getPara("id"))
+                .set("type", "删除用户").save();
       }
+      renderText("OK");
+
     }
   }
   /**
@@ -343,16 +362,21 @@ public class UserController extends Controller {
   @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void reset(){
     User user = User.dao.findById(getPara("id"));
+
     if (user == null) {
       renderText("要重置的用户不存在，请刷新页面后再试！");
     }else if(!IDNumber.availableIDNumber(Util.CheckNull(user.getStr("number"))) && !user.getStr("number").equals("000000000000000000")){
       renderText("要重置的用户证件号码有误，请修改证件号码后再试！");
     } else {
-      if (user.set("pass", encodeMD5String(user.get("number").toString().substring(user.get("number").toString().length()-8,user.get("number").toString().length()).trim())).update()){
-        renderText("OK");
-      } else {
-        renderText("发生未知错误，请检查数据库！");
+      user.set("pass", encodeMD5String(user.get("number").toString().substring(user.get("number").toString().length()-8,user.get("number").toString().length()).trim())).update();
+      if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+        Variantu variantu = new Variantu();
+        variantu.set("time", new Date())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("uids", getPara("id"))
+                .set("type", "重置密码").save();
       }
+      renderText("OK");
     }
   }
   /**
@@ -522,11 +546,16 @@ public class UserController extends Controller {
     } else if (!getPara("passAfter1").trim().matches("[a-zA-Z0-9]{6,12}")) {
       renderText("新密码必须为6到12位的数字或字母组合!");
     } else {
-      if (u.set("pass", encodeMD5String(getPara("passAfter1").trim())).update()) {
-        renderText("OK");
-      } else {
-        renderText("发生未知错误，请检查数据库！");
+      u.set("pass", encodeMD5String(getPara("passAfter1").trim())).update();
+      if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+        Variantu variantu = new Variantu();
+        variantu.set("time", new Date())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("uids", ((User) getSessionAttr("user")).get("id").toString())
+                .set("type", "修改密码").save();
       }
+      renderText("OK");
+
     }
   }
   /**

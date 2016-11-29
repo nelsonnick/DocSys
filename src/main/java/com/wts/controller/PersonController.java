@@ -168,18 +168,22 @@ public class PersonController extends Controller {
    * id
    */
   @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
-  public void active(){
+  public void active() {
     Person person = Person.dao.findById(getPara("id"));
     if (person == null) {
       renderText("要转为在档状态的人员不存在，请刷新页面后再试！");
-    }else if (Util.CheckNull(person.getStr("state")).equals("在档")){
+    } else if (Util.CheckNull(person.getStr("state")).equals("在档")) {
       renderText("该用户已处于在档状态！");
-    }else{
-      if (person.set("state", "在档").update()){
-        renderText("OK");
-      } else {
-        renderText("发生未知错误，请检查数据库！");
+    } else {
+      person.set("state", "在档").update();
+      if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+        Variantp variantp = new Variantp();
+        variantp.set("time", new Date())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("pid", getPara("id"))
+                .set("type", "人员转在档").save();
       }
+      renderText("OK");
     }
   }
   /**
@@ -187,18 +191,22 @@ public class PersonController extends Controller {
    * id
    */
   @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
-  public void abandon(){
+  public void abandon() {
     Person person = Person.dao.findById(getPara("id"));
     if (person == null) {
       renderText("要转为已提状态的人员不存在，请刷新页面后再试！");
-    }else if (Util.CheckNull(person.getStr("state")).equals("已提")){
+    } else if (Util.CheckNull(person.getStr("state")).equals("已提")) {
       renderText("该用户已处于已提状态！");
-    }else{
-      if (person.set("state", "已提").update()){
-        renderText("OK");
-      } else {
-        renderText("发生未知错误，请检查数据库！");
+    } else {
+      person.set("state", "已提").update();
+      if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+        Variantp variantp = new Variantp();
+        variantp.set("time", new Date())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("pid", getPara("id"))
+                .set("type", "人员转已提").save();
       }
+      renderText("OK");
     }
   }
   /**
@@ -293,6 +301,13 @@ public class PersonController extends Controller {
               .set("sex", IDNumber.get(getPara("number").trim()))
               .set("birth", IDNumber.getBirthDate(getPara("number").trim()))
               .update();
+      if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+        Variantp variantp = new Variantp();
+        variantp.set("time", new Date())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("pid", getPara("id"))
+                .set("type", "修改人员").save();
+      }
       renderText("OK");
     }
 

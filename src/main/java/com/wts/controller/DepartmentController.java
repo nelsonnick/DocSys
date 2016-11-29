@@ -6,9 +6,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
-import com.wts.entity.model.Department;
-import com.wts.entity.model.Export;
-import com.wts.entity.model.User;
+import com.wts.entity.model.*;
 import com.wts.interceptor.LoginInterceptor;
 import com.wts.interceptor.PowerInterceptor;
 import com.wts.util.Util;
@@ -194,12 +192,15 @@ public class DepartmentController extends Controller {
               .set("code", getPara("code").trim())
               .set("state", getPara("state").trim())
               .set("number", getPara("number").trim())
-              .set("other", getPara("other").trim());
-      if (department.save()) {
-        renderText("OK");
-      } else {
-        renderText("发生未知错误，请检查数据库！");
+              .set("other", getPara("other").trim()).save();
+      if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+        Variantd variantd = new Variantd();
+        variantd.set("time", new Date())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("did", department.get("id").toString())
+                .set("type", "新增部门").save();
       }
+      renderText("OK");
     }
   }
   /**
@@ -213,11 +214,15 @@ public class DepartmentController extends Controller {
     }else if (Util.CheckNull(department.getStr("state")).equals("注销")){
       renderText("该部门已注销！");
     }else{
-      if (Department.dao.findById(getPara("id")).set("state", "注销").update()){
-        renderText("OK");
-      } else {
-        renderText("发生未知错误，请检查数据库！");
+      Department.dao.findById(getPara("id")).set("state", "注销").update();
+      if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+        Variantd variantd = new Variantd();
+        variantd.set("time", new Date())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("did", getPara("id"))
+                .set("type", "注销部门").save();
       }
+      renderText("OK");
     }
   }
   /**
@@ -231,11 +236,15 @@ public class DepartmentController extends Controller {
     }else if (Util.CheckNull(department.getStr("state")).equals("激活")){
       renderText("该部门已激活！");
     }else{
-      if (department.set("state", "激活").update()){
-        renderText("OK");
-      } else {
-        renderText("发生未知错误，请检查数据库！");
+      department.set("state", "激活").update();
+      if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+        Variantd variantd = new Variantd();
+        variantd.set("time", new Date())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("did", getPara("id"))
+                .set("type", "激活部门").save();
       }
+      renderText("OK");
     }
   }
   /**
@@ -249,11 +258,15 @@ public class DepartmentController extends Controller {
     }else if (Util.CheckNull(department.getStr("state")).equals("删除")){
       renderText("该部门已删除！");
     }else{
-      if (department.set("state", "删除").update()){
-        renderText("OK");
-      } else {
-        renderText("发生未知错误，请检查数据库！");
+      department.set("state", "删除").update();
+      if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+        Variantd variantd = new Variantd();
+        variantd.set("time", new Date())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("did", getPara("id"))
+                .set("type", "删除部门").save();
       }
+      renderText("OK");
     }
   }
   /**
@@ -294,18 +307,23 @@ public class DepartmentController extends Controller {
             && Department.dao.find("select * from department where number=?", getPara("number")).size() > 0) {
       renderText("该部门编号数据库中已存在，请使用其他编号!");
     } else {
-      if (department
+      department
               .set("name",getPara("name").trim())
               .set("phone",getPara("phone").trim())
               .set("address",getPara("address").trim())
               .set("code",getPara("code").trim())
               .set("other",Util.CheckNull(getPara("other").trim()))
               .set("number",getPara("number").trim())
-              .update()) {
-        renderText("OK");
-      } else{
-        renderText("发生未知错误，请检查数据库！");
+              .update();
+      if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
+        Variantd variantd = new Variantd();
+        variantd.set("time", new Date())
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("did", getPara("id"))
+                .set("type", "修改部门").save();
       }
+      renderText("OK");
+
     }
 
   }

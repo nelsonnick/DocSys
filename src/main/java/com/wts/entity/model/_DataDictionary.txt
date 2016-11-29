@@ -218,6 +218,38 @@ Table: user
  did    | INT(10)      | YES  |     |         |         
  other  | VARCHAR(999) | YES  |     |         |         
  state  | VARCHAR(255) | YES  |     |         |         
- time   | DATETIME(19) | YES  |     |         |         
 --------+--------------+------+-----+---------+---------
+
+Table: variantd
+-------+--------------+------+-----+---------+---------
+ Field | Type         | Null | Key | Default | Remarks 
+-------+--------------+------+-----+---------+---------
+ id    | INT(10)      | NO   | PRI |         |         
+ uid   | INT(10)      | YES  |     |         |         
+ did   | INT(10)      | YES  |     |         |         
+ time  | DATETIME(19) | YES  |     |         |         
+ type  | VARCHAR(255) | YES  |     |         |         
+-------+--------------+------+-----+---------+---------
+
+Table: variantp
+-------+--------------+------+-----+---------+---------
+ Field | Type         | Null | Key | Default | Remarks 
+-------+--------------+------+-----+---------+---------
+ id    | INT(10)      | NO   | PRI |         |         
+ uid   | INT(10)      | YES  |     |         |         
+ pid   | INT(10)      | YES  |     |         |         
+ time  | DATETIME(19) | YES  |     |         |         
+ type  | VARCHAR(255) | YES  |     |         |         
+-------+--------------+------+-----+---------+---------
+
+Table: variantu
+-------+--------------+------+-----+---------+---------
+ Field | Type         | Null | Key | Default | Remarks 
+-------+--------------+------+-----+---------+---------
+ id    | INT(10)      | NO   | PRI |         |         
+ uid   | INT(10)      | YES  |     |         |         
+ uids  | INT(10)      | YES  |     |         |         
+ time  | DATETIME(19) | YES  |     |         |         
+ type  | VARCHAR(255) | YES  |     |         |         
+-------+--------------+------+-----+---------+---------
 
