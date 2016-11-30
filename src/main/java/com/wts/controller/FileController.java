@@ -371,7 +371,7 @@ public class FileController extends Controller {
           renderText("联系地址应该在两个字符以上，请修改后再办理档案转出!");
         } else if (!person.get("fileAge").toString().matches(a)) {
           renderText("档案年龄日期有误，请修改后再办理档案转出!");
-        }  else {
+        } else {
           Flow l = new Flow();
           l.set("pid", getPara("pid").trim())
                   .set("uid", ((User) getSessionAttr("user")).get("id").toString())
