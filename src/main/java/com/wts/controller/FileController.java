@@ -369,7 +369,7 @@ public class FileController extends Controller {
           renderText("证件号码错误，，请修改后再办理档案转出!");
         } else if (person.get("address").toString().length()<2) {
           renderText("联系地址应该在两个字符以上，请修改后再办理档案转出!");
-        }else if (!person.get("fileAge").toString().matches(a)) {
+        } else if (!person.get("fileAge").toString().matches(a)) {
           renderText("档案年龄日期有误，请修改后再办理档案转出!");
         }  else {
           Flow l = new Flow();
