@@ -202,7 +202,7 @@ public class UserController extends Controller {
             "select * from user where login=?", getPara("login"));
     if (!getPara("name").matches("[\u4e00-\u9fa5]+")) {
       renderText("用户名称必须为汉字!");
-    } else if (user1.size() != 0) {
+    } else if (user1.size() != 0&&!(getPara("number").equals("000000000000000000"))) {
       renderText("该证件号码数据库中已存在，请核实!");
     } else if (user2.size() != 0) {
       renderText("该登录名称已有其他工作人员使用，请更换!");
@@ -256,6 +256,7 @@ public class UserController extends Controller {
         renderText("未找到修改内容，请核实后再修改！");
       } else if (!Util.CheckNull(user.getStr("number")).equals(getPara("number"))
               && User.dao.find("select * from user where number=?", getPara("number")).size() > 0
+              &&!(getPara("number").equals("000000000000000000"))
               ){
         renderText("该证件号码已绑定为其他工作人员，请重新修改！");
       } else if (!getPara("name").matches("[\u4e00-\u9fa5]+")) {
