@@ -2,20 +2,7 @@ import React from 'react';
 import { Form, Input, Select, Row, Col } from 'antd';
 const FormItem = Form.Item;
 class PolityFrom extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      Birth: '',
-    };
-  }
-  componentWillMount() {
-    const a = this.props.personBirth.toString().trim();
-    this.setState(
-      {
-        Birth: a.substring(0, 4) + a.substring(5, 7) + a.substring(8, 10),
-      }
-    );
-  }
+
   render() {
     const { getFieldDecorator, getFieldError, isFieldValidating } = this.props.form;
     const { fileId, personName, personNumber, personSex } = this.props;
@@ -65,7 +52,7 @@ class PolityFrom extends React.Component {
               required
               help={isFieldValidating('personBirth') ? '校验中...' : (getFieldError('personBirth') || [])}
             >
-              {getFieldDecorator('personBirth', { initialValue: this.state.Birth,
+              {getFieldDecorator('personBirth', { initialValue: this.props.personBirth.toString().trim().substring(0, 4) + this.props.personBirth.toString().trim().substring(5, 7) + this.props.personBirth.toString().trim().substring(8, 10),
                 rules: [
                   { required: true, whitespace: true, message: '必填项' },
                 ],

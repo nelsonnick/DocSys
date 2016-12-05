@@ -6,9 +6,6 @@ import * as AjaxFunction from '../Util/AjaxFunction.js';
 class EditFrom extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      FileAge: '',
-    };
     this.fileAgeCheck = this.fileAgeCheck.bind(this);
     this.fileNumberCheck = this.fileNumberCheck.bind(this);
     this.personNameCheck = this.personNameCheck.bind(this);
@@ -19,14 +16,7 @@ class EditFrom extends React.Component {
     this.flowDirectCheck = this.flowDirectCheck.bind(this);
     this.flowReasonCheck = this.flowReasonCheck.bind(this);
   }
-  componentWillMount() {
-    const a = this.props.fileAge.toString().trim();
-    this.setState(
-      {
-        FileAge: a.substring(0, 4) + a.substring(5, 7) + a.substring(8, 10),
-      }
-    );
-  }
+
   personNumberCheck(rule, value, callback) {
     if (!value) {
       callback();
@@ -291,7 +281,7 @@ class EditFrom extends React.Component {
               required
               help={isFieldValidating('fileAge') ? '校验中...' : (getFieldError('fileAge') || [])}
             >
-              {getFieldDecorator('fileAge', { initialValue: this.state.FileAge,
+              {getFieldDecorator('fileAge', { initialValue: this.props.fileAge.toString().trim().substring(0, 4) + this.props.fileAge.toString().trim().substring(5, 7) + this.props.fileAge.toString().trim().substring(8, 10),
                 rules: [
                   { required: true, whitespace: true, message: '必填项' },
                   { validator: this.fileAgeCheck },
@@ -343,7 +333,7 @@ class EditFrom extends React.Component {
                   { validator: this.personAddressCheck },
                 ],
               })(
-                <Input placeholder="请输入市民联系地址" />
+                <Input type="textarea" rows="2" placeholder="请输入市民联系地址" />
               )}
             </FormItem>
             <FormItem

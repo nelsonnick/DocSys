@@ -9,20 +9,10 @@ const Option = Select.Option;
 class BackFrom extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      FileAge: '',
-    };
     this.flowDirectCheck = this.flowDirectCheck.bind(this);
     this.flowReasonCheck = this.flowReasonCheck.bind(this);
   }
-  componentWillMount() {
-    const a = this.props.fileAge.toString();
-    this.setState(
-      {
-        FileAge: a.substring(0, 4) + a.substring(5, 7) + a.substring(8, 10),
-      }
-    );
-  }
+
   flowDirectCheck(rule, value, callback) {
     if (!value) {
       callback();
@@ -118,7 +108,7 @@ class BackFrom extends React.Component {
               required
               help={isFieldValidating('fileAge') ? '校验中...' : (getFieldError('fileAge') || [])}
             >
-              {getFieldDecorator('fileAge', { initialValue: this.state.FileAge })(
+              {getFieldDecorator('fileAge', { initialValue: this.props.fileAge.toString().trim().substring(0, 4) + this.props.fileAge.toString().trim().substring(5, 7) + this.props.fileAge.toString().trim().substring(8, 10) })(
                 <Input placeholder="请输入市民档案年龄" maxlength="8" disabled />
               )}
             </FormItem>
@@ -151,7 +141,7 @@ class BackFrom extends React.Component {
               help={isFieldValidating('personAddress') ? '校验中...' : (getFieldError('personAddress') || [])}
             >
               {getFieldDecorator('personAddress', { initialValue: personAddress })(
-                <Input placeholder="请输入市民联系地址" disabled />
+                <Input type="textarea" rows="2" placeholder="请输入市民联系地址" disabled />
               )}
             </FormItem>
             <FormItem

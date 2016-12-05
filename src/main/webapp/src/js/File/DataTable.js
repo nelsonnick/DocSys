@@ -68,12 +68,12 @@ export default class DataTable extends React.Component {
       title: '档案位置',
       dataIndex: 'dname',
       key: 'dname',
-      width: 100,
+      width: 120,
     }, {
       title: '档案状态',
       dataIndex: 'fstate',
       key: 'fstate',
-      width: 100,
+      width: 80,
     }, {
       title: '操作',
       key: 'operation',

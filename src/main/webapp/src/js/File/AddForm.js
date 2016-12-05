@@ -334,7 +334,7 @@ class AddFrom extends React.Component {
                   { validator: this.personAddressCheck },
                 ],
               })(
-                <Input placeholder="请输入市民联系地址" />
+                <Input type="textarea" rows="2" placeholder="请输入市民联系地址" />
               )}
             </FormItem>
             <FormItem
