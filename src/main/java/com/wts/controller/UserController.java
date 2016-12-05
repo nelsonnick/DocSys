@@ -124,8 +124,8 @@ public class UserController extends Controller {
             "select * from user where login=?", getPara("login"));
     if (user.size() != 0) {
       renderText("该登录名称已有其他工作人员使用，请更换!");
-    } else if (!getPara("login").matches("[a-zA-Z0-9]{4,12}")) {
-      renderText("登录名称必须为4到12位的数字或字母组合!");
+    } else if (!getPara("login").matches("[a-zA-Z0-9]{4,24}")) {
+      renderText("登录名称必须为4到24位的数字或字母组合!");
     } else if (getPara("login").equals("whosyourdaddy")) {
       renderText("该登录名称已有其他工作人员使用，请更换!");
     } else {
@@ -138,8 +138,8 @@ public class UserController extends Controller {
    */
   @Before({LoginInterceptor.class,PowerInterceptor.class})
   public void logins() {
-    if (!getPara("login").matches("[a-zA-Z0-9]{4,12}")) {
-      renderText("登录名称必须为4到12位的数字或字母组合!");
+    if (!getPara("login").matches("[a-zA-Z0-9]{4,24}")) {
+      renderText("登录名称必须为4到24位的数字或字母组合!");
     } else {
       renderText("OK");
     }
@@ -208,8 +208,8 @@ public class UserController extends Controller {
       renderText("该登录名称已有其他工作人员使用，请更换!");
     } else if (getPara("name").length()<2) {
       renderText("用户名称必须为两个以上汉字!");
-    } else if (!getPara("login").matches("[a-zA-Z0-9]{4,12}")) {
-      renderText("登录名称必须为4到12位的数字或字母组合!");
+    } else if (!getPara("login").matches("[a-zA-Z0-9]{4,24}")) {
+      renderText("登录名称必须为4到24位的数字或字母组合!");
     } else if (getPara("login").equals("whosyourdaddy")) {
       renderText("该登录名称已有其他工作人员使用，请更换!");
     } else if (!getPara("phone").matches("\\d{11}")) {

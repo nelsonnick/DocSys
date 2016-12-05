@@ -363,14 +363,12 @@ public class FileController extends Controller {
           renderText("人员姓名称必须为两个以上汉字，请修改后再办理档案转出!");
         } else if (!person.get("phone1").toString().matches("\\d{11}")) {
           renderText("联系电话1必须为11位数字，请修改后再办理档案转出!");
-        } else if ((!person.get("phone1").toString().trim().equals("")) && (!person.get("phone2").toString().matches("\\d{11}"))){
+        } else if ((!person.get("phone2").toString().trim().equals("")) && (!person.get("phone2").toString().matches("\\d{11}"))){
           renderText("联系电话2必须为11位数字或不填写，请修改后再办理档案转出!");
         } else if (!IDNumber.availableIDNumber(person.get("number").toString()) && !person.get("number").toString().equals("000000000000000000")){
           renderText("证件号码错误，，请修改后再办理档案转出!");
         } else if (person.get("address").toString().length()<2) {
           renderText("联系地址应该在两个字符以上，请修改后再办理档案转出!");
-        } else if (!person.get("fileAge").toString().matches(a)) {
-          renderText("档案年龄日期有误，请修改后再办理档案转出!");
         } else {
           Flow l = new Flow();
           l.set("pid", getPara("pid").trim())
