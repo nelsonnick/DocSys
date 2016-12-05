@@ -425,7 +425,7 @@ public class UserController extends Controller {
    */
   @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void export() throws IOException {
-    String[] title={"序号","姓名","证件号码","联系电话","登录名称","所属部门","状态"," 入职时间","备注"};
+    String[] title={"序号","姓名","证件号码","联系电话","登录名称","所属部门","状态","备注"};
     //创建Excel工作簿
     XSSFWorkbook workbook = new XSSFWorkbook();
     //创建一个工作表
@@ -504,12 +504,6 @@ public class UserController extends Controller {
         cell2.setCellValue(u.get(i).get("state").toString());
       }
       cell2 = nextRow.createCell(7);
-      if (u.get(i).get("time") == null) {
-        cell2.setCellValue("");
-      } else {
-        cell2.setCellValue(u.get(i).get("time").toString());
-      }
-      cell2 = nextRow.createCell(8);
       if (u.get(i).get("other") == null) {
         cell2.setCellValue("");
       } else {
