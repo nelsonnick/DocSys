@@ -638,6 +638,6 @@ public class IDNumber {
   }
 
   public static void main(String[] args) {
-    System.out.println(getBirthDate("000000000000000000"));
+    System.out.println(getFileDate("20160101"));
   }
 }
