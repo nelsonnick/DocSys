@@ -637,7 +637,39 @@ public class IDNumber {
     return null;
   }
 
+  private static boolean checkFileDate(String number) {
+    String Birth = number.substring(0, 4) + "-"
+            + number.substring(4, 6) + "-" + number.substring(6, 8);
+    SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+    try {
+      Date BirthDate = formatDate.parse(Birth);
+      Date DateBefore = formatDate.parse("1800-1-1");
+      Date DateAfter = formatDate.parse("2199-12-31");
+      return BirthDate.after(DateBefore) && BirthDate.before(DateAfter);
+    } catch (ParseException e1) {
+      e1.printStackTrace();
+    }
+    return false;
+  }
+  public static String getfileAge(String number) {
+    if (number.matches("\\d{8}")) {
+      if (checkFileDate(number)) {
+        return "OK";
+      }
+      return "档案年龄日期有误！";
+    }
+    return "档案年龄必须为8位数字!";
+  }
+  public static boolean checkfileAge(String number) {
+    if (number.matches("\\d{8}")) {
+      if (checkFileDate(number)) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
   public static void main(String[] args) {
-    System.out.println(getFileDate("20160101"));
+    System.out.println(checkfileAge("20160101"));
   }
 }

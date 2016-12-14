@@ -151,8 +151,8 @@ public class FileController extends Controller {
       renderText("证件号码错误，请核实！");
     } else if (getPara("paddress").length()<2) {
       renderText("联系地址应该在两个字符以上！");
-    }else if (!getPara("fileAge").matches(a)) {
-      renderText("档案年龄日期有误!");
+    }else if (!IDNumber.checkfileAge((getPara("fileAge")))) {
+      renderText(IDNumber.getfileAge((getPara("fileAge"))));
     } else if (getPara("lreason").trim().length()==0) {
       renderText("存档原因必须填写!");
     } else if (getPara("ldirect").trim().length()==0) {
@@ -272,8 +272,8 @@ public class FileController extends Controller {
           renderText("联系电话2必须为11位数字或不填写!");
         } else if (getPara("paddress").length() < 2) {
           renderText("联系地址应该在两个字符以上！");
-        } else if (!getPara("fileAge").matches(a)) {
-          renderText("档案年龄日期有误!");
+        } else if (!IDNumber.checkfileAge((getPara("fileAge")))) {
+          renderText(IDNumber.getfileAge((getPara("fileAge"))));
         } else {
           Trans t = new Trans();
           t.set("pid", getPara("pid").trim())

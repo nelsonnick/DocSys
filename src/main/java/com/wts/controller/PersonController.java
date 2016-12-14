@@ -127,16 +127,18 @@ public class PersonController extends Controller {
    */
   @Before(LoginInterceptor.class)
   public void age() {
-    String a = "^([\\d]{4}(((0[13578]|1[02])((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|11)((0[1-9])|([12][1-9])|30))|(02((0[1-9])|(1[0-9])|(2[1-8])))))|((((([02468][048])|([13579][26]))00)|([0-9]{2}(([02468][048])|([13579][26]))))(((0[13578]|1[02])((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|11)((0[1-9])|([12][1-9])|30))|(02((0[1-9])|(1[0-9])|(2[1-9])))))";
-    if (!getPara("fileAge").matches("\\d{8}")) {
-      renderText("档案年龄必须为8位数字!");
-    } else {
-      if (getPara("fileAge").matches(a)) {
-        renderText("OK");
-      }else{
-        renderText("档案年龄日期有误!");
-      }
-    }
+    renderText(IDNumber.getfileAge((getPara("fileAge"))));
+
+//    String a = "^([\\d]{4}(((0[13578]|1[02])((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|11)((0[1-9])|([12][1-9])|30))|(02((0[1-9])|(1[0-9])|(2[1-8])))))|((((([02468][048])|([13579][26]))00)|([0-9]{2}(([02468][048])|([13579][26]))))(((0[13578]|1[02])((0[1-9])|([12][0-9])|(3[01])))|(((0[469])|11)((0[1-9])|([12][1-9])|30))|(02((0[1-9])|(1[0-9])|(2[1-9])))))";
+//    if (!getPara("fileAge").matches("\\d{8}")) {
+//      renderText("档案年龄必须为8位数字!");
+//    } else {
+//      if (getPara("fileAge").matches(a)) {
+//        renderText("OK");
+//      }else{
+//        renderText("档案年龄日期有误!");
+//      }
+//    }
   }
 
   /**
@@ -259,8 +261,8 @@ public class PersonController extends Controller {
       renderText("联系电话2必须为11位数字或不填写!");
     } else if (getPara("address").length() < 2) {
       renderText("联系地址应该在两个字符以上！");
-    } else if (!getPara("fileAge").matches(a)) {
-      renderText("档案年龄日期有误!");
+    } else if (!IDNumber.checkfileAge((getPara("fileAge")))) {
+      renderText(IDNumber.getfileAge((getPara("fileAge"))));
     } else {
       if (!((User) getSessionAttr("user")).getStr("login").equals(Util.ADMIN)) {
         Trans t = new Trans();
