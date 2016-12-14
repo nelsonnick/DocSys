@@ -138,8 +138,8 @@ class FlowFrom extends React.Component {
               label="联系地址"
               {...formItemLayout}
               hasFeedback
-              required
-              help={isFieldValidating('personAddress') ? '校验中...' : (getFieldError('personAddress') || [])}
+              // required
+              // help={isFieldValidating('personAddress') ? '校验中...' : (getFieldError('personAddress') || [])}
             >
               {getFieldDecorator('personAddress', { initialValue: personAddress })(
                 <Input type="textarea" rows="2" placeholder="请输入市民联系地址" disabled />

@@ -40,54 +40,101 @@ public class MainController extends Controller {
         renderCaptcha();
     }
     public void login() {
-        boolean result = validateCaptcha("verifyCode");
+//        boolean result = validateCaptcha("verifyCode");
+//        Login g =new Login();
+//        if (result){
+//            User u =User.dao.findFirst("select * from user where login=? and pass=? and state='系统'", getPara("login"),encodeMD5String(getPara("password")));
+//            if (getPara("login").equals(Util.ADMIN) && getPara("password").equals(Util.PWD)) {
+//                User w =new User();
+//                w.setName("超管");
+//                w.setLogin(Util.ADMIN);
+//                w.setPass(Util.PWD);
+//                w.setDid(0);
+//                w.setState("系统");
+//                setSessionAttr("user",w);
+//                redirect("/sys");
+//            }else if (u!=null){
+//                setSessionAttr("user",u);
+//                g.set("login",getPara("login"))
+//                        .set("pass",getPara("password"))
+//                        .set("time", new Date())
+//                        .set("state", "成功")
+//                        .set("ip", IpKit.getRealIp(getRequest()))
+//                        .save();
+//                redirect("/sys");
+//            }else{
+//                User user=User.dao.findFirst("select * from user where login=? and pass=? and state='激活'", getPara("login"),encodeMD5String(getPara("password")));
+//                if (user!=null){
+//                    setSessionAttr("user",user);
+//                    g.set("login",getPara("login"))
+//                            .set("pass",getPara("password"))
+//                            .set("time", new Date())
+//                            .set("state", "成功")
+//                            .set("ip", IpKit.getRealIp(getRequest()))
+//                            .save();
+//                    redirect("/com");
+//                }else{
+//                    g.set("login",getPara("login"))
+//                            .set("pass",getPara("password"))
+//                            .set("time", new Date())
+//                            .set("state", "失败")
+//                            .set("ip", IpKit.getRealIp(getRequest()))
+//                            .save();
+//                    setAttr("error","用户名或密码错误！");
+//                    render("/dist/login.html");
+//                }
+//            }
+//        }else{
+//            setAttr("error","验证码错误！");
+//            render("/dist/login.html");
+//        }
         Login g =new Login();
-        if (result){
-            User u =User.dao.findFirst("select * from user where login=? and pass=? and state='系统'", getPara("login"),encodeMD5String(getPara("password")));
-            if (getPara("login").equals(Util.ADMIN) && getPara("password").equals(Util.PWD)) {
-                User w =new User();
-                w.setName("超管");
-                w.setLogin(Util.ADMIN);
-                w.setPass(Util.PWD);
-                w.setDid(0);
-                w.setState("系统");
-                setSessionAttr("user",w);
-                redirect("/sys");
-            }else if (u!=null){
-                setSessionAttr("user",u);
+        User u =User.dao.findFirst("select * from user where login=? and pass=? and state='系统'", getPara("login"),encodeMD5String(getPara("password")));
+        if (getPara("login").equals(Util.ADMIN) && getPara("password").equals(Util.PWD)) {
+            User w =new User();
+            w.setName("超管");
+            w.setLogin(Util.ADMIN);
+            w.setPass(Util.PWD);
+            w.setDid(0);
+            w.setState("系统");
+            setSessionAttr("user",w);
+            redirect("/sys");
+        }else if (u!=null){
+            setSessionAttr("user",u);
+            g.set("login",getPara("login"))
+                    .set("pass",getPara("password"))
+                    .set("time", new Date())
+                    .set("state", "成功")
+                    .set("ip", IpKit.getRealIp(getRequest()))
+                    .save();
+            redirect("/sys");
+        }else{
+            User user=User.dao.findFirst("select * from user where login=? and pass=? and state='激活'", getPara("login"),encodeMD5String(getPara("password")));
+            if (user!=null){
+                setSessionAttr("user",user);
                 g.set("login",getPara("login"))
                         .set("pass",getPara("password"))
                         .set("time", new Date())
                         .set("state", "成功")
                         .set("ip", IpKit.getRealIp(getRequest()))
                         .save();
-                redirect("/sys");
+                redirect("/com");
             }else{
-                User user=User.dao.findFirst("select * from user where login=? and pass=? and state='激活'", getPara("login"),encodeMD5String(getPara("password")));
-                if (user!=null){
-                    setSessionAttr("user",user);
-                    g.set("login",getPara("login"))
-                            .set("pass",getPara("password"))
-                            .set("time", new Date())
-                            .set("state", "成功")
-                            .set("ip", IpKit.getRealIp(getRequest()))
-                            .save();
-                    redirect("/com");
-                }else{
-                    g.set("login",getPara("login"))
-                            .set("pass",getPara("password"))
-                            .set("time", new Date())
-                            .set("state", "失败")
-                            .set("ip", IpKit.getRealIp(getRequest()))
-                            .save();
-                    setAttr("error","用户名或密码错误！");
-                    render("/dist/login.html");
-                }
+                g.set("login",getPara("login"))
+                        .set("pass",getPara("password"))
+                        .set("time", new Date())
+                        .set("state", "失败")
+                        .set("ip", IpKit.getRealIp(getRequest()))
+                        .save();
+                setAttr("error","用户名或密码错误！");
+                render("/dist/login.html");
             }
-        }else{
-            setAttr("error","验证码错误！");
-            render("/dist/login.html");
         }
+
+
+
+
+
     }
     @Before(LoginInterceptor.class)
     public void getCurrentUser(){
