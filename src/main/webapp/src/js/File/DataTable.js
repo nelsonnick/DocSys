@@ -197,7 +197,7 @@ export default class DataTable extends React.Component {
           } else if (record.pstate.toString() === '已提' && record.fstate.toString() === '在档') {
             operate.push(<a className="btn btn-xs btn-link" >状态冲突(档在人提)，请联系管理员！</a>);
           } else if (record.pstate.toString() === '在档' && record.fstate.toString() === '已提') {
-            operate.push(<a className="btn btn-xs btn-link" >状态冲突(档提人在)，请联系管理员！</a>);
+            operate.push();
           } else {
             operate.push();
           }
