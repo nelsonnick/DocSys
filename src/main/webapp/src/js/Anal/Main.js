@@ -33,6 +33,16 @@ const columns = [{
   key: 'flow_count3',
   width: 70,
 }, {
+  title: '档案出借',
+  dataIndex: 'flow_count4',
+  key: 'flow_count4',
+  width: 70,
+}, {
+  title: '档案归还',
+  dataIndex: 'flow_count5',
+  key: 'flow_count5',
+  width: 70,
+}, {
   title: '修改档案',
   dataIndex: 'trans_count',
   key: 'trans_count',
@@ -87,6 +97,16 @@ const columnz = [{
   title: '档案重存',
   dataIndex: 'flow_count3',
   key: 'flow_count3',
+  width: 70,
+},  {
+  title: '档案出借',
+  dataIndex: 'flow_count4',
+  key: 'flow_count4',
+  width: 70,
+}, {
+  title: '档案归还',
+  dataIndex: 'flow_count5',
+  key: 'flow_count5',
   width: 70,
 }, {
   title: '修改档案',

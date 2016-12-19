@@ -4,6 +4,7 @@ import EditLink from './EditLink.js';
 import FlowLink from './FlowLink.js';
 import BackLink from './BackLink.js';
 import PolityLink from './PolityLink.js';
+import BorrowLink from './BorrowLink.js';
 import $ from 'jquery';
 import * as AjaxFunction from '../Util/AjaxFunction.js';
 
@@ -125,8 +126,28 @@ export default class DataTable extends React.Component {
                 afterEdit={this.afterEdit}
               />
             );
+            operate.push(
+              <BorrowLink
+                fileId={record.fid}
+                fileNumber={record.fnumber}
+                fileState={record.fstate}
+                fileRemark={record.fremark}
+                personId={record.pid}
+                personName={record.pname}
+                personNumber={record.pnumber}
+                personState={record.pstate}
+                personPhone1={record.pphone1}
+                personPhone2={record.pphone2}
+                personAddress={record.paddress}
+                fileAge={record.fileAge}
+                personRemark={record.premark}
+                departmentId={record.did}
+                departmentName={record.dname}
+                afterEdit={this.afterEdit}
+              />
+            );
             operate.push(<span className="ant-divider" />);
-            operate.push(<a className="btn btn-xs btn-default" href={`${AjaxFunction.PrintProve}?fid=${record.fid}`} >存档证明</a>);
+            operate.push(<a className="btn btn-xs btn-link" href={`${AjaxFunction.PrintProve}?fid=${record.fid}`} >存档证明</a>);
             operate.push(<span className="ant-divider" />);
             operate.push(
               <PolityLink
@@ -167,7 +188,34 @@ export default class DataTable extends React.Component {
           } else if (record.pstate.toString() === '已提' && record.fstate.toString() === '在档') {
             operate.push(<a className="btn btn-xs btn-link" >状态冲突(档在人提)，请联系管理员！</a>);
           } else if (record.pstate.toString() === '在档' && record.fstate.toString() === '已提') {
-            operate.push();
+            operate.push(
+              <EditLink
+                fileId={record.fid}
+                fileNumber={record.fnumber}
+                fileState={record.fstate}
+                fileRemark={record.fremark}
+                personId={record.pid}
+                personName={record.pname}
+                personNumber={record.pnumber}
+                personState={record.pstate}
+                personPhone1={record.pphone1}
+                personPhone2={record.pphone2}
+                personAddress={record.paddress}
+                personInfo={record.pinfo}
+                personRetire={record.pretire}
+                fileAge={record.fileAge}
+                personRemark={record.premark}
+                departmentId={record.did}
+                departmentName={record.dname}
+                afterEdit={this.afterEdit}
+              />
+            );
+            operate.push(<span className="ant-divider" />);
+            operate.push(<Popconfirm title={`确定要归还<${record.pname}>的<${record.fnumber}>档案？`} okText="还档" onConfirm={this.returns.bind(this, record.fid)} onCancel={this.cancel}>
+              <a className="btn btn-xs btn-primary" >还档</a>
+            </Popconfirm>);
+            operate.push(<span className="ant-divider" />);
+            operate.push(<a className="btn btn-xs btn-link" href={`${AjaxFunction.PrintProve}?fid=${record.fid}`} >存档证明</a>);
           } else {
             operate.push();
           }

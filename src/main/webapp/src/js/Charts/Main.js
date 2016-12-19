@@ -235,8 +235,34 @@ export default class Chart extends React.Component {
                                     'did': userDept,
                                   },
                                   'success': (FemaleOut) => {
-                                    this.drawChartsA(FlowIn, FlowOut, FlowChange, PersonChange);
-                                    this.drawChartsB(MaleIn, MaleOut, FemaleIn, FemaleOut);
+                                    $.ajax({
+                                      'type': 'POST',
+                                      'url': AjaxFunction.FlowBorrow,
+                                      'dataType': 'text',
+                                      'data': {
+                                        'did': userDept,
+                                      },
+                                      'success': (FlowBorrow) => {
+                                        $.ajax({
+                                          'type': 'POST',
+                                          'url': AjaxFunction.FlowReturn,
+                                          'dataType': 'text',
+                                          'data': {
+                                            'did': userDept,
+                                          },
+                                          'success': (FlowReturn) => {
+                                            this.drawChartsA(FlowIn, FlowOut, FlowChange, PersonChange,FlowBorrow,FlowReturn);
+                                            this.drawChartsB(MaleIn, MaleOut, FemaleIn, FemaleOut);
+                                          },
+                                          'error': () => {
+                                            openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                                          },
+                                        });
+                                      },
+                                      'error': () => {
+                                        openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                                      },
+                                    });
                                   },
                                   'error': () => {
                                     openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
@@ -278,7 +304,7 @@ export default class Chart extends React.Component {
       },
     });
   }
-  drawChartsA(FlowIn = '0', FlowOut = '0', FlowChange = '', PersonChange = '0') {
+  drawChartsA(FlowIn = '0', FlowOut = '0', FlowBorrow = '0', FlowReturn = '0', FlowChange = '', PersonChange = '0') {
     const myChart = echarts.init(document.getElementById('ChartsA'));
     myChart.setOption({
       title: {
@@ -291,7 +317,7 @@ export default class Chart extends React.Component {
       }, legend: {
         orient: 'vertical',
         left: 'left',
-        data: ['档案存放', '档案提取', '修改人员信息', '修改流转信息'],
+        data: ['档案存放', '档案提取', '档案出借', '档案归还','修改人员信息', '修改流转信息'],
       }, series: [
         {
           name: '业务分析',
@@ -301,6 +327,8 @@ export default class Chart extends React.Component {
           data: [
             { value: FlowIn, name: '档案存放' },
             { value: FlowOut, name: '档案提取' },
+            { value: FlowBorrow, name: '档案出借' },
+            { value: FlowReturn, name: '档案归还' },
             { value: FlowChange, name: '修改人员信息' },
             { value: PersonChange, name: '修改档案信息' },
           ],
@@ -325,7 +353,7 @@ export default class Chart extends React.Component {
         },
       },
       legend: {
-        data: ['男', '女'],
+        data: ['女', '男'],
       },
       grid: {
         left: '1%',
@@ -342,18 +370,6 @@ export default class Chart extends React.Component {
       },
       series: [
         {
-          name: '男',
-          type: 'bar',
-          stack: '总量',
-          label: {
-            normal: {
-              show: true,
-              position: 'insideRight',
-            },
-          },
-          data: [MaleIn, MaleOut],
-        },
-        {
           name: '女',
           type: 'bar',
           stack: '总量',
@@ -364,6 +380,18 @@ export default class Chart extends React.Component {
             },
           },
           data: [FemaleIn, FemaleOut],
+        },
+        {
+          name: '男',
+          type: 'bar',
+          stack: '总量',
+          label: {
+            normal: {
+              show: true,
+              position: 'insideRight',
+            },
+          },
+          data: [MaleIn, MaleOut],
         },
       ],
     });

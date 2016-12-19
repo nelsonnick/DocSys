@@ -33,6 +33,26 @@ public class CountController extends Controller {
         }
     }
     @Before({Tx.class,LoginInterceptor.class})
+    public void flowBorrow() {
+        if (getPara("did").equals("")) {
+            String count = Db.queryLong("select count(*) from flow where flow.flow = '出借' ").toString();
+            renderText(count);
+        } else {
+            String count = Db.queryLong("select count(*) from flow where flow.flow = '出借' and flow.did = " + getPara("did")).toString();
+            renderText(count);
+        }
+    }
+    @Before({Tx.class,LoginInterceptor.class})
+    public void flowReturn() {
+        if (getPara("did").equals("")) {
+            String count = Db.queryLong("select count(*) from flow where flow.flow = '归还' ").toString();
+            renderText(count);
+        } else {
+            String count = Db.queryLong("select count(*) from flow where flow.flow = '归还' and flow.did = " + getPara("did")).toString();
+            renderText(count);
+        }
+    }
+    @Before({Tx.class,LoginInterceptor.class})
     public void flowChange() {
         if (getPara("did").equals("")) {
             String count = Db.queryLong("select count(*) from trans ").toString();
@@ -137,6 +157,8 @@ public class CountController extends Controller {
                 + "(select count(*) from `flow`) as flow_count1 ,"
                 + "(select count(*) from `flow`) as flow_count2 ,"
                 + "(select count(*) from `flow`) as flow_count3 ,"
+                + "(select count(*) from `flow`) as flow_count4 ,"
+                + "(select count(*) from `flow`) as flow_count5 ,"
                 + "(select count(*) from `look`) as look_count ,"
                 + "(select count(*) from `polity`) as polity_count ,"
                 + "(select count(*) from `print`) as print_count ,"
@@ -152,6 +174,8 @@ public class CountController extends Controller {
                     + "(select count(*) from `flow` where flow='转入' and uid = " + users.get(i).get("id").toString() + ") as flow_count1 ,"
                     + "(select count(*) from `flow` where flow='转出' and uid = " + users.get(i).get("id").toString() + ") as flow_count2 ,"
                     + "(select count(*) from `flow` where flow='重存' and uid = " + users.get(i).get("id").toString() + ") as flow_count3 ,"
+                    + "(select count(*) from `flow` where flow='出借' and uid = " + users.get(i).get("id").toString() + ") as flow_count4 ,"
+                    + "(select count(*) from `flow` where flow='归还' and uid = " + users.get(i).get("id").toString() + ") as flow_count5 ,"
                     + "(select count(*) from `look` where uid = " + users.get(i).get("id").toString() + ") as look_count ,"
                     + "(select count(*) from `polity` where uid = " + users.get(i).get("id").toString() + ") as polity_count ,"
                     + "(select count(*) from `print` where uid = " + users.get(i).get("id").toString() + ") as print_count ,"
@@ -174,6 +198,8 @@ public class CountController extends Controller {
                 + "(select count(*) from `flow` where flow='转入') as flow_count1 ,"
                 + "(select count(*) from `flow` where flow='转出') as flow_count2 ,"
                 + "(select count(*) from `flow` where flow='重存') as flow_count3 ,"
+                + "(select count(*) from `flow` where flow='出借') as flow_count4 ,"
+                + "(select count(*) from `flow` where flow='归还') as flow_count5 ,"
                 + "(select count(*) from `look`) as look_count ,"
                 + "(select count(*) from `polity`) as polity_count ,"
                 + "(select count(*) from `print`) as print_count ,"

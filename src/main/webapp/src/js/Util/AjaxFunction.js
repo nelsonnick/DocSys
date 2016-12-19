@@ -87,9 +87,12 @@ export const FlowDownload = `${h}/flow/download`;                // 检查导出
 export const FlowExport = `${h}/Flow/export`;                    // 导出流动     --参数：
 export const PrintOut = `${h}/flow/printOut`;                    // 转出打印     --参数：
 export const PrintIn = `${h}/flow/printIn`;                      // 转入打印     --参数：
+export const PrintBorrow = `${h}/flow/printBorrow`;              // 出借打印     --参数：
 
 export const FlowIn = `${h}/count/flowIn`;                       // 存档数量     --参数：userDept
 export const FlowOut = `${h}/count/flowOut`;                     // 提档数量     --参数：userDept
+export const FlowBorrow = `${h}/count/flowBorrow`;               // 借档数量     --参数：userDept
+export const FlowReturn = `${h}/count/flowReturn`;               // 还档数量     --参数：userDept
 export const FlowChange = `${h}/count/flowChange`;               // 流动变更     --参数：userDept
 export const PersonChange = `${h}/count/personChange`;           // 人员变更     --参数：userDept
 export const MaleIn = `${h}/count/maleIn`;                       // 存档男性     --参数：userDept

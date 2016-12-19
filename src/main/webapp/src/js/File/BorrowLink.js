@@ -96,7 +96,7 @@ export default class BorrowLink extends React.Component {
     const { fileId, fileNumber, fileRemark, personId, personName, personNumber, personPhone1, personPhone2, personAddress, fileAge, personRemark, departmentName } = this.props;
     return (
       <span>
-        <a onClick={this.showModal} className="btn btn-link btn-xs" >借出</a>
+        <a onClick={this.showModal} className="btn btn-default btn-xs" >借出</a>
         <Modal
           maskClosable={false}
           title="档案借出"

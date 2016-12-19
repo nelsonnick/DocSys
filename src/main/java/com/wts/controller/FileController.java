@@ -353,18 +353,18 @@ public class FileController extends Controller {
         redirect("/index");
       } else {
         Person person = Person.dao.findById(getPara("pid"));
-        if (!Util.CheckNull(file.getStr("state")).equals("在档")) {
-          renderText("该档案已处于提档状态！");
+        if (!Util.CheckNull(file.getStr("state")).equals("已提")) {
+          renderText("该档案正处于在档状态！");
         } else if (!Util.CheckNull(person.getStr("state")).equals("在档")) {
           renderText("该人员已处于提档状态！");
         } else if (!person.get("name").toString().matches("[\u4e00-\u9fa5]+")) {
-          renderText("人员姓名必须为汉字，请修改后再办理档案转出!");
+          renderText("人员姓名必须为汉字，请修改后再办理档案出出借!");
         } else if (person.get("name").toString().length()<2) {
-          renderText("人员姓名称必须为两个以上汉字，请修改后再办理档案转出!");
+          renderText("人员姓名称必须为两个以上汉字，请修改后再办理档案出借!");
         } else if (!person.get("phone1").toString().matches("\\d{11}")) {
-          renderText("联系电话1必须为11位数字，请修改后再办理档案转出!");
+          renderText("联系电话1必须为11位数字，请修改后再办理档案出借!");
         } else if ((!person.get("phone2").toString().trim().equals("")) && (!person.get("phone2").toString().matches("\\d{11}"))){
-          renderText("联系电话2必须为11位数字或不填写，请修改后再办理档案转出!");
+          renderText("联系电话2必须为11位数字或不填写，请修改后再办理档案出借!");
         } else if (!IDNumber.availableIDNumber(person.get("number").toString()) && !person.get("number").toString().equals("000000000000000000")){
           renderText("证件号码错误，，请修改后再办理档案转出!");
 //        } else if (person.get("address").trim().toString().length()<2) {
@@ -382,14 +382,7 @@ public class FileController extends Controller {
                   .set("time", new Date())
                   .set("flow", "出借")
                   .save();
-          person.set("state", "已提").update();
-          if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
-            Variantp variantp = new Variantp();
-            variantp.set("time", new Date())
-                    .set("uid", ((User) getSessionAttr("user")).get("id").toString())
-                    .set("pid", person.get("id").toString())
-                    .set("type", "人员转已提").save();
-          }
+          file.set("state", "已提").update();
           renderText("OK");
         }
       }
@@ -583,14 +576,14 @@ public class FileController extends Controller {
       } else {
         Person person = Person.dao.findById(file.get("pid"));
         Department d = Department.dao.findById(file.get("did"));
-        if (!file.getStr("state").trim().equals("在档")) {
-          renderText("该档案处于已提状态!");
+        if (!file.getStr("state").trim().equals("已提")) {
+          renderText("该档案处于在档状态!");
         } else if (person==null) {
           renderText("该人员不存在!");
-        } else if (!person.getStr("state").trim().equals("已提")) {
-          renderText("该人员处于在档状态!");
+        } else if (!person.getStr("state").trim().equals("在档")) {
+          renderText("该人员处于已提状态!");
         }  else {
-          person.set("state", "在档").update();
+          file.set("state", "在档").update();
           Flow l = new Flow();
           l.set("remark", "还档")
                   .set("type", "其他")
@@ -601,15 +594,8 @@ public class FileController extends Controller {
                   .set("time", new Date())
                   .set("fid", file.get("id").toString())
                   .set("pid", person.get("id").toString())
-                  .set("flow", "还档")
+                  .set("flow", "归还")
                   .save();
-          if (!((User) getSessionAttr("user")).get("login").toString().equals(Util.ADMIN)) {
-            Variantp variantp = new Variantp();
-            variantp.set("time", new Date())
-                    .set("uid", ((User) getSessionAttr("user")).get("id").toString())
-                    .set("pid", person.get("id").toString())
-                    .set("type", "人员转在档").save();
-          }
           renderText("OK");
         }
       }
