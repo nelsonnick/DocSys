@@ -23,10 +23,13 @@ export default class Chart extends React.Component {
       DeptList: [],      // 部门列表
       FlowIn: '',        // 档案存入
       FlowOut: '',       // 档案提出
+      FlowBorrow: '',    // 档案出借
+      FlowReturn: '',    // 档案归还
       FlowChange: '',    // 流动变更
       PersonChange: '',  // 人员变更
       FileIn: '',        // 存档数量
       FileOut: '',       // 提档数量
+      FileBorrow: '',    // 借档数量
       Female: '',        // 男性数量
       Male: '',          // 女性数量
     };
@@ -127,8 +130,48 @@ export default class Chart extends React.Component {
                                   'url': AjaxFunction.FemaleOutAll,
                                   'dataType': 'text',
                                   'success': (FemaleOut) => {
-                                    this.drawChartsA(FlowIn, FlowOut, FlowChange, PersonChange);
-                                    this.drawChartsB(MaleIn, MaleOut, FemaleIn, FemaleOut);
+                                    $.ajax({
+                                      'type': 'POST',
+                                      'url': AjaxFunction.FlowBorrowAll,
+                                      'dataType': 'text',
+                                      'success': (FlowBorrow) => {
+                                        $.ajax({
+                                          'type': 'POST',
+                                          'url': AjaxFunction.FlowReturnAll,
+                                          'dataType': 'text',
+                                          'success': (FlowReturn) => {
+                                            $.ajax({
+                                              'type': 'POST',
+                                              'url': AjaxFunction.MaleBorrowAll,
+                                              'dataType': 'text',
+                                              'success': (MaleBorrow) => {
+                                                $.ajax({
+                                                  'type': 'POST',
+                                                  'url': AjaxFunction.FemaleBorrowAll,
+                                                  'dataType': 'text',
+                                                  'success': (FemaleBorrow) => {
+                                                    this.drawChartsA(FlowIn, FlowOut, FlowChange, PersonChange, FlowBorrow, FlowReturn);
+                                                    this.drawChartsB(MaleIn, MaleOut, MaleBorrow, FemaleIn, FemaleOut, FemaleBorrow);
+                                                  },
+                                                  'error': () => {
+                                                    openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                                                  },
+                                                });
+                                              },
+                                              'error': () => {
+                                                openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                                              },
+                                            });
+                                          },
+                                          'error': () => {
+                                            openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                                          },
+                                        });
+                                      },
+                                      'error': () => {
+                                        openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                                      },
+                                    });
                                   },
                                   'error': () => {
                                     openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
@@ -251,8 +294,34 @@ export default class Chart extends React.Component {
                                             'did': userDept,
                                           },
                                           'success': (FlowReturn) => {
-                                            this.drawChartsA(FlowIn, FlowOut, FlowChange, PersonChange,FlowBorrow,FlowReturn);
-                                            this.drawChartsB(MaleIn, MaleOut, FemaleIn, FemaleOut);
+                                            $.ajax({
+                                              'type': 'POST',
+                                              'url': AjaxFunction.MaleBorrow,
+                                              'dataType': 'text',
+                                              'data': {
+                                                'did': userDept,
+                                              },
+                                              'success': (MaleBorrow) => {
+                                                $.ajax({
+                                                  'type': 'POST',
+                                                  'url': AjaxFunction.FemaleBorrow,
+                                                  'dataType': 'text',
+                                                  'data': {
+                                                    'did': userDept,
+                                                  },
+                                                  'success': (FemaleBorrow) => {
+                                                    this.drawChartsA(FlowIn, FlowOut, FlowChange, PersonChange, FlowBorrow, FlowReturn);
+                                                    this.drawChartsB(MaleIn, MaleOut, MaleBorrow, FemaleIn, FemaleOut, FemaleBorrow);
+                                                  },
+                                                  'error': () => {
+                                                    openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                                                  },
+                                                });
+                                              },
+                                              'error': () => {
+                                                openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
+                                              },
+                                            });
                                           },
                                           'error': () => {
                                             openNotificationWithIcon('error', '请求错误', '无法读取数量，请检查网络情况');
@@ -317,7 +386,7 @@ export default class Chart extends React.Component {
       }, legend: {
         orient: 'vertical',
         left: 'left',
-        data: ['档案存放', '档案提取', '档案出借', '档案归还','修改人员信息', '修改流转信息'],
+        data: ['档案存放', '档案提取', '档案出借', '档案归还', '修改人员信息', '修改流转信息'],
       }, series: [
         {
           name: '业务分析',
@@ -343,7 +412,7 @@ export default class Chart extends React.Component {
       ],
     });
   }
-  drawChartsB(MaleIn = '0', MaleOut = '0', FemaleIn = '', FemaleOut = '0') {
+  drawChartsB(MaleIn = '0', MaleOut = '0', MaleBorrow = '0', FemaleIn = '', FemaleOut = '0', FemaleBorrow = '0') {
     const myChart = echarts.init(document.getElementById('ChartsB'));
     myChart.setOption({
       tooltip: {
@@ -366,7 +435,7 @@ export default class Chart extends React.Component {
       },
       yAxis: {
         type: 'category',
-        data: ['在存', '已提'],
+        data: ['在存', '已提', '出借'],
       },
       series: [
         {
@@ -379,7 +448,7 @@ export default class Chart extends React.Component {
               position: 'insideRight',
             },
           },
-          data: [FemaleIn, FemaleOut],
+          data: [FemaleIn, FemaleOut, FemaleBorrow],
         },
         {
           name: '男',
@@ -391,7 +460,7 @@ export default class Chart extends React.Component {
               position: 'insideRight',
             },
           },
-          data: [MaleIn, MaleOut],
+          data: [MaleIn, MaleOut, MaleBorrow],
         },
       ],
     });
@@ -411,13 +480,13 @@ export default class Chart extends React.Component {
               &nbsp;&nbsp;&nbsp;
             </Col>
             <Col span={8} >
-              <div id="ChartsA" style={{ 'width': '400px', 'height': '400px' }}></div>
+              <div id="ChartsA" style={{ 'width': '450px', 'height': '450px' }}></div>
             </Col>
             <Col span={2} >
               &nbsp;&nbsp;&nbsp;
             </Col>
             <Col span={8} >
-              <div id="ChartsB" style={{ 'width': '400px', 'height': '400px' }}></div>
+              <div id="ChartsB" style={{ 'width': '450px', 'height': '450px' }}></div>
             </Col>
           </Row>
         </div>

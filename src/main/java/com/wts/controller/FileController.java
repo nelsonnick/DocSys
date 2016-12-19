@@ -353,8 +353,8 @@ public class FileController extends Controller {
         redirect("/index");
       } else {
         Person person = Person.dao.findById(getPara("pid"));
-        if (!Util.CheckNull(file.getStr("state")).equals("已提")) {
-          renderText("该档案正处于在档状态！");
+        if (!Util.CheckNull(file.getStr("state")).equals("在档")) {
+          renderText("该档案处于非在档状态！");
         } else if (!Util.CheckNull(person.getStr("state")).equals("在档")) {
           renderText("该人员已处于提档状态！");
         } else if (!person.get("name").toString().matches("[\u4e00-\u9fa5]+")) {
@@ -382,7 +382,7 @@ public class FileController extends Controller {
                   .set("time", new Date())
                   .set("flow", "出借")
                   .save();
-          file.set("state", "已提").update();
+          file.set("state", "出借").update();
           renderText("OK");
         }
       }
@@ -576,8 +576,8 @@ public class FileController extends Controller {
       } else {
         Person person = Person.dao.findById(file.get("pid"));
         Department d = Department.dao.findById(file.get("did"));
-        if (!file.getStr("state").trim().equals("已提")) {
-          renderText("该档案处于在档状态!");
+        if (!file.getStr("state").trim().equals("出借")) {
+          renderText("该档案并非处于出借状态!");
         } else if (person==null) {
           renderText("该人员不存在!");
         } else if (!person.getStr("state").trim().equals("在档")) {
@@ -588,7 +588,7 @@ public class FileController extends Controller {
           l.set("remark", "还档")
                   .set("type", "其他")
                   .set("direct", d.get("name").toString())
-                  .set("reason", "还档")
+                  .set("reason", "归还档案")
                   .set("did", ((User) getSessionAttr("user")).get("did").toString())
                   .set("uid", ((User) getSessionAttr("user")).get("id").toString())
                   .set("time", new Date())

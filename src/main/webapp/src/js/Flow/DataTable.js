@@ -87,10 +87,13 @@ export default class DataTable extends React.Component {
             operate.push();
           } else if (record.lflow.toString() === '转出') {
             operate.push(<span className="ant-divider" />);
-            operate.push(<a className="btn btn-xs btn-warning" href={`${AjaxFunction.PrintOut}?lid=${record.lid}`} >转出打印</a>);
+            operate.push(<a className="btn btn-xs btn-danger" href={`${AjaxFunction.PrintOut}?lid=${record.lid}`} >转出打印</a>);
           } else if (record.lflow.toString() === '出借') {
             operate.push(<span className="ant-divider" />);
-            operate.push(<a className="btn btn-xs btn-default" href={`${AjaxFunction.PrintBorrow}?lid=${record.lid}`} >出借打印</a>);
+            operate.push(<a className="btn btn-xs btn-warning" href={`${AjaxFunction.PrintBorrow}?lid=${record.lid}`} >出借打印</a>);
+          } else if (record.lflow.toString() === '归还') {
+            operate.push(<span className="ant-divider" />);
+            operate.push(<a className="btn btn-xs btn-default" href={`${AjaxFunction.PrintReturn}?lid=${record.lid}`} >归还打印</a>);
           } else {
             operate.push(<span className="ant-divider" />);
           }

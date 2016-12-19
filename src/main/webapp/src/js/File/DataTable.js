@@ -185,9 +185,9 @@ export default class DataTable extends React.Component {
               />
             );
             operate.push(<span className="ant-divider" />);
-          } else if (record.pstate.toString() === '已提' && record.fstate.toString() === '在档') {
+          } else if (record.pstate.toString() === '已提' && (record.fstate.toString() === '在档' || record.fstate.toString() === '出借')) {
             operate.push(<a className="btn btn-xs btn-link" >状态冲突(档在人提)，请联系管理员！</a>);
-          } else if (record.pstate.toString() === '在档' && record.fstate.toString() === '已提') {
+          } else if (record.pstate.toString() === '在档' && record.fstate.toString() === '出借') {
             operate.push(
               <EditLink
                 fileId={record.fid}
@@ -211,8 +211,8 @@ export default class DataTable extends React.Component {
               />
             );
             operate.push(<span className="ant-divider" />);
-            operate.push(<Popconfirm title={`确定要归还<${record.pname}>的<${record.fnumber}>档案？`} okText="还档" onConfirm={this.returns.bind(this, record.fid)} onCancel={this.cancel}>
-              <a className="btn btn-xs btn-primary" >还档</a>
+            operate.push(<Popconfirm title={`确定要归还<${record.pname}>的<${record.fnumber}>档案？`} okText="归还" onConfirm={this.returns.bind(this, record.fid)} onCancel={this.cancel}>
+              <a className="btn btn-xs btn-primary" >归还</a>
             </Popconfirm>);
             operate.push(<span className="ant-divider" />);
             operate.push(<a className="btn btn-xs btn-link" href={`${AjaxFunction.PrintProve}?fid=${record.fid}`} >存档证明</a>);

@@ -93,6 +93,16 @@ public class CountController extends Controller {
         }
     }
     @Before({Tx.class,LoginInterceptor.class})
+    public void maleBorrow() {
+        if (getPara("did").equals("")) {
+            String count = Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='出借' and person.sex='男' ").toString();
+            renderText(count);
+        } else {
+            String count = Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='出借' and person.sex='男' and file.did = " + getPara("did")).toString();
+            renderText(count);
+        }
+    }
+    @Before({Tx.class,LoginInterceptor.class})
     public void femaleIn() {
         if (getPara("did").equals("")) {
             String count = Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='在档' and person.sex='女' ").toString();
@@ -113,12 +123,30 @@ public class CountController extends Controller {
         }
     }
     @Before({Tx.class,LoginInterceptor.class})
+    public void femaleBorrow() {
+        if (getPara("did").equals("")) {
+            String count = Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='出借' and person.sex='女' ").toString();
+            renderText(count);
+        } else {
+            String count = Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='出借' and person.sex='女' and file.did = " + getPara("did")).toString();
+            renderText(count);
+        }
+    }
+    @Before({Tx.class,LoginInterceptor.class})
     public void flowInAll() {
         renderText(Db.queryLong("select count(*) from flow where flow.flow = '转入' ").toString());
     }
     @Before({Tx.class,LoginInterceptor.class})
     public void flowOutAll() {
         renderText(Db.queryLong("select count(*) from flow where flow.flow = '转出' ").toString());
+    }
+    @Before({Tx.class,LoginInterceptor.class})
+    public void flowBorrowAll() {
+        renderText(Db.queryLong("select count(*) from flow where flow.flow = '出借' ").toString());
+    }
+    @Before({Tx.class,LoginInterceptor.class})
+    public void flowReturnAll() {
+        renderText(Db.queryLong("select count(*) from flow where flow.flow = '归还' ").toString());
     }
     @Before({Tx.class,LoginInterceptor.class})
     public void flowChangeAll() {
@@ -137,6 +165,10 @@ public class CountController extends Controller {
         renderText(Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='已提' and person.sex='男' ").toString());
     }
     @Before({Tx.class,LoginInterceptor.class})
+    public void maleBorrowAll() {
+        renderText(Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='出借' and person.sex='男' ").toString());
+    }
+    @Before({Tx.class,LoginInterceptor.class})
     public void femaleInAll() {
         renderText(Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='在档' and person.sex='女' ").toString());
     }
@@ -144,7 +176,10 @@ public class CountController extends Controller {
     public void femaleOutAll() {
         renderText(Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='已提' and person.sex='女' ").toString());
     }
-
+    @Before({Tx.class,LoginInterceptor.class})
+    public void femaleBorrowAll() {
+        renderText(Db.queryLong("select count(*) from file inner join person on file.pid = person.id where file.state='出借' and person.sex='女' ").toString());
+    }
     /**
      * 检查导出
      * did

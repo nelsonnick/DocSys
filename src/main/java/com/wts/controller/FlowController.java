@@ -494,6 +494,104 @@ public class FlowController extends Controller {
       }
     }
   }
+  /**
+   * 打印
+   * lid
+   */
+  @Before({Tx.class,LoginInterceptor.class})
+  public void printBorrow() {
+    Flow l = Flow.dao.findById(getPara("lid"));
+    if (l == null) {
+      removeSessionAttr("user");
+      redirect("/index");
+    } else {
+      User u = User.dao.findById(l.getInt("uid"));
+      File f = File.dao.findById(l.getInt("fid"));
+      if (((User) getSessionAttr("user")).get("did") != f.getInt("did")) {
+        removeSessionAttr("user");
+        redirect("/index");
+      } else {
+        Print r = new Print();
+        r.set("lid", getPara("lid"))
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("time", new Date())
+                .save();
+        Department d = Department.dao.findById(l.getInt("did"));
+        Person p = Person.dao.findById(l.getInt("pid"));
+        SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
+        SimpleDateFormat MM = new SimpleDateFormat("MM");
+        SimpleDateFormat dd = new SimpleDateFormat("dd");
+        setAttr("fnumber", Util.CheckNull(f.getStr("number")));
+        setAttr("uname", Util.CheckNull(u.getStr("name")));
+        setAttr("pname", Util.CheckNull(p.getStr("name")));
+        setAttr("dname", Util.CheckNull(d.getStr("name")));
+        setAttr("pnumber", Util.CheckNull(p.getStr("number")));
+        setAttr("pphone1", Util.CheckNull(p.getStr("phone1")));
+        setAttr("pphone2", Util.CheckNull(p.getStr("phone2")));
+        setAttr("paddress", Util.CheckNull(p.getStr("address")));
+        setAttr("lreason", Util.CheckNull(l.getStr("reason")));
+        setAttr("ldirect", Util.CheckNull(l.getStr("ldirect")));
+        setAttr("pbirth", yyyy.format(p.get("birth")) + MM.format(p.get("birth")) + dd.format(p.get("birth")));
+        setAttr("psex", Util.CheckNull(p.getStr("sex")));
+        setAttr("fileAge", yyyy.format(p.get("fileAge")) + MM.format(p.get("fileAge")) + dd.format(p.get("fileAge")));
+        setAttr("lremark", Util.CheckNull(l.getStr("remark")));
+        setAttr("fremark", Util.CheckNull(f.getStr("remark")));
+        setAttr("yyyy", yyyy.format(l.get("time")));
+        setAttr("mm", MM.format(l.get("time")));
+        setAttr("dd", dd.format(l.get("time")));
+        render("/dist/printBorrow.html");
+      }
+    }
+  }
+  /**
+   * 打印
+   * lid
+   */
+  @Before({Tx.class,LoginInterceptor.class})
+  public void printReturn() {
+    Flow l = Flow.dao.findById(getPara("lid"));
+    if (l == null) {
+      removeSessionAttr("user");
+      redirect("/index");
+    } else {
+      User u = User.dao.findById(l.getInt("uid"));
+      File f = File.dao.findById(l.getInt("fid"));
+      if (((User) getSessionAttr("user")).get("did") != f.getInt("did")) {
+        removeSessionAttr("user");
+        redirect("/index");
+      } else {
+        Print r = new Print();
+        r.set("lid", getPara("lid"))
+                .set("uid", ((User) getSessionAttr("user")).get("id").toString())
+                .set("time", new Date())
+                .save();
+        Department d = Department.dao.findById(l.getInt("did"));
+        Person p = Person.dao.findById(l.getInt("pid"));
+        SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
+        SimpleDateFormat MM = new SimpleDateFormat("MM");
+        SimpleDateFormat dd = new SimpleDateFormat("dd");
+        setAttr("fnumber", Util.CheckNull(f.getStr("number")));
+        setAttr("uname", Util.CheckNull(u.getStr("name")));
+        setAttr("pname", Util.CheckNull(p.getStr("name")));
+        setAttr("dname", Util.CheckNull(d.getStr("name")));
+        setAttr("pnumber", Util.CheckNull(p.getStr("number")));
+        setAttr("pphone1", Util.CheckNull(p.getStr("phone1")));
+        setAttr("pphone2", Util.CheckNull(p.getStr("phone2")));
+        setAttr("paddress", Util.CheckNull(p.getStr("address")));
+        setAttr("lreason", Util.CheckNull(l.getStr("reason")));
+        setAttr("ldirect", Util.CheckNull(l.getStr("ldirect")));
+        setAttr("pbirth", yyyy.format(p.get("birth")) + MM.format(p.get("birth")) + dd.format(p.get("birth")));
+        setAttr("psex", Util.CheckNull(p.getStr("sex")));
+        setAttr("fileAge", yyyy.format(p.get("fileAge")) + MM.format(p.get("fileAge")) + dd.format(p.get("fileAge")));
+        setAttr("lremark", Util.CheckNull(l.getStr("remark")));
+        setAttr("fremark", Util.CheckNull(f.getStr("remark")));
+        setAttr("yyyy", yyyy.format(l.get("time")));
+        setAttr("mm", MM.format(l.get("time")));
+        setAttr("dd", dd.format(l.get("time")));
+        render("/dist/printReturn.html");
+      }
+    }
+  }
 
 }
 

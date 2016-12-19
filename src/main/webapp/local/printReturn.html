@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>档案归还</title>
+    <link rel="stylesheet" href="../src/css/bootstrap-3.3.0/css/bootstrap.min.css">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#print").click(function() {
+                $(".my_show").jqprint();
+            });
+        });
+    </script>
+    <style media="print">
+        .Noprint {
+            display: none;
+        }
+        .PageNext {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+<div class="Noprint" style="position:absolute; top: 0cm; left:0cm;">
+    <p>
+        <object id="WebBrowser" classid="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2" height="0" width="0"></object>
+        <button type="button"  class="btn btn-success"  onclick="window.print()">直接打印</button>
+        <button type="button"  class="btn btn-default"  onclick="history.go(-1)">返回首页</button>
+        <br />
+    </p>
+</div>
+    <div class="my_show">
+        <div style="position:absolute; top: 1.5cm; left:8cm;"><span><h1>档案归还登记表</h1></span></div>
+        <div style="position:absolute; top: 4cm; left:2cm;">存档单位（盖章）：${(dname)!''}&nbsp;&nbsp;&nbsp;&nbsp;归还日期：${(yyyy)!''}${(mm)!''}${(dd)!''}</div>
+        <div style="position:absolute; top: 4cm; left:16cm;">档案编号：${(fnumber)!''}</div>
+        <div style="position:absolute; top: 4.8cm; left:1cm;">
+            <table border="1" width="800" height="800" cellspacing="0" cellpadding="0">
+                <tr style="height:80px;">
+                    <td width="80" style="text-align:center">姓&nbsp;&nbsp;名</td>
+                    <td style="text-align:center">${(pname)!''}</td>
+                    <td width="80" style="text-align:center">性&nbsp;&nbsp;别</td>
+                    <td style="text-align:center">${(psex)!''}</td>
+                    <td width="80" style="text-align:center">证件号码</td>
+                    <td style="text-align:center">${(pnumber)!''}</td>
+                </tr>
+                <tr style="height:80px;">
+                    <td style="text-align:center">出生日期</td>
+                    <td style="text-align:center">${(pbirth)!''}</td>
+                    <td style="text-align:center">档案年龄</td>
+                    <td style="text-align:center">${(fileAge)!''}</td>
+                    <td style="text-align:center">联系电话</td>
+                    <td style="text-align:center">${(pphone1)!''}</td>
+                </tr>
+                <tr style="height:80px;">
+                    <td style="text-align:center">联系电话</td>
+                    <td style="text-align:center">${(pphone2)!''}</td>
+                    <td style="text-align:center">联系地址</td>
+                    <td style="text-align:center" colspan=3>${(paddress)!''}</td>
+                </tr>
+                <tr style="height:200px;">
+                    <td style="text-align:center">档案材料</td>
+                    <td style="text-align:center" colspan=5>${(fremark)!''}</td>
+                </tr>
+                <tr style="height:100px;">
+                    <td style="text-align:center" colspan=6>
+                        <h2>请确保档案归还时内容完整！未封存档案不接收！</br>请认真核实以上信息，无误后签名确认。</h2>
+                    </td>
+                </tr>
+                <tr style="height:100px;">
+                    <td style="text-align:center" colspan=6>申请人（签名）：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代办人（签名）：</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
