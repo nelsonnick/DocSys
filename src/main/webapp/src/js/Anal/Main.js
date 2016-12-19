@@ -98,7 +98,7 @@ const columnz = [{
   dataIndex: 'flow_count3',
   key: 'flow_count3',
   width: 70,
-},  {
+}, {
   title: '档案出借',
   dataIndex: 'flow_count4',
   key: 'flow_count4',
