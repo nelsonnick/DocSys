@@ -18,6 +18,7 @@ export default class DataTable extends React.Component {
   constructor(props) {
     super(props);
     this.returns = this.returns.bind(this);
+    this.returnz = this.returnz.bind(this);
     this.cancel = this.cancel.bind(this);
     this.afterEdit = this.afterEdit.bind(this);
   }
@@ -35,6 +36,27 @@ export default class DataTable extends React.Component {
           openNotificationWithIcon('success', '重存成功', '重存成功，请进行后续操作');
         } else {
           openNotificationWithIcon('error', '重存失败', data.toString());
+        }
+      },
+      'error': () => {
+        openNotificationWithIcon('error', '请求错误', '无法完成修改操作，请检查网络情况');
+      },
+    });
+  }
+  returnz(Fid) {
+    $.ajax({
+      'type': 'POST',
+      'url': AjaxFunction.FileReturnz,
+      'dataType': 'text',
+      'data': {
+        'fid': Fid,
+      },
+      'success': (data) => {
+        if (data.toString() === 'OK') {
+          this.props.afterState();
+          openNotificationWithIcon('success', '还档成功', '还档成功，请进行后续操作');
+        } else {
+          openNotificationWithIcon('error', '还档失败', data.toString());
         }
       },
       'error': () => {
@@ -126,6 +148,7 @@ export default class DataTable extends React.Component {
                 afterEdit={this.afterEdit}
               />
             );
+            operate.push(<span className="ant-divider" />);
             operate.push(
               <BorrowLink
                 fileId={record.fid}
@@ -211,7 +234,7 @@ export default class DataTable extends React.Component {
               />
             );
             operate.push(<span className="ant-divider" />);
-            operate.push(<Popconfirm title={`确定要归还<${record.pname}>的<${record.fnumber}>档案？`} okText="归还" onConfirm={this.returns.bind(this, record.fid)} onCancel={this.cancel}>
+            operate.push(<Popconfirm title={`确定要归还<${record.pname}>的<${record.fnumber}>档案？`} okText="归还" onConfirm={this.returnz.bind(this, record.fid)} onCancel={this.cancel}>
               <a className="btn btn-xs btn-primary" >归还</a>
             </Popconfirm>);
             operate.push(<span className="ant-divider" />);
