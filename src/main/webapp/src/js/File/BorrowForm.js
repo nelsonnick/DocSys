@@ -127,8 +127,8 @@ class BorrowFrom extends React.Component {
               label="联系电话"
               {...formItemLayout}
               hasFeedback
-              required
-              help={isFieldValidating('personPhone2') ? '校验中...' : (getFieldError('personPhone2') || [])}
+              // required
+              // help={isFieldValidating('personPhone2') ? '校验中...' : (getFieldError('personPhone2') || [])}
             >
               {getFieldDecorator('personPhone2', { initialValue: personPhone2 })(
                 <Input placeholder="请输入市民手机号码" maxlength="11" disabled />

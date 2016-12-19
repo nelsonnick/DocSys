@@ -76,7 +76,7 @@ export default class DataTable extends React.Component {
       title: '档案编号',
       dataIndex: 'fnumber',
       key: 'fnumber',
-      width: 100,
+      width: 80,
     }, {
       title: '人员姓名',
       dataIndex: 'pname',
@@ -91,16 +91,16 @@ export default class DataTable extends React.Component {
       title: '档案位置',
       dataIndex: 'dname',
       key: 'dname',
-      width: 120,
+      width: 110,
     }, {
       title: '档案状态',
       dataIndex: 'fstate',
       key: 'fstate',
-      width: 80,
+      width: 70,
     }, {
       title: '操作',
       key: 'operation',
-      width: 150,
+      width: 170,
       render: (text, record) => {
         const operate = [];
         if (window.CurrentDepartment === record.dname.toString()) {
@@ -170,7 +170,7 @@ export default class DataTable extends React.Component {
               />
             );
             operate.push(<span className="ant-divider" />);
-            operate.push(<a className="btn btn-xs btn-link" href={`${AjaxFunction.PrintProve}?fid=${record.fid}`} >存档证明</a>);
+            operate.push(<a className="btn btn-xs btn-default" href={`${AjaxFunction.PrintProve}?fid=${record.fid}`} >存档证明</a>);
             operate.push(<span className="ant-divider" />);
             operate.push(
               <PolityLink
@@ -183,10 +183,6 @@ export default class DataTable extends React.Component {
               />
             );
           } else if (record.pstate.toString() === '已提' && record.fstate.toString() === '已提') {
-            operate.push(<Popconfirm title={`确定要重存<${record.pname}>的<${record.fnumber}>档案？`} okText="重存" onConfirm={this.returns.bind(this, record.fid)} onCancel={this.cancel}>
-              <a className="btn btn-xs btn-primary" >原档重存</a>
-            </Popconfirm>);
-            operate.push(<span className="ant-divider" />);
             operate.push(
               <BackLink
                 fileId={record.fid}
@@ -207,6 +203,10 @@ export default class DataTable extends React.Component {
                 afterEdit={this.afterEdit}
               />
             );
+            operate.push(<span className="ant-divider" />);
+            operate.push(<Popconfirm title={`确定要重存<${record.pname}>的<${record.fnumber}>档案？`} okText="重存" onConfirm={this.returns.bind(this, record.fid)} onCancel={this.cancel}>
+              <a className="btn btn-xs btn-primary" >原档重存</a>
+            </Popconfirm>);
             operate.push(<span className="ant-divider" />);
           } else if (record.pstate.toString() === '已提' && (record.fstate.toString() === '在档' || record.fstate.toString() === '出借')) {
             operate.push(<a className="btn btn-xs btn-link" >状态冲突(档在人提)，请联系管理员！</a>);
@@ -238,7 +238,7 @@ export default class DataTable extends React.Component {
               <a className="btn btn-xs btn-primary" >归还</a>
             </Popconfirm>);
             operate.push(<span className="ant-divider" />);
-            operate.push(<a className="btn btn-xs btn-link" href={`${AjaxFunction.PrintProve}?fid=${record.fid}`} >存档证明</a>);
+            operate.push(<a className="btn btn-xs btn-default" href={`${AjaxFunction.PrintProve}?fid=${record.fid}`} >存档证明</a>);
           } else {
             operate.push();
           }
@@ -265,7 +265,7 @@ export default class DataTable extends React.Component {
               />
             );
             operate.push(<span className="ant-divider" />);
-          } else if (record.pstate.toString() === '已提' && record.fstate.toString() === '在档') {
+          } else if (record.pstate.toString() === '已提' && (record.fstate.toString() === '在档' || record.fstate.toString() === '出借')) {
             operate.push(<a className="btn btn-xs btn-link" >状态冲突(档在人提)，请联系管理员！</a>);
           } else if (record.pstate.toString() === '在档' && record.fstate.toString() === '已提') {
             operate.push();

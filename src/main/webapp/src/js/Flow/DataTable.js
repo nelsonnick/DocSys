@@ -93,7 +93,7 @@ export default class DataTable extends React.Component {
             operate.push(<a className="btn btn-xs btn-warning" href={`${AjaxFunction.PrintBorrow}?lid=${record.lid}`} >出借打印</a>);
           } else if (record.lflow.toString() === '归还') {
             operate.push(<span className="ant-divider" />);
-            operate.push(<a className="btn btn-xs btn-default" href={`${AjaxFunction.PrintReturn}?lid=${record.lid}`} >归还打印</a>);
+            operate.push(<a className="btn btn-xs btn-info" href={`${AjaxFunction.PrintReturn}?lid=${record.lid}`} >归还打印</a>);
           } else {
             operate.push(<span className="ant-divider" />);
           }

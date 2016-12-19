@@ -530,7 +530,7 @@ public class FlowController extends Controller {
         setAttr("pphone2", Util.CheckNull(p.getStr("phone2")));
         setAttr("paddress", Util.CheckNull(p.getStr("address")));
         setAttr("lreason", Util.CheckNull(l.getStr("reason")));
-        setAttr("ldirect", Util.CheckNull(l.getStr("ldirect")));
+        setAttr("ldirect", Util.CheckNull(l.getStr("direct")));
         setAttr("pbirth", yyyy.format(p.get("birth")) + MM.format(p.get("birth")) + dd.format(p.get("birth")));
         setAttr("psex", Util.CheckNull(p.getStr("sex")));
         setAttr("fileAge", yyyy.format(p.get("fileAge")) + MM.format(p.get("fileAge")) + dd.format(p.get("fileAge")));
