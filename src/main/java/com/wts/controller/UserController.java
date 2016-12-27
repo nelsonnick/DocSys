@@ -243,6 +243,7 @@ public class UserController extends Controller {
   @Before({Tx.class,LoginInterceptor.class,PowerInterceptor.class})
   public void edit(){
     User user = User.dao.findById(getPara("id"));
+
     if (user == null) {
       renderText("要修改的用户不存在，请刷新页面后再试！");
     } else {
@@ -251,7 +252,7 @@ public class UserController extends Controller {
               && Util.CheckNull(user.getStr("number")).equals(getPara("number").trim())
               && Util.CheckNull(user.getStr("phone")).equals(getPara("phone").trim())
               && Util.CheckNull(user.getStr("login")).equals(getPara("login").trim())
-              && Util.CheckNull(user.getStr("did")).equals(getPara("did").trim())
+              && Util.CheckNull(user.getInt("did").toString()).equals(getPara("did").trim())
               ) {
         renderText("未找到修改内容，请核实后再修改！");
       } else if (!Util.CheckNull(user.getStr("number")).equals(getPara("number"))
@@ -267,7 +268,7 @@ public class UserController extends Controller {
         renderText("登录名称必须为4到12位的数字或字母组合!");
       } else if (getPara("login").equals("whosyourdaddy")) {
         renderText("该登录名称已有其他工作人员使用，请更换!");
-      }  else if (!getPara("phone").matches("\\d{11}")) {
+      } else if (!getPara("phone").matches("\\d{11}")) {
         renderText("联系电话必须为11位数字!");
       } else if (!IDNumber.availableIDNumber(getPara("number"))&&!(getPara("number").equals("000000000000000000"))){
         renderText("证件号码错误，请核实！");
