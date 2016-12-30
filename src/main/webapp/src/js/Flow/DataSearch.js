@@ -86,6 +86,8 @@ class DataSearch extends React.Component {
               >
                 <Option value="转入">转入</Option>
                 <Option value="转出">转出</Option>
+                <Option value="出借">出借</Option>
+                <Option value="归还">归还</Option>
                 <Option value="重存">重存</Option>
               </Select>
             )}

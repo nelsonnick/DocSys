@@ -86,6 +86,7 @@ class DataSearch extends React.Component {
               >
                 <Option value="在档">在档</Option>
                 <Option value="已提">已提</Option>
+                <Option value="出借">出借</Option>
               </Select>
             )}
           </FormItem>
