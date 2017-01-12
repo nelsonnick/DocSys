@@ -27,15 +27,14 @@ export default class Blank extends React.Component {
         <Row>
           <Col span="8">
             <Card title="业务变更" >
-              经反复考虑，将档案的流动过程归纳为进、出两部分(借档和提档均视为出)。<br />
-              推荐采用自动生成的档案编号。
+              应众多同事要求，现追加档案出借的功能。<br />
             </Card>
           </Col>
           <Col span="8">
             <Card title="编号规则" >
               3位部门编号+8位日期编号+3位顺序号。<br />
               每个部门每日收取的最大档案数量为999。<br />
-              如果特殊需要，可自行修改。
+              非特殊需要，不推荐采用自动生成的档案编号！
             </Card>
           </Col>
           <Col span="8">
